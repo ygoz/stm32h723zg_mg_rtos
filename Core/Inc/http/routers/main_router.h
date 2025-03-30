@@ -12,6 +12,7 @@
 
 #include "mongoose.h"
 
-void handle_http_request(struct mg_connection *c, void *ev_data);
+static void handle_http_request(struct mg_connection *c, void *ev_data);
+void event_handler(struct mg_connection *c, int ev, void *ev_data);
 
 #endif /* INC_HTTP_MAIN_ROUTER_H_ */

@@ -20,6 +20,7 @@
 #include "main.h"
 #include "string.h"
 #include "cmsis_os.h"
+#include "http/routers/main_router.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -94,54 +95,12 @@ void server(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void mg_random(void *buf, size_t len) {  // Use on-board RNG
-  extern RNG_HandleTypeDef hrng;
-  for (size_t n = 0; n < len; n += sizeof(uint32_t)) {
-    uint32_t r;
-    HAL_RNG_GenerateRandomNumber(&hrng, &r);
-    memcpy((char *) buf + n, &r, n + sizeof(r) > len ? len - n : sizeof(r));
-  }
-}
-
-
-uint8_t static inline numconns(struct mg_mgr *mgr) {
-  int n = 0;
-  for (struct mg_connection *t = mgr->conns; t != NULL; t = t->next) {
-//	  printf("IP ADDR 192.168.1.3 at port: %d", t->loc.port);
-	  n++;
-  }
-  return n;
-}
-
-static void event_handler(struct mg_connection *c, int ev, void *ev_data) {
-	  if (ev == MG_EV_HTTP_MSG) {
-		  handle_http_request(c, ev_data);
-	  }
-	  if (ev == MG_EV_ACCEPT) {
-		  uint8_t active_connections = numconns(c->mgr);
-		  printf("Active TCP connections: %d\r\n", active_connections);
-		  if (active_connections > 5) {
-	        MG_ERROR(("Too many connections\r\n"));
-	        c->is_closing = 1;
-	//  	  mg_mgr_free(c->mgr);
-	//  	  mg_mgr_init(c->mgr);
-		  }
-	  }
-	  else if (ev == MG_EV_ERROR){
-		  printf("yams print - MG_EV_ERROR /r/n");
-	  }
-	}
-
 
 int _write(int fd, unsigned char *buf, int len) {
   if (fd == 1 || fd == 2) {                     // stdout or stderr ?
     HAL_UART_Transmit(&huart3, buf, len, 999);  // Print to the UART
   }
   return len;
-}
-
-uint64_t mg_millis(void) {
-  return HAL_GetTick();
 }
 
 // In RTOS environment, run this function in a separate task. Give it 8k stack
@@ -152,7 +111,7 @@ static void run_mongoose(void) {
   HAL_GPIO_WritePin(GPIOE, LED_YELLOW_Pin, GPIO_PIN_SET);
   mg_http_listen(&mgr, "http://0.0.0.0:80", event_handler, NULL);
   for (;;) {                // Infinite event loop
-    mg_mgr_poll(&mgr, 0);   // Process network events
+    mg_mgr_poll(&mgr, 500);   // Process network events
   }
 }
 /* USER CODE END 0 */
@@ -234,8 +193,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  NVIC_EnableIRQ(ETH_IRQn);   // preferably do this in Cube, as the tutorials above instruct
-  run_mongoose();
 
   while (1) {
     printf("Tick: %lu\r\n", HAL_GetTick());
@@ -494,11 +451,8 @@ static void MX_GPIO_Init(void)
 void server(void *argument)
 {
   /* USER CODE BEGIN 5 */
-//	struct mg_mgr mgr;        // Initialise Mongoose event manager
-//	mg_mgr_init(&mgr);        // and attach it to the interface
-//	mg_log_set(MG_LL_DEBUG);  // Set log level
-	NVIC_EnableIRQ(ETH_IRQn);   // preferably do this in Cube, as the tutorials above instruct
-	  run_mongoose();
+  NVIC_EnableIRQ(ETH_IRQn);   // preferably do this in Cube, as the tutorials above instruct
+  run_mongoose();
   /* Infinite loop */
   for(;;)
   {
