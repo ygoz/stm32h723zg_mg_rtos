@@ -1,5 +1,5 @@
 ../Core/Src/http/routers/main_router.c:18:6:mg_random	24	static
 ../Core/Src/http/routers/main_router.c:29:10:mg_millis	16	static
 ../Core/Src/http/routers/main_router.c:35:13:handle_http_request	40	static
-../Core/Src/http/routers/main_router.c:54:23:numconns	24	static
-../Core/Src/http/routers/main_router.c:63:6:event_handler	32	static
+../Core/Src/http/routers/main_router.c:53:23:numconns	24	static
+../Core/Src/http/routers/main_router.c:62:6:event_handler	32	static

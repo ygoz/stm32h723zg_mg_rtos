@@ -20,11 +20,11 @@
 #include "main.h"
 #include "string.h"
 #include "cmsis_os.h"
-#include "http/routers/main_router.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "mongoose.h"
+#include "http/routers/main_router.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -72,7 +72,7 @@ UART_HandleTypeDef huart3;
 osThreadId_t ServerHandle;
 const osThreadAttr_t Server_attributes = {
   .name = "Server",
-  .stack_size = 2048 * 4,
+  .stack_size = 2048 * 8,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
@@ -108,7 +108,7 @@ static void run_mongoose(void) {
   struct mg_mgr mgr;        // Mongoose event manager
   mg_mgr_init(&mgr);        // Initialise event manager
   mg_log_set(MG_LL_DEBUG);  // Set log level to debug
-  HAL_GPIO_WritePin(GPIOE, LED_YELLOW_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, LED_GREEN_Pin, GPIO_PIN_SET);
   mg_http_listen(&mgr, "http://0.0.0.0:80", event_handler, NULL);
   for (;;) {                // Infinite event loop
     mg_mgr_poll(&mgr, 500);   // Process network events
@@ -488,6 +488,27 @@ void MPU_Config(void)
   /* Enables the MPU */
   HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM6 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM6) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
 }
 
 /**

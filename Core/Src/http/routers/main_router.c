@@ -35,7 +35,6 @@ uint64_t mg_millis(void) {
 static void handle_http_request(struct mg_connection *c, void *ev_data) {
 
 	struct mg_http_message *hm = (struct mg_http_message *) ev_data;
-//		  printf("HTTP Body body: %.*s\r\n", (int) hm->body.len, hm->body.ptr);
 
 		    if (mg_strcmp(hm->method, mg_str("GET")) == 0) {
 		        GET_requests_router(c, hm);
@@ -70,8 +69,6 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 		  if (active_connections > 5) {
 	        MG_ERROR(("Too many connections\r\n"));
 	        c->is_closing = 1;
-	//  	  mg_mgr_free(c->mgr);
-	//  	  mg_mgr_init(c->mgr);
 		  }
 	  }
 	  else if (ev == MG_EV_ERROR){
