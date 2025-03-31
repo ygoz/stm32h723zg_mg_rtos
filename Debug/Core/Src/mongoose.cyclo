@@ -1,3 +1,4 @@
+../Core/Inc/mongoose.h:208:21:mg_calloc	2
 ../Core/Src/mongoose.c:35:12:mg_base64_encode_single	5
 ../Core/Src/mongoose.c:47:12:mg_base64_decode_single	10
 ../Core/Src/mongoose.c:65:8:mg_base64_update	3
@@ -203,7 +204,7 @@
 ../Core/Src/mongoose.c:4886:13:rx_ip	19
 ../Core/Src/mongoose.c:4930:13:rx_ip6	6
 ../Core/Src/mongoose.c:4946:13:mg_tcpip_rx	20
-../Core/Src/mongoose.c:4991:13:mg_tcpip_poll	45
+../Core/Src/mongoose.c:4991:13:mg_tcpip_poll	43
 ../Core/Src/mongoose.c:5107:6:mg_tcpip_qwrite	2
 ../Core/Src/mongoose.c:5118:6:mg_tcpip_init	18
 ../Core/Src/mongoose.c:5155:6:mg_tcpip_free	1

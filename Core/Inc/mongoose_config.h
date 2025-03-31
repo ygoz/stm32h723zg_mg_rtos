@@ -12,13 +12,16 @@
 
 // OS
 //#define MG_ARCH MG_ARCH_NEWLIB
-#define MG_ARCH MG_ARCH_CMSIS_RTOS2
+#define MG_ARCH MG_ARCH_FREERTOS
 #define MG_ENABLE_CUSTOM_RANDOM 1
+
+#define MG_IRAM __attribute__((section(".RamFunc")))
 
 // For all ARM GCC based environments
 #define MG_ENABLE_TCPIP 1          // Enables built-in TCP/IP stack
 #define MG_ENABLE_CUSTOM_MILLIS 1  // We must implement mg_millis()
-#define MG_ENABLE_TCPIP_PRINT_DEBUG_STATS 1  // Enable debug stats log
+//#define MG_ENABLE_TCPIP_PRINT_DEBUG_STATS 1  // Enable debug stats log
+#define MG_ENABLE_DRIVER_STM32H 1
 
 // Uncomment the driver for your device
  #define MG_ENABLE_DRIVER_STM32H 1

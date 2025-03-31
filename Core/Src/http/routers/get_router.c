@@ -28,6 +28,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	    char response[128];
 	    snprintf(response, sizeof(response), "{\"free_memory\": %u, \"total_memory\": %u}\n", free_memory, total_memory);
 	      mg_http_reply(c, 200, "", response);
+	      printf("yamson smart");
 	    }
 	else{
 //		mg_http_reply(c, 200, "", "ok get router\r\n");

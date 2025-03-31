@@ -63,10 +63,10 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 	  if (ev == MG_EV_HTTP_MSG) {
 		  handle_http_request(c, ev_data);
 	  }
-	  if (ev == MG_EV_ACCEPT) {
+	  else if (ev == MG_EV_ACCEPT) {
 		  uint8_t active_connections = numconns(c->mgr);
 		  printf("Active TCP connections: %d\r\n", active_connections);
-		  if (active_connections > 5) {
+		  if (active_connections > 10) {
 	        MG_ERROR(("Too many connections\r\n"));
 	        c->is_closing = 1;
 		  }

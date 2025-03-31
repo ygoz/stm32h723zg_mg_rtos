@@ -1,3 +1,4 @@
+../Core/Inc/mongoose.h:208:21:mg_calloc	24	static
 ../Core/Src/mongoose.c:35:12:mg_base64_encode_single	16	static
 ../Core/Src/mongoose.c:47:12:mg_base64_decode_single	16	static
 ../Core/Src/mongoose.c:65:8:mg_base64_update	32	static
@@ -203,7 +204,7 @@
 ../Core/Src/mongoose.c:4886:13:rx_ip	64	static
 ../Core/Src/mongoose.c:4930:13:rx_ip6	16	static
 ../Core/Src/mongoose.c:4946:13:mg_tcpip_rx	88	static
-../Core/Src/mongoose.c:4991:13:mg_tcpip_poll	120	static
+../Core/Src/mongoose.c:4991:13:mg_tcpip_poll	104	static
 ../Core/Src/mongoose.c:5107:6:mg_tcpip_qwrite	32	static
 ../Core/Src/mongoose.c:5118:6:mg_tcpip_init	24	static
 ../Core/Src/mongoose.c:5155:6:mg_tcpip_free	16	static
