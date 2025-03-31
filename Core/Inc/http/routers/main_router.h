@@ -12,6 +12,8 @@
 
 #include "mongoose.h"
 
+static const uint64_t s_timeout_ms = 1500;  // Connect timeout in milliseconds
+
 static void handle_http_request(struct mg_connection *c, void *ev_data);
 void event_handler(struct mg_connection *c, int ev, void *ev_data);
 

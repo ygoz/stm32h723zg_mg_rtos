@@ -72,8 +72,23 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 		  }
 	  }
 	  else if (ev == MG_EV_ERROR){
-		  printf("yams print - MG_EV_ERROR /r/n");
+		  printf("yams print - MG_EV_ERROR \r\n\r\n");
+		  printf("Error: %s\r\n", (char *) ev_data);
 	  }
+	  else if (ev == MG_EV_OPEN) {
+		  uint64_t timeout_value = mg_millis() + s_timeout_ms;
+	      // Connection created. Store connect expiration time in c->data
+	      *(uint64_t *) c->data = timeout_value;
+	      printf("timestamp in hex: 0x%02X%02X%02X%02X\r\n", (char *)c->data[3], (char *)c->data[2], (char *)c->data[1], (char *)c->data[0]);
+
+	    }
+	  else if (ev == MG_EV_POLL) {
+	      if (mg_millis() > *(uint64_t *) c->data &&
+	          (c->is_connecting || c->is_resolving)) {
+	    	  printf("TIMEOUT-------------\r\n");
+	        mg_error(c, "Connect timeout");
+	      }
+	    }
 	}
 
 
