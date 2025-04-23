@@ -22,9 +22,11 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Core/Src/flash \
 Core/Src \
 Core/Src/http/FOTA \
 Core/Src/http/routers \
+Core/Src/http/settings \
 Core/Src/http/web_ui/file_system \
 Core/Startup \
 Drivers/STM32H7xx_HAL_Driver/Src \

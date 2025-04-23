@@ -20,6 +20,7 @@
 #include "main.h"
 #include "string.h"
 #include "cmsis_os.h"
+#include "http/settings/network.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -60,6 +61,8 @@ ETH_DMADescTypeDef DMARxDscrTab[ETH_RX_DESC_CNT] __attribute__((section(".RxDesc
 ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDescripSection")));   /* Ethernet Tx DMA Descriptors */
 #endif
 
+
+// maybe can put the following structs to main.h
 ETH_TxPacketConfig TxConfig;
 
 ETH_HandleTypeDef heth;
@@ -79,6 +82,7 @@ const osThreadAttr_t Server_attributes = {
 
 /* USER CODE END PV */
 
+// put to main.h check if it compiles then
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -94,13 +98,26 @@ void server(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-
+//  try to move to syscalls.c 
 int _write(int fd, unsigned char *buf, int len) {
   if (fd == 1 || fd == 2) {                     // stdout or stderr ?
     HAL_UART_Transmit(&huart3, buf, len, 999);  // Print to the UART
   }
   return len;
 }
+
+// maybe put to network.c
+static void load_network_configurations(struct mg_mgr *mgr){
+	printf("dshfchdscbjdxbjfhhvjdbjv===================================\r\n\r\n");
+  	network_settings settings;
+	get_network_settings(&settings);  // Read settings from flash and convert to struct
+
+	if (!settings.settings_initialized) {
+			// Settings were never initialized, return 400 Bad Request
+			printf("gggggggggggggggggggggggggggggggg");
+		}
+}
+
 
 // In RTOS environment, run this function in a separate task. Give it 8k stack
 static void run_mongoose(void) {
@@ -110,6 +127,9 @@ static void run_mongoose(void) {
 //  HAL_GPIO_WritePin(GPIOB, LED_GREEN_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
   mg_http_listen(&mgr, "http://0.0.0.0:80", event_handler, "");
+
+//  mg_timer_add(&mgr, 6000, 0, load_network_configurations, &mgr); // Non-blocking delay to func set_ip_configurations
+
   for (;;) {                // Infinite event loop
     mg_mgr_poll(&mgr, 10);   // Process network events
   }

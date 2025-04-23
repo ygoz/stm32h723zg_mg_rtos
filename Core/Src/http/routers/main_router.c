@@ -30,26 +30,29 @@ uint64_t mg_millis(void) {
   return HAL_GetTick();
 }
 
-
+// add return status: ok, error, for the ve handler to print out for debug
 // Function to handle the request based on the type
 static void handle_http_request(struct mg_connection *c, void *ev_data) {
 
 	struct mg_http_message *hm = (struct mg_http_message *) ev_data;
 
-		    if (mg_strcmp(hm->method, mg_str("GET")) == 0) {
-		        GET_requests_router(c, hm);
-		    } else if (mg_strcmp(hm->method, mg_str("POST")) == 0) {
-		        POST_requests_router(c, hm);
+	if (mg_strcmp(hm->method, mg_str("GET")) == 0) {
+		GET_requests_router(c, hm);
+	} else if (mg_strcmp(hm->method, mg_str("POST")) == 0) {
+		POST_requests_router(c, hm);
 //		    } else if (mg_strcmp(hm->method, mg_str("PUT")) == 0) {
 //		        PUT_requests_router(c);
 //		    } else if (mg_strcmp(hm->method, mg_str("DELETE")) == 0) {
 //		        DELETE_requests_router(c);
-		    } else {
-		        mg_http_reply(c, 405, "", "Method Not Allowed\r\n");
-		    }
+	} else {
+		mg_http_reply(c, 405, "", "Method Not Allowed\r\n");
+	}
 //
 //		  mg_http_reply(c, 200, "", "ok shmoopoo4\r\n");
 }
+
+
+// ?? remove inline, change to num_cons
 uint8_t static inline numconns(struct mg_mgr *mgr) {
   int n = 0;
   for (struct mg_connection *t = mgr->conns; t != NULL; t = t->next) {
@@ -59,8 +62,14 @@ uint8_t static inline numconns(struct mg_mgr *mgr) {
   return n;
 }
 
+
 void event_handler(struct mg_connection *c, int ev, void *ev_data) {
-	  if (ev == MG_EV_HTTP_MSG) {
+	// check type of ev and change from int to enum of needed
+	
+	// replace with switch case statements
+	
+	
+	if (ev == MG_EV_HTTP_MSG) {
 		  handle_http_request(c, ev_data);
 	  }
 	  else if (ev == MG_EV_ACCEPT) {
@@ -75,6 +84,9 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 		  printf("yams print - MG_EV_ERROR \r\n\r\n");
 		  printf("Error: %s\r\n", (char *) ev_data);
 	  }
+//	  else if (ev == MG_TCPIP_EV_ST_CHG && c->mgr->ifp->state == MG_TCPIP_STATE_READY){
+//
+//	  	  }
 	  else if (ev == MG_EV_OPEN) {
 		  uint64_t timeout_value = mg_millis() + s_timeout_ms;
 	      // Connection created. Store connect expiration time in c->data

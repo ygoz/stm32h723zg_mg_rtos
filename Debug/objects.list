@@ -1,3 +1,4 @@
+"./Core/Src/flash/internal_flash.o"
 "./Core/Src/freertos.o"
 "./Core/Src/main.o"
 "./Core/Src/mongoose.o"
@@ -11,6 +12,7 @@
 "./Core/Src/http/routers/get_router.o"
 "./Core/Src/http/routers/main_router.o"
 "./Core/Src/http/routers/post_router.o"
+"./Core/Src/http/settings/network.o"
 "./Core/Src/http/web_ui/file_system/packed_fs.o"
 "./Core/Startup/startup_stm32h723zgtx.o"
 "./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o"

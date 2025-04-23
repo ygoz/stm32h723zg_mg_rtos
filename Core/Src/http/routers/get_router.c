@@ -4,6 +4,10 @@
 #include "main.h"
 #include "FreeRTOSConfig.h"
 
+#include "flash/internal_flash.h"
+#include "http/settings/network.h"
+#include "string.h"
+
 
 
 
@@ -20,16 +24,42 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		HAL_GPIO_TogglePin(GPIOB, LED_GREEN_Pin); // Can be different on your board
 	      mg_http_reply(c, 200, "", "true\n");
 	    }
+	else if (mg_match(hm->uri, mg_str("/flash/settings/get"), NULL)){
+		network_settings settings;
+		get_network_settings(&settings);  // Read settings from flash and convert to struct
+
+		// change to better name
+		if (settings.settings_initialized) {
+				// Settings were never initialized, return 400 Bad Request
+				mg_http_reply(c, 400, "", "error: settings were never initialized\r\n");
+			} else {
+				// Settings are valid, return them
+				char response[256] = {0};                           // put response in the beginning of function
+				snprintf(response, sizeof(response),
+						 "ok settings were set:\r\n"
+						 "IP: %s\r\n"
+						 "Gateway: %s\r\n"
+						 "Netmask: %s\r\n"
+						 "DHCP: %s\r\n",
+						 settings.ip,
+						 settings.gateway,
+						 settings.netmask,
+						 settings.dhcp ? "Enabled" : "Disabled");
+
+				mg_http_reply(c, 200, "", "%s", response);
+			}
+
+	}
 	else if (mg_match(hm->uri, mg_str("/mem/ram/get"), NULL)) {
 	    uint32_t free_memory = xPortGetFreeHeapSize();  // Example: Get the available heap memory
 	    uint32_t total_memory = configTOTAL_HEAP_SIZE;  // Total heap memory size from FreeRTOS config
 
 	    // Format the response as JSON or plain text
-	    char response[128];
+	    char response[128] = {0};                                // !!!!!!!!!!!!! remove response here
 	    snprintf(response, sizeof(response), "{\"free_memory\": %u, \"total_memory\": %u}\n", free_memory, total_memory);
 	      mg_http_reply(c, 200, "", response);
-	    }
-	else{
+	}
+	else {
 		struct mg_http_serve_opts opts = {.root_dir = "/web_root", .fs = &mg_fs_packed};
 		mg_http_serve_dir(c, hm, &opts);
 	}

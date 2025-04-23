@@ -45,7 +45,8 @@ Core/Src/http/routers/get_router.o: ../Core/Src/http/routers/get_router.c \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h
+ ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
+ ../Core/Inc/flash/internal_flash.h ../Core/Inc/http/settings/network.h
 ../Core/Inc/http/routers/get_router.h:
 ../Core/Inc/mongoose.h:
 ../Core/Inc/mongoose_config.h:
@@ -95,3 +96,5 @@ Core/Src/http/routers/get_router.o: ../Core/Src/http/routers/get_router.c \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
+../Core/Inc/flash/internal_flash.h:
+../Core/Inc/http/settings/network.h:
