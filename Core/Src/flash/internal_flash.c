@@ -134,6 +134,7 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 	int sofar=0;
 
 	 /* Unlock the Flash to enable the flash control register access *************/
+	  __disable_irq();
 	  HAL_FLASH_Unlock();
 
 	  /* Erase the user Flash area */
@@ -177,11 +178,13 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 	  /* Lock the Flash to disable the flash control register access (recommended
 	     to protect the FLASH memory against possible unwanted operation) *********/
 	  HAL_FLASH_Lock();
+	  __enable_irq();
 
 	   return 0;
 }
 
 
+// ** THIS CAUSES HARDFAULT :( **
 //MG_IRAM void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
 //	while (1) {
 //		*data = *(__IO uint32_t *)StartSectorAddress;
@@ -193,9 +196,12 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 
 
 MG_IRAM void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
+	__disable_irq();
 	for (uint16_t i = 0; i < numberofwords; i++) {
 		data[i] = *(__IO uint32_t *)(StartSectorAddress + i * 4);
 	}
+    __enable_irq();
+
 }
 
 

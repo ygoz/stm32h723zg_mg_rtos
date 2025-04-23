@@ -15,37 +15,37 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   5 .fini_array   00000004  080267cc  080267cc  000277cc  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  6 .data         00000b88  24000000  080267d0  00028000  2**3
+  6 .data         00000b98  24000000  080267d0  00028000  2**3
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  7 .RxDescripSection 00000060  24000b88  08027358  00028b88  2**2
+  7 .RxDescripSection 00000060  24000b98  08027368  00028b98  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .TxDescripSection 00000060  24000be8  080273b8  00028be8  2**2
+  8 .TxDescripSection 00000060  24000bf8  080273c8  00028bf8  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000142c8  24000c48  08027418  00028c48  2**3
+  9 .bss          000142c8  24000c58  08027428  00028c58  2**3
                   ALLOC
- 10 ._user_heap_stack 00000600  24014f10  08027418  00028f10  2**0
+ 10 ._user_heap_stack 00000600  24014f20  08027428  00028f20  2**0
                   ALLOC
- 11 .ARM.attributes 0000002e  00000000  00000000  00028c48  2**0
+ 11 .ARM.attributes 0000002e  00000000  00000000  00028c58  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00038e14  00000000  00000000  00028c76  2**0
+ 12 .debug_info   00038e64  00000000  00000000  00028c86  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00005c1e  00000000  00000000  00061a8a  2**0
+ 13 .debug_abbrev 00005c51  00000000  00000000  00061aea  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000029c8  00000000  00000000  000676a8  2**3
+ 14 .debug_aranges 000029c8  00000000  00000000  00067740  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 00002198  00000000  00000000  0006a070  2**0
+ 15 .debug_rnglists 00002198  00000000  00000000  0006a108  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0003a959  00000000  00000000  0006c208  2**0
+ 16 .debug_macro  0003a959  00000000  00000000  0006c2a0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   000343ef  00000000  00000000  000a6b61  2**0
+ 17 .debug_line   00034423  00000000  00000000  000a6bf9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0016707f  00000000  00000000  000daf50  2**0
+ 18 .debug_str    0016707f  00000000  00000000  000db01c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  00241fcf  2**0
+ 19 .comment      00000043  00000000  00000000  0024209b  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  0000c52c  00000000  00000000  00242014  2**2
+ 20 .debug_frame  0000c52c  00000000  00000000  002420e0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000005a  00000000  00000000  0024e540  2**0
+ 21 .debug_line_str 0000005a  00000000  00000000  0024e60c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -62,7 +62,7 @@ Disassembly of section .text:
  80002e2:	2301      	movs	r3, #1
  80002e4:	7023      	strb	r3, [r4, #0]
  80002e6:	bd10      	pop	{r4, pc}
- 80002e8:	24000c48 	.word	0x24000c48
+ 80002e8:	24000c58 	.word	0x24000c58
  80002ec:	00000000 	.word	0x00000000
  80002f0:	08017560 	.word	0x08017560
 
@@ -75,7 +75,7 @@ Disassembly of section .text:
  80002fe:	f3af 8000 	nop.w
  8000302:	bd08      	pop	{r3, pc}
  8000304:	00000000 	.word	0x00000000
- 8000308:	24000c4c 	.word	0x24000c4c
+ 8000308:	24000c5c 	.word	0x24000c5c
  800030c:	08017560 	.word	0x08017560
 
 08000310 <strcmp>:
@@ -755,7 +755,7 @@ int _write(int fd, unsigned char *buf, int len) {
  80008a6:	46bd      	mov	sp, r7
  80008a8:	bd80      	pop	{r7, pc}
  80008aa:	bf00      	nop
- 80008ac:	24000d78 	.word	0x24000d78
+ 80008ac:	24000d88 	.word	0x24000d88
 
 080008b0 <run_mongoose>:
 
@@ -897,7 +897,7 @@ int main(void)
  800095e:	bf00      	nop
  8000960:	080196b4 	.word	0x080196b4
  8000964:	08000cfd 	.word	0x08000cfd
- 8000968:	24000e0c 	.word	0x24000e0c
+ 8000968:	24000e1c 	.word	0x24000e1c
  800096c:	080175c0 	.word	0x080175c0
 
 08000970 <SystemClock_Config>:
@@ -1161,12 +1161,12 @@ static void MX_ETH_Init(void)
 }
  8000ad0:	bf00      	nop
  8000ad2:	bd80      	pop	{r7, pc}
- 8000ad4:	24000cb4 	.word	0x24000cb4
+ 8000ad4:	24000cc4 	.word	0x24000cc4
  8000ad8:	40028000 	.word	0x40028000
- 8000adc:	24000e10 	.word	0x24000e10
- 8000ae0:	24000be8 	.word	0x24000be8
- 8000ae4:	24000b88 	.word	0x24000b88
- 8000ae8:	24000c7c 	.word	0x24000c7c
+ 8000adc:	24000e20 	.word	0x24000e20
+ 8000ae0:	24000bf8 	.word	0x24000bf8
+ 8000ae4:	24000b98 	.word	0x24000b98
+ 8000ae8:	24000c8c 	.word	0x24000c8c
 
 08000aec <MX_RNG_Init>:
   * @brief RNG Initialization Function
@@ -1207,7 +1207,7 @@ static void MX_RNG_Init(void)
 }
  8000b0c:	bf00      	nop
  8000b0e:	bd80      	pop	{r7, pc}
- 8000b10:	24000d64 	.word	0x24000d64
+ 8000b10:	24000d74 	.word	0x24000d74
  8000b14:	48021800 	.word	0x48021800
 
 08000b18 <MX_USART3_UART_Init>:
@@ -1317,7 +1317,7 @@ static void MX_USART3_UART_Init(void)
 }
  8000ba4:	bf00      	nop
  8000ba6:	bd80      	pop	{r7, pc}
- 8000ba8:	24000d78 	.word	0x24000d78
+ 8000ba8:	24000d88 	.word	0x24000d88
  8000bac:	40004800 	.word	0x40004800
 
 08000bb0 <MX_GPIO_Init>:
@@ -1919,13 +1919,13 @@ bool mg_ota_flash_begin(size_t new_firmware_size, struct mg_flash *flash) {
  8000f8e:	46bd      	mov	sp, r7
  8000f90:	bd80      	pop	{r7, pc}
  8000f92:	bf00      	nop
- 8000f94:	24000e1c 	.word	0x24000e1c
+ 8000f94:	24000e2c 	.word	0x24000e2c
  8000f98:	24000248 	.word	0x24000248
  8000f9c:	080196ec 	.word	0x080196ec
  8000fa0:	080175cc 	.word	0x080175cc
  8000fa4:	0801771c 	.word	0x0801771c
- 8000fa8:	24000e20 	.word	0x24000e20
- 8000fac:	24000e18 	.word	0x24000e18
+ 8000fa8:	24000e30 	.word	0x24000e30
+ 8000fac:	24000e28 	.word	0x24000e28
  8000fb0:	08017748 	.word	0x08017748
  8000fb4:	08017760 	.word	0x08017760
  8000fb8:	08017780 	.word	0x08017780
@@ -2104,13 +2104,13 @@ bool mg_ota_flash_write(const void *buf, size_t len, struct mg_flash *flash) {
  800111c:	46bd      	mov	sp, r7
  800111e:	e8bd 87f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, pc}
  8001122:	bf00      	nop
- 8001124:	24000e1c 	.word	0x24000e1c
+ 8001124:	24000e2c 	.word	0x24000e2c
  8001128:	24000248 	.word	0x24000248
  800112c:	08019700 	.word	0x08019700
  8001130:	080175cc 	.word	0x080175cc
  8001134:	080177a4 	.word	0x080177a4
- 8001138:	24000e18 	.word	0x24000e18
- 800113c:	24000e20 	.word	0x24000e20
+ 8001138:	24000e28 	.word	0x24000e28
+ 800113c:	24000e30 	.word	0x24000e30
  8001140:	080177cc 	.word	0x080177cc
 
 08001144 <mg_ota_flash_end>:
@@ -2231,9 +2231,9 @@ bool mg_ota_flash_end(struct mg_flash *flash) {
  8001216:	3718      	adds	r7, #24
  8001218:	46bd      	mov	sp, r7
  800121a:	bd80      	pop	{r7, pc}
- 800121c:	24000e1c 	.word	0x24000e1c
- 8001220:	24000e18 	.word	0x24000e18
- 8001224:	24000e20 	.word	0x24000e20
+ 800121c:	24000e2c 	.word	0x24000e2c
+ 8001220:	24000e28 	.word	0x24000e28
+ 8001224:	24000e30 	.word	0x24000e30
  8001228:	24000248 	.word	0x24000248
  800122c:	08019714 	.word	0x08019714
  8001230:	080175cc 	.word	0x080175cc
@@ -11934,7 +11934,7 @@ static void logc(unsigned char c) {
  8006288:	46bd      	mov	sp, r7
  800628a:	bd80      	pop	{r7, pc}
  800628c:	2400024c 	.word	0x2400024c
- 8006290:	24000e24 	.word	0x24000e24
+ 8006290:	24000e34 	.word	0x24000e34
 
 08006294 <logs>:
 
@@ -12091,7 +12091,7 @@ void mg_log(const char *fmt, ...) {
  800639c:	b004      	add	sp, #16
  800639e:	4770      	bx	lr
  80063a0:	2400024c 	.word	0x2400024c
- 80063a4:	24000e24 	.word	0x24000e24
+ 80063a4:	24000e34 	.word	0x24000e34
  80063a8:	080178a8 	.word	0x080178a8
 
 080063ac <nibble>:
@@ -13527,9 +13527,9 @@ void mg_mgr_init(struct mg_mgr *mgr) {
  8006dfa:	3708      	adds	r7, #8
  8006dfc:	46bd      	mov	sp, r7
  8006dfe:	bd80      	pop	{r7, pc}
- 8006e00:	24003ed8 	.word	0x24003ed8
+ 8006e00:	24003ee8 	.word	0x24003ee8
  8006e04:	c0a8010a 	.word	0xc0a8010a
- 8006e08:	24003ee0 	.word	0x24003ee0
+ 8006e08:	24003ef0 	.word	0x24003ef0
  8006e0c:	c0a80101 	.word	0xc0a80101
  8006e10:	24000268 	.word	0x24000268
  8006e14:	24000248 	.word	0x24000248
@@ -20372,7 +20372,7 @@ bool mg_ota_end(void) {
  800a2a0:	080175cc 	.word	0x080175cc
  800a2a4:	08018be4 	.word	0x08018be4
  800a2a8:	08018c10 	.word	0x08018c10
- 800a2ac:	24000e28 	.word	0x24000e28
+ 800a2ac:	24000e38 	.word	0x24000e38
 
 0800a2b0 <mg_pfn_iobuf_private>:
   len = mg_queue_vprintf(q, fmt, &ap);
@@ -24445,14 +24445,14 @@ static bool mg_tcpip_driver_stm32h_init(struct mg_tcpip_if *ifp) {
  800bfba:	3728      	adds	r7, #40	@ 0x28
  800bfbc:	46bd      	mov	sp, r7
  800bfbe:	bd80      	pop	{r7, pc}
- 800bfc0:	24003ecc 	.word	0x24003ecc
- 800bfc4:	24000eac 	.word	0x24000eac
- 800bfc8:	24000e2c 	.word	0x24000e2c
- 800bfcc:	240026bc 	.word	0x240026bc
- 800bfd0:	24000e6c 	.word	0x24000e6c
+ 800bfc0:	24003edc 	.word	0x24003edc
+ 800bfc4:	24000ebc 	.word	0x24000ebc
+ 800bfc8:	24000e3c 	.word	0x24000e3c
+ 800bfcc:	240026cc 	.word	0x240026cc
+ 800bfd0:	24000e7c 	.word	0x24000e7c
  800bfd4:	40028000 	.word	0x40028000
  800bfd8:	0801918c 	.word	0x0801918c
- 800bfdc:	24000e5c 	.word	0x24000e5c
+ 800bfdc:	24000e6c 	.word	0x24000e6c
 
 0800bfe0 <mg_tcpip_driver_stm32h_tx>:
 
@@ -24656,12 +24656,12 @@ static size_t mg_tcpip_driver_stm32h_tx(const void *buf, size_t len,
  800c174:	08019918 	.word	0x08019918
  800c178:	080175cc 	.word	0x080175cc
  800c17c:	08019194 	.word	0x08019194
- 800c180:	24003ed0 	.word	0x24003ed0
- 800c184:	24000e6c 	.word	0x24000e6c
+ 800c180:	24003ee0 	.word	0x24003ee0
+ 800c184:	24000e7c 	.word	0x24000e7c
  800c188:	40028000 	.word	0x40028000
  800c18c:	080191a8 	.word	0x080191a8
  800c190:	080191d0 	.word	0x080191d0
- 800c194:	240026bc 	.word	0x240026bc
+ 800c194:	240026cc 	.word	0x240026cc
 
 0800c198 <mg_tcpip_driver_stm32h_poll>:
 
@@ -24944,11 +24944,11 @@ void ETH_IRQHandler(void) {
  800c3a8:	46bd      	mov	sp, r7
  800c3aa:	bd80      	pop	{r7, pc}
  800c3ac:	40028000 	.word	0x40028000
- 800c3b0:	24003ed4 	.word	0x24003ed4
- 800c3b4:	24000e2c 	.word	0x24000e2c
- 800c3b8:	24000eac 	.word	0x24000eac
- 800c3bc:	24003ecc 	.word	0x24003ecc
- 800c3c0:	24000e5c 	.word	0x24000e5c
+ 800c3b0:	24003ee4 	.word	0x24003ee4
+ 800c3b4:	24000e3c 	.word	0x24000e3c
+ 800c3b8:	24000ebc 	.word	0x24000ebc
+ 800c3bc:	24003edc 	.word	0x24003edc
+ 800c3c0:	24000e6c 	.word	0x24000e6c
 
 0800c3c4 <HAL_MspInit>:
 /* USER CODE END 0 */
@@ -25560,7 +25560,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
  800c7b8:	24000284 	.word	0x24000284
  800c7bc:	58024400 	.word	0x58024400
  800c7c0:	431bde83 	.word	0x431bde83
- 800c7c4:	24003f6c 	.word	0x24003f6c
+ 800c7c4:	24003f7c 	.word	0x24003f7c
  800c7c8:	40001000 	.word	0x40001000
 
 0800c7cc <NMI_Handler>:
@@ -25692,7 +25692,7 @@ void TIM6_DAC_IRQHandler(void)
  800c81a:	bf00      	nop
  800c81c:	bd80      	pop	{r7, pc}
  800c81e:	bf00      	nop
- 800c820:	24003f6c 	.word	0x24003f6c
+ 800c820:	24003f7c 	.word	0x24003f7c
 
 0800c824 <_getpid>:
 void initialise_monitor_handles()
@@ -25959,8 +25959,8 @@ void *_sbrk(ptrdiff_t incr)
  800c966:	bd80      	pop	{r7, pc}
  800c968:	24050000 	.word	0x24050000
  800c96c:	00000400 	.word	0x00000400
- 800c970:	24003fb8 	.word	0x24003fb8
- 800c974:	24014f10 	.word	0x24014f10
+ 800c970:	24003fc8 	.word	0x24003fc8
+ 800c974:	24014f20 	.word	0x24014f20
 
 0800c978 <SystemInit>:
   *         configuration.
@@ -26785,7 +26785,7 @@ void mg_random(void *buf, size_t len) {  // Use on-board RNG
  800cfe2:	3710      	adds	r7, #16
  800cfe4:	46bd      	mov	sp, r7
  800cfe6:	bd80      	pop	{r7, pc}
- 800cfe8:	24000d64 	.word	0x24000d64
+ 800cfe8:	24000d74 	.word	0x24000d74
 
 0800cfec <mg_millis>:
 
@@ -27358,7 +27358,7 @@ void set_network_settings(network_settings *data, struct mg_mgr *mgr) {
  800d480:	46bd      	mov	sp, r7
  800d482:	bd80      	pop	{r7, pc}
  800d484:	080a0000 	.word	0x080a0000
- 800d488:	240009e5 	.word	0x240009e5
+ 800d488:	240009f5 	.word	0x240009f5
 
 0800d48c <scmp>:
 } packed_files[] = {
@@ -27577,13 +27577,13 @@ LoopFillZerobss:
   ldr r0, =_sdata
  800d5a4:	24000000 	.word	0x24000000
   ldr r1, =_edata
- 800d5a8:	24000b88 	.word	0x24000b88
+ 800d5a8:	24000b98 	.word	0x24000b98
   ldr r2, =_sidata
  800d5ac:	080267d0 	.word	0x080267d0
   ldr r2, =_sbss
- 800d5b0:	24000c48 	.word	0x24000c48
+ 800d5b0:	24000c58 	.word	0x24000c58
   ldr r4, =_ebss
- 800d5b4:	24014f10 	.word	0x24014f10
+ 800d5b4:	24014f20 	.word	0x24014f20
 
 0800d5b8 <ADC3_IRQHandler>:
  * @retval None
@@ -27710,7 +27710,7 @@ __weak void HAL_IncTick(void)
  800d650:	4770      	bx	lr
  800d652:	bf00      	nop
  800d654:	24000288 	.word	0x24000288
- 800d658:	24003fbc 	.word	0x24003fbc
+ 800d658:	24003fcc 	.word	0x24003fcc
 
 0800d65c <HAL_GetTick>:
   * @note This function is declared as __weak to be overwritten in case of other
@@ -27730,7 +27730,7 @@ __weak uint32_t HAL_GetTick(void)
  800d668:	f85d 7b04 	ldr.w	r7, [sp], #4
  800d66c:	4770      	bx	lr
  800d66e:	bf00      	nop
- 800d670:	24003fbc 	.word	0x24003fbc
+ 800d670:	24003fcc 	.word	0x24003fcc
 
 0800d674 <HAL_Delay>:
   *       implementations in user file.
@@ -29675,7 +29675,7 @@ __STATIC_FORCEINLINE void __DSB(void)
  800e1de:	46bd      	mov	sp, r7
  800e1e0:	bd80      	pop	{r7, pc}
  800e1e2:	bf00      	nop
- 800e1e4:	24003fc0 	.word	0x24003fc0
+ 800e1e4:	24003fd0 	.word	0x24003fd0
  800e1e8:	52002000 	.word	0x52002000
 
 0800e1ec <HAL_FLASH_Unlock>:
@@ -29791,7 +29791,7 @@ uint32_t HAL_FLASH_GetError(void)
  800e26c:	f85d 7b04 	ldr.w	r7, [sp], #4
  800e270:	4770      	bx	lr
  800e272:	bf00      	nop
- 800e274:	24003fc0 	.word	0x24003fc0
+ 800e274:	24003fd0 	.word	0x24003fd0
 
 0800e278 <FLASH_WaitForLastOperation>:
   * @param  Timeout maximum flash operation timeout
@@ -29933,7 +29933,7 @@ HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t Timeout, uint32_t Bank)
  800e316:	bd80      	pop	{r7, pc}
  800e318:	52002000 	.word	0x52002000
  800e31c:	17ee0000 	.word	0x17ee0000
- 800e320:	24003fc0 	.word	0x24003fc0
+ 800e320:	24003fd0 	.word	0x24003fd0
 
 0800e324 <HAL_FLASHEx_Erase>:
   *          the sectors have been correctly erased)
@@ -30140,7 +30140,7 @@ HAL_StatusTypeDef HAL_FLASHEx_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t
  800e42a:	3710      	adds	r7, #16
  800e42c:	46bd      	mov	sp, r7
  800e42e:	bd80      	pop	{r7, pc}
- 800e430:	24003fc0 	.word	0x24003fc0
+ 800e430:	24003fd0 	.word	0x24003fd0
  800e434:	52002000 	.word	0x52002000
  800e438:	fffff8fb 	.word	0xfffff8fb
 
@@ -42190,7 +42190,7 @@ osStatus_t osKernelInitialize (void) {
  80132b0:	f85d 7b04 	ldr.w	r7, [sp], #4
  80132b4:	4770      	bx	lr
  80132b6:	bf00      	nop
- 80132b8:	24003fdc 	.word	0x24003fdc
+ 80132b8:	24003fec 	.word	0x24003fec
 
 080132bc <osKernelStart>:
   }
@@ -42253,7 +42253,7 @@ osStatus_t osKernelStart (void) {
  80132fe:	46bd      	mov	sp, r7
  8013300:	bd80      	pop	{r7, pc}
  8013302:	bf00      	nop
- 8013304:	24003fdc 	.word	0x24003fdc
+ 8013304:	24003fec 	.word	0x24003fec
 
 08013308 <osThreadNew>:
   return (configCPU_CLOCK_HZ);
@@ -42558,8 +42558,8 @@ __WEAK void vApplicationGetIdleTaskMemory (StaticTask_t **ppxIdleTaskTCBBuffer, 
  8013488:	f85d 7b04 	ldr.w	r7, [sp], #4
  801348c:	4770      	bx	lr
  801348e:	bf00      	nop
- 8013490:	24003fe0 	.word	0x24003fe0
- 8013494:	24004088 	.word	0x24004088
+ 8013490:	24003ff0 	.word	0x24003ff0
+ 8013494:	24004098 	.word	0x24004098
 
 08013498 <vApplicationGetTimerTaskMemory>:
 
@@ -42596,8 +42596,8 @@ __WEAK void vApplicationGetTimerTaskMemory (StaticTask_t **ppxTimerTaskTCBBuffer
  80134bc:	46bd      	mov	sp, r7
  80134be:	f85d 7b04 	ldr.w	r7, [sp], #4
  80134c2:	4770      	bx	lr
- 80134c4:	24004288 	.word	0x24004288
- 80134c8:	24004330 	.word	0x24004330
+ 80134c4:	24004298 	.word	0x24004298
+ 80134c8:	24004340 	.word	0x24004340
 
 080134cc <vListInitialise>:
 /*-----------------------------------------------------------
@@ -44711,7 +44711,7 @@ BaseType_t xReturn;
  8013fb4:	f85d 7b04 	ldr.w	r7, [sp], #4
  8013fb8:	4770      	bx	lr
  8013fba:	bf00      	nop
- 8013fbc:	24004730 	.word	0x24004730
+ 8013fbc:	24004740 	.word	0x24004740
 
 08013fc0 <vQueueWaitForMessageRestricted>:
 /*-----------------------------------------------------------*/
@@ -45305,9 +45305,9 @@ BaseType_t xReturn;
  80142b2:	46bd      	mov	sp, r7
  80142b4:	bd80      	pop	{r7, pc}
  80142b6:	bf00      	nop
- 80142b8:	24014dc4 	.word	0x24014dc4
- 80142bc:	24014e2c 	.word	0x24014e2c
- 80142c0:	24014e94 	.word	0x24014e94
+ 80142b8:	24014dd4 	.word	0x24014dd4
+ 80142bc:	24014e3c 	.word	0x24014e3c
+ 80142c0:	24014ea4 	.word	0x24014ea4
 
 080142c4 <prvAddNewTaskToReadyList>:
 /*-----------------------------------------------------------*/
@@ -45466,12 +45466,12 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
  8014382:	46bd      	mov	sp, r7
  8014384:	bd80      	pop	{r7, pc}
  8014386:	bf00      	nop
- 8014388:	24004c44 	.word	0x24004c44
- 801438c:	24004770 	.word	0x24004770
- 8014390:	24004c50 	.word	0x24004c50
- 8014394:	24004c60 	.word	0x24004c60
- 8014398:	24004c4c 	.word	0x24004c4c
- 801439c:	24004774 	.word	0x24004774
+ 8014388:	24004c54 	.word	0x24004c54
+ 801438c:	24004780 	.word	0x24004780
+ 8014390:	24004c60 	.word	0x24004c60
+ 8014394:	24004c70 	.word	0x24004c70
+ 8014398:	24004c5c 	.word	0x24004c5c
+ 801439c:	24004784 	.word	0x24004784
  80143a0:	e000ed04 	.word	0xe000ed04
 
 080143a4 <vTaskDelay>:
@@ -45552,7 +45552,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
  8014402:	46bd      	mov	sp, r7
  8014404:	bd80      	pop	{r7, pc}
  8014406:	bf00      	nop
- 8014408:	24004c6c 	.word	0x24004c6c
+ 8014408:	24004c7c 	.word	0x24004c7c
  801440c:	e000ed04 	.word	0xe000ed04
 
 08014410 <vTaskStartScheduler>:
@@ -45714,12 +45714,12 @@ BaseType_t xReturn;
  80144ce:	bd80      	pop	{r7, pc}
  80144d0:	0801969c 	.word	0x0801969c
  80144d4:	08014b21 	.word	0x08014b21
- 80144d8:	24004c68 	.word	0x24004c68
- 80144dc:	24004770 	.word	0x24004770
+ 80144d8:	24004c78 	.word	0x24004c78
+ 80144dc:	24004780 	.word	0x24004780
  80144e0:	2400029c 	.word	0x2400029c
- 80144e4:	24004c64 	.word	0x24004c64
- 80144e8:	24004c50 	.word	0x24004c50
- 80144ec:	24004c48 	.word	0x24004c48
+ 80144e4:	24004c74 	.word	0x24004c74
+ 80144e8:	24004c60 	.word	0x24004c60
+ 80144ec:	24004c58 	.word	0x24004c58
 
 080144f0 <vTaskSuspendAll>:
 	vPortEndScheduler();
@@ -45750,7 +45750,7 @@ void vTaskSuspendAll( void )
  8014500:	46bd      	mov	sp, r7
  8014502:	f85d 7b04 	ldr.w	r7, [sp], #4
  8014506:	4770      	bx	lr
- 8014508:	24004c6c 	.word	0x24004c6c
+ 8014508:	24004c7c 	.word	0x24004c7c
 
 0801450c <xTaskResumeAll>:
 
@@ -45978,14 +45978,14 @@ BaseType_t xAlreadyYielded = pdFALSE;
  801461e:	3710      	adds	r7, #16
  8014620:	46bd      	mov	sp, r7
  8014622:	bd80      	pop	{r7, pc}
- 8014624:	24004c6c 	.word	0x24004c6c
- 8014628:	24004c44 	.word	0x24004c44
- 801462c:	24004c04 	.word	0x24004c04
- 8014630:	24004c4c 	.word	0x24004c4c
- 8014634:	24004774 	.word	0x24004774
- 8014638:	24004770 	.word	0x24004770
- 801463c:	24004c58 	.word	0x24004c58
- 8014640:	24004c54 	.word	0x24004c54
+ 8014624:	24004c7c 	.word	0x24004c7c
+ 8014628:	24004c54 	.word	0x24004c54
+ 801462c:	24004c14 	.word	0x24004c14
+ 8014630:	24004c5c 	.word	0x24004c5c
+ 8014634:	24004784 	.word	0x24004784
+ 8014638:	24004780 	.word	0x24004780
+ 801463c:	24004c68 	.word	0x24004c68
+ 8014640:	24004c64 	.word	0x24004c64
  8014644:	e000ed04 	.word	0xe000ed04
 
 08014648 <xTaskGetTickCount>:
@@ -46017,7 +46017,7 @@ TickType_t xTicks;
  801465c:	f85d 7b04 	ldr.w	r7, [sp], #4
  8014660:	4770      	bx	lr
  8014662:	bf00      	nop
- 8014664:	24004c48 	.word	0x24004c48
+ 8014664:	24004c58 	.word	0x24004c58
 
 08014668 <xTaskIncrementTick>:
 
@@ -46292,17 +46292,17 @@ BaseType_t xSwitchRequired = pdFALSE;
  80147aa:	3718      	adds	r7, #24
  80147ac:	46bd      	mov	sp, r7
  80147ae:	bd80      	pop	{r7, pc}
- 80147b0:	24004c6c 	.word	0x24004c6c
- 80147b4:	24004c48 	.word	0x24004c48
- 80147b8:	24004bfc 	.word	0x24004bfc
- 80147bc:	24004c00 	.word	0x24004c00
- 80147c0:	24004c5c 	.word	0x24004c5c
- 80147c4:	24004c64 	.word	0x24004c64
- 80147c8:	24004c4c 	.word	0x24004c4c
- 80147cc:	24004774 	.word	0x24004774
- 80147d0:	24004770 	.word	0x24004770
- 80147d4:	24004c58 	.word	0x24004c58
- 80147d8:	24004c54 	.word	0x24004c54
+ 80147b0:	24004c7c 	.word	0x24004c7c
+ 80147b4:	24004c58 	.word	0x24004c58
+ 80147b8:	24004c0c 	.word	0x24004c0c
+ 80147bc:	24004c10 	.word	0x24004c10
+ 80147c0:	24004c6c 	.word	0x24004c6c
+ 80147c4:	24004c74 	.word	0x24004c74
+ 80147c8:	24004c5c 	.word	0x24004c5c
+ 80147cc:	24004784 	.word	0x24004784
+ 80147d0:	24004780 	.word	0x24004780
+ 80147d4:	24004c68 	.word	0x24004c68
+ 80147d8:	24004c64 	.word	0x24004c64
 
 080147dc <vTaskSwitchContext>:
 
@@ -46413,11 +46413,11 @@ void vTaskSwitchContext( void )
  8014888:	f85d 7b04 	ldr.w	r7, [sp], #4
  801488c:	4770      	bx	lr
  801488e:	bf00      	nop
- 8014890:	24004c6c 	.word	0x24004c6c
- 8014894:	24004c58 	.word	0x24004c58
- 8014898:	24004c4c 	.word	0x24004c4c
- 801489c:	24004774 	.word	0x24004774
- 80148a0:	24004770 	.word	0x24004770
+ 8014890:	24004c7c 	.word	0x24004c7c
+ 8014894:	24004c68 	.word	0x24004c68
+ 8014898:	24004c5c 	.word	0x24004c5c
+ 801489c:	24004784 	.word	0x24004784
+ 80148a0:	24004780 	.word	0x24004780
  80148a4:	2400029c 	.word	0x2400029c
 
 080148a8 <vTaskPlaceOnEventList>:
@@ -46467,7 +46467,7 @@ void vTaskPlaceOnEventList( List_t * const pxEventList, const TickType_t xTicksT
  80148ea:	46bd      	mov	sp, r7
  80148ec:	bd80      	pop	{r7, pc}
  80148ee:	bf00      	nop
- 80148f0:	24004770 	.word	0x24004770
+ 80148f0:	24004780 	.word	0x24004780
 
 080148f4 <vTaskPlaceOnEventListRestricted>:
 /*-----------------------------------------------------------*/
@@ -46532,7 +46532,7 @@ void vTaskPlaceOnEventList( List_t * const pxEventList, const TickType_t xTicksT
  8014942:	3718      	adds	r7, #24
  8014944:	46bd      	mov	sp, r7
  8014946:	bd80      	pop	{r7, pc}
- 8014948:	24004770 	.word	0x24004770
+ 8014948:	24004780 	.word	0x24004780
 
 0801494c <xTaskRemoveFromEventList>:
 
@@ -46662,12 +46662,12 @@ BaseType_t xTaskRemoveFromEventList( const List_t * const pxEventList )
  80149f6:	3718      	adds	r7, #24
  80149f8:	46bd      	mov	sp, r7
  80149fa:	bd80      	pop	{r7, pc}
- 80149fc:	24004c6c 	.word	0x24004c6c
- 8014a00:	24004c4c 	.word	0x24004c4c
- 8014a04:	24004774 	.word	0x24004774
- 8014a08:	24004c04 	.word	0x24004c04
- 8014a0c:	24004770 	.word	0x24004770
- 8014a10:	24004c58 	.word	0x24004c58
+ 80149fc:	24004c7c 	.word	0x24004c7c
+ 8014a00:	24004c5c 	.word	0x24004c5c
+ 8014a04:	24004784 	.word	0x24004784
+ 8014a08:	24004c14 	.word	0x24004c14
+ 8014a0c:	24004780 	.word	0x24004780
+ 8014a10:	24004c68 	.word	0x24004c68
 
 08014a14 <vTaskInternalSetTimeOutState>:
 	taskEXIT_CRITICAL();
@@ -46697,8 +46697,8 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut )
  8014a30:	46bd      	mov	sp, r7
  8014a32:	f85d 7b04 	ldr.w	r7, [sp], #4
  8014a36:	4770      	bx	lr
- 8014a38:	24004c5c 	.word	0x24004c5c
- 8014a3c:	24004c48 	.word	0x24004c48
+ 8014a38:	24004c6c 	.word	0x24004c6c
+ 8014a3c:	24004c58 	.word	0x24004c58
 
 08014a40 <xTaskCheckForTimeOut>:
 /*-----------------------------------------------------------*/
@@ -46843,8 +46843,8 @@ BaseType_t xReturn;
  8014afa:	3720      	adds	r7, #32
  8014afc:	46bd      	mov	sp, r7
  8014afe:	bd80      	pop	{r7, pc}
- 8014b00:	24004c48 	.word	0x24004c48
- 8014b04:	24004c5c 	.word	0x24004c5c
+ 8014b00:	24004c58 	.word	0x24004c58
+ 8014b04:	24004c6c 	.word	0x24004c6c
 
 08014b08 <vTaskMissedYield>:
 /*-----------------------------------------------------------*/
@@ -46862,7 +46862,7 @@ void vTaskMissedYield( void )
  8014b14:	46bd      	mov	sp, r7
  8014b16:	f85d 7b04 	ldr.w	r7, [sp], #4
  8014b1a:	4770      	bx	lr
- 8014b1c:	24004c58 	.word	0x24004c58
+ 8014b1c:	24004c68 	.word	0x24004c68
 
 08014b20 <prvIdleTask>:
  *
@@ -46902,7 +46902,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 		prvCheckTasksWaitingTermination();
  8014b44:	e7f0      	b.n	8014b28 <prvIdleTask+0x8>
  8014b46:	bf00      	nop
- 8014b48:	24004774 	.word	0x24004774
+ 8014b48:	24004784 	.word	0x24004784
  8014b4c:	e000ed04 	.word	0xe000ed04
 
 08014b50 <prvInitialiseTaskLists>:
@@ -46983,14 +46983,14 @@ UBaseType_t uxPriority;
  8014baa:	46bd      	mov	sp, r7
  8014bac:	bd80      	pop	{r7, pc}
  8014bae:	bf00      	nop
- 8014bb0:	24004774 	.word	0x24004774
- 8014bb4:	24004bd4 	.word	0x24004bd4
- 8014bb8:	24004be8 	.word	0x24004be8
- 8014bbc:	24004c04 	.word	0x24004c04
- 8014bc0:	24004c18 	.word	0x24004c18
- 8014bc4:	24004c30 	.word	0x24004c30
- 8014bc8:	24004bfc 	.word	0x24004bfc
- 8014bcc:	24004c00 	.word	0x24004c00
+ 8014bb0:	24004784 	.word	0x24004784
+ 8014bb4:	24004be4 	.word	0x24004be4
+ 8014bb8:	24004bf8 	.word	0x24004bf8
+ 8014bbc:	24004c14 	.word	0x24004c14
+ 8014bc0:	24004c28 	.word	0x24004c28
+ 8014bc4:	24004c40 	.word	0x24004c40
+ 8014bc8:	24004c0c 	.word	0x24004c0c
+ 8014bcc:	24004c10 	.word	0x24004c10
 
 08014bd0 <prvCheckTasksWaitingTermination>:
 /*-----------------------------------------------------------*/
@@ -47055,9 +47055,9 @@ static void prvCheckTasksWaitingTermination( void )
  8014c1a:	46bd      	mov	sp, r7
  8014c1c:	bd80      	pop	{r7, pc}
  8014c1e:	bf00      	nop
- 8014c20:	24004c18 	.word	0x24004c18
- 8014c24:	24004c44 	.word	0x24004c44
- 8014c28:	24004c2c 	.word	0x24004c2c
+ 8014c20:	24004c28 	.word	0x24004c28
+ 8014c24:	24004c54 	.word	0x24004c54
+ 8014c28:	24004c3c 	.word	0x24004c3c
 
 08014c2c <prvDeleteTCB>:
 /*-----------------------------------------------------------*/
@@ -47191,8 +47191,8 @@ TCB_t *pxTCB;
  8014cc8:	46bd      	mov	sp, r7
  8014cca:	f85d 7b04 	ldr.w	r7, [sp], #4
  8014cce:	4770      	bx	lr
- 8014cd0:	24004bfc 	.word	0x24004bfc
- 8014cd4:	24004c64 	.word	0x24004c64
+ 8014cd0:	24004c0c 	.word	0x24004c0c
+ 8014cd4:	24004c74 	.word	0x24004c74
 
 08014cd8 <xTaskGetSchedulerState>:
 /*-----------------------------------------------------------*/
@@ -47246,8 +47246,8 @@ TCB_t *pxTCB;
  8014d04:	46bd      	mov	sp, r7
  8014d06:	f85d 7b04 	ldr.w	r7, [sp], #4
  8014d0a:	4770      	bx	lr
- 8014d0c:	24004c50 	.word	0x24004c50
- 8014d10:	24004c6c 	.word	0x24004c6c
+ 8014d0c:	24004c60 	.word	0x24004c60
+ 8014d10:	24004c7c 	.word	0x24004c7c
 
 08014d14 <xTaskPriorityDisinherit>:
 /*-----------------------------------------------------------*/
@@ -47405,9 +47405,9 @@ TCB_t *pxTCB;
  8014de2:	46bd      	mov	sp, r7
  8014de4:	bd80      	pop	{r7, pc}
  8014de6:	bf00      	nop
- 8014de8:	24004770 	.word	0x24004770
- 8014dec:	24004c4c 	.word	0x24004c4c
- 8014df0:	24004774 	.word	0x24004774
+ 8014de8:	24004780 	.word	0x24004780
+ 8014dec:	24004c5c 	.word	0x24004c5c
+ 8014df0:	24004784 	.word	0x24004784
 
 08014df4 <prvAddCurrentTaskToDelayedList>:
 
@@ -47517,12 +47517,12 @@ const TickType_t xConstTickCount = xTickCount;
  8014e7e:	3710      	adds	r7, #16
  8014e80:	46bd      	mov	sp, r7
  8014e82:	bd80      	pop	{r7, pc}
- 8014e84:	24004c48 	.word	0x24004c48
- 8014e88:	24004770 	.word	0x24004770
- 8014e8c:	24004c30 	.word	0x24004c30
- 8014e90:	24004c00 	.word	0x24004c00
- 8014e94:	24004bfc 	.word	0x24004bfc
- 8014e98:	24004c64 	.word	0x24004c64
+ 8014e84:	24004c58 	.word	0x24004c58
+ 8014e88:	24004780 	.word	0x24004780
+ 8014e8c:	24004c40 	.word	0x24004c40
+ 8014e90:	24004c10 	.word	0x24004c10
+ 8014e94:	24004c0c 	.word	0x24004c0c
+ 8014e98:	24004c74 	.word	0x24004c74
 
 08014e9c <xTimerCreateTimerTask>:
 									TimerCallbackFunction_t pxCallbackFunction,
@@ -47624,10 +47624,10 @@ BaseType_t xReturn = pdFAIL;
  8014f1a:	46bd      	mov	sp, r7
  8014f1c:	bd80      	pop	{r7, pc}
  8014f1e:	bf00      	nop
- 8014f20:	24004ca0 	.word	0x24004ca0
+ 8014f20:	24004cb0 	.word	0x24004cb0
  8014f24:	080196a4 	.word	0x080196a4
  8014f28:	08015069 	.word	0x08015069
- 8014f2c:	24004ca4 	.word	0x24004ca4
+ 8014f2c:	24004cb4 	.word	0x24004cb4
 
 08014f30 <xTimerGenericCommand>:
 	}
@@ -47738,7 +47738,7 @@ DaemonTaskMessage_t xMessage;
  8014fc2:	3728      	adds	r7, #40	@ 0x28
  8014fc4:	46bd      	mov	sp, r7
  8014fc6:	bd80      	pop	{r7, pc}
- 8014fc8:	24004ca0 	.word	0x24004ca0
+ 8014fc8:	24004cb0 	.word	0x24004cb0
 
 08014fcc <prvProcessExpiredTimer>:
 	return pxTimer->pcTimerName;
@@ -47846,7 +47846,7 @@ Timer_t * const pxTimer = ( Timer_t * ) listGET_OWNER_OF_HEAD_ENTRY( pxCurrentTi
  801505e:	46bd      	mov	sp, r7
  8015060:	bd80      	pop	{r7, pc}
  8015062:	bf00      	nop
- 8015064:	24004c98 	.word	0x24004c98
+ 8015064:	24004ca8 	.word	0x24004ca8
 
 08015068 <prvTimerTask>:
 /*-----------------------------------------------------------*/
@@ -47983,8 +47983,8 @@ BaseType_t xTimerListsWereSwitched;
  801511a:	46bd      	mov	sp, r7
  801511c:	bd80      	pop	{r7, pc}
  801511e:	bf00      	nop
- 8015120:	24004c9c 	.word	0x24004c9c
- 8015124:	24004ca0 	.word	0x24004ca0
+ 8015120:	24004cac 	.word	0x24004cac
+ 8015124:	24004cb0 	.word	0x24004cb0
  8015128:	e000ed04 	.word	0xe000ed04
 
 0801512c <prvGetNextExpireTime>:
@@ -48043,7 +48043,7 @@ static TickType_t prvGetNextExpireTime( BaseType_t * const pxListWasEmpty )
  8015168:	f85d 7b04 	ldr.w	r7, [sp], #4
  801516c:	4770      	bx	lr
  801516e:	bf00      	nop
- 8015170:	24004c98 	.word	0x24004c98
+ 8015170:	24004ca8 	.word	0x24004ca8
 
 08015174 <prvSampleTimeNow>:
 /*-----------------------------------------------------------*/
@@ -48097,7 +48097,7 @@ PRIVILEGED_DATA static TickType_t xLastTime = ( TickType_t ) 0U; /*lint !e956 Va
  80151aa:	46bd      	mov	sp, r7
  80151ac:	bd80      	pop	{r7, pc}
  80151ae:	bf00      	nop
- 80151b0:	24004ca8 	.word	0x24004ca8
+ 80151b0:	24004cb8 	.word	0x24004cb8
 
 080151b4 <prvInsertTimerInActiveList>:
 /*-----------------------------------------------------------*/
@@ -48201,8 +48201,8 @@ BaseType_t xProcessTimerNow = pdFALSE;
  801522a:	3718      	adds	r7, #24
  801522c:	46bd      	mov	sp, r7
  801522e:	bd80      	pop	{r7, pc}
- 8015230:	24004c9c 	.word	0x24004c9c
- 8015234:	24004c98 	.word	0x24004c98
+ 8015230:	24004cac 	.word	0x24004cac
+ 8015234:	24004ca8 	.word	0x24004ca8
 
 08015238 <prvProcessReceivedCommands>:
 /*-----------------------------------------------------------*/
@@ -48501,7 +48501,7 @@ TickType_t xTimeNow;
  80153fa:	46bd      	mov	sp, r7
  80153fc:	bd80      	pop	{r7, pc}
  80153fe:	bf00      	nop
- 8015400:	24004ca0 	.word	0x24004ca0
+ 8015400:	24004cb0 	.word	0x24004cb0
 
 08015404 <prvSwitchTimerLists>:
 /*-----------------------------------------------------------*/
@@ -48645,8 +48645,8 @@ static void prvSwitchTimerLists( void )
  80154c2:	46bd      	mov	sp, r7
  80154c4:	bd80      	pop	{r7, pc}
  80154c6:	bf00      	nop
- 80154c8:	24004c98 	.word	0x24004c98
- 80154cc:	24004c9c 	.word	0x24004c9c
+ 80154c8:	24004ca8 	.word	0x24004ca8
+ 80154cc:	24004cac 	.word	0x24004cac
 
 080154d0 <prvCheckForValidListAndQueue>:
 /*-----------------------------------------------------------*/
@@ -48727,13 +48727,13 @@ static void prvCheckForValidListAndQueue( void )
  801552a:	46bd      	mov	sp, r7
  801552c:	bd80      	pop	{r7, pc}
  801552e:	bf00      	nop
- 8015530:	24004ca0 	.word	0x24004ca0
- 8015534:	24004c70 	.word	0x24004c70
- 8015538:	24004c84 	.word	0x24004c84
- 801553c:	24004c98 	.word	0x24004c98
- 8015540:	24004c9c 	.word	0x24004c9c
- 8015544:	24004d4c 	.word	0x24004d4c
- 8015548:	24004cac 	.word	0x24004cac
+ 8015530:	24004cb0 	.word	0x24004cb0
+ 8015534:	24004c80 	.word	0x24004c80
+ 8015538:	24004c94 	.word	0x24004c94
+ 801553c:	24004ca8 	.word	0x24004ca8
+ 8015540:	24004cac 	.word	0x24004cac
+ 8015544:	24004d5c 	.word	0x24004d5c
+ 8015548:	24004cbc 	.word	0x24004cbc
  801554c:	080196ac 	.word	0x080196ac
 
 08015550 <pxPortInitialiseStack>:
@@ -48896,7 +48896,7 @@ void vPortSVCHandler( void )
  801563c:	f3af 8000 	nop.w
 
 08015640 <pxCurrentTCBConst2>:
- 8015640:	24004770 	.word	0x24004770
+ 8015640:	24004780 	.word	0x24004780
 					"	bx r14							\n"
 					"									\n"
 					"	.align 4						\n"
@@ -49160,8 +49160,8 @@ BaseType_t xPortStartScheduler( void )
  8015798:	410fc271 	.word	0x410fc271
  801579c:	410fc270 	.word	0x410fc270
  80157a0:	e000e400 	.word	0xe000e400
- 80157a4:	24004d9c 	.word	0x24004d9c
- 80157a8:	24004da0 	.word	0x24004da0
+ 80157a4:	24004dac 	.word	0x24004dac
+ 80157a8:	24004db0 	.word	0x24004db0
  80157ac:	e000ed20 	.word	0xe000ed20
  80157b0:	2400028c 	.word	0x2400028c
  80157b4:	e000ef34 	.word	0xe000ef34
@@ -49319,7 +49319,7 @@ void xPortPendSVHandler( void )
  80158cc:	f3af 8000 	nop.w
 
 080158d0 <pxCurrentTCBConst>:
- 80158d0:	24004770 	.word	0x24004770
+ 80158d0:	24004780 	.word	0x24004780
 	"										\n"
 	"	.align 4							\n"
 	"pxCurrentTCBConst: .word pxCurrentTCB	\n"
@@ -49532,9 +49532,9 @@ static void vPortEnableVFP( void )
  80159e8:	4770      	bx	lr
  80159ea:	bf00      	nop
  80159ec:	e000e3f0 	.word	0xe000e3f0
- 80159f0:	24004d9c 	.word	0x24004d9c
+ 80159f0:	24004dac 	.word	0x24004dac
  80159f4:	e000ed0c 	.word	0xe000ed0c
- 80159f8:	24004da0 	.word	0x24004da0
+ 80159f8:	24004db0 	.word	0x24004db0
 
 080159fc <pvPortMalloc>:
 static size_t xBlockAllocatedBit = 0;
@@ -49831,12 +49831,12 @@ void *pvReturn = NULL;
  8015b7a:	3728      	adds	r7, #40	@ 0x28
  8015b7c:	46bd      	mov	sp, r7
  8015b7e:	bd80      	pop	{r7, pc}
- 8015b80:	24014dac 	.word	0x24014dac
- 8015b84:	24014dc0 	.word	0x24014dc0
- 8015b88:	24014db0 	.word	0x24014db0
- 8015b8c:	24014da4 	.word	0x24014da4
- 8015b90:	24014db4 	.word	0x24014db4
- 8015b94:	24014db8 	.word	0x24014db8
+ 8015b80:	24014dbc 	.word	0x24014dbc
+ 8015b84:	24014dd0 	.word	0x24014dd0
+ 8015b88:	24014dc0 	.word	0x24014dc0
+ 8015b8c:	24014db4 	.word	0x24014db4
+ 8015b90:	24014dc4 	.word	0x24014dc4
+ 8015b94:	24014dc8 	.word	0x24014dc8
 
 08015b98 <vPortFree>:
 /*-----------------------------------------------------------*/
@@ -49969,9 +49969,9 @@ BlockLink_t *pxLink;
  8015c4e:	46bd      	mov	sp, r7
  8015c50:	bd80      	pop	{r7, pc}
  8015c52:	bf00      	nop
- 8015c54:	24014dc0 	.word	0x24014dc0
- 8015c58:	24014db0 	.word	0x24014db0
- 8015c5c:	24014dbc 	.word	0x24014dbc
+ 8015c54:	24014dd0 	.word	0x24014dd0
+ 8015c58:	24014dc0 	.word	0x24014dc0
+ 8015c5c:	24014dcc 	.word	0x24014dcc
 
 08015c60 <xPortGetFreeHeapSize>:
 /*-----------------------------------------------------------*/
@@ -49989,7 +49989,7 @@ size_t xPortGetFreeHeapSize( void )
  8015c6c:	f85d 7b04 	ldr.w	r7, [sp], #4
  8015c70:	4770      	bx	lr
  8015c72:	bf00      	nop
- 8015c74:	24014db0 	.word	0x24014db0
+ 8015c74:	24014dc0 	.word	0x24014dc0
 
 08015c78 <prvHeapInit>:
 	/* This just exists to keep the linker quiet. */
@@ -50122,12 +50122,12 @@ size_t xTotalHeapSize = configTOTAL_HEAP_SIZE;
  8015d1c:	46bd      	mov	sp, r7
  8015d1e:	f85d 7b04 	ldr.w	r7, [sp], #4
  8015d22:	4770      	bx	lr
- 8015d24:	24004da4 	.word	0x24004da4
- 8015d28:	24014da4 	.word	0x24014da4
- 8015d2c:	24014dac 	.word	0x24014dac
- 8015d30:	24014db4 	.word	0x24014db4
- 8015d34:	24014db0 	.word	0x24014db0
- 8015d38:	24014dc0 	.word	0x24014dc0
+ 8015d24:	24004db4 	.word	0x24004db4
+ 8015d28:	24014db4 	.word	0x24014db4
+ 8015d2c:	24014dbc 	.word	0x24014dbc
+ 8015d30:	24014dc4 	.word	0x24014dc4
+ 8015d34:	24014dc0 	.word	0x24014dc0
+ 8015d38:	24014dd0 	.word	0x24014dd0
 
 08015d3c <prvInsertBlockIntoFreeList>:
 /*-----------------------------------------------------------*/
@@ -50271,8 +50271,8 @@ uint8_t *puc;
  8015de0:	f85d 7b04 	ldr.w	r7, [sp], #4
  8015de4:	4770      	bx	lr
  8015de6:	bf00      	nop
- 8015de8:	24014da4 	.word	0x24014da4
- 8015dec:	24014dac 	.word	0x24014dac
+ 8015de8:	24014db4 	.word	0x24014db4
+ 8015dec:	24014dbc 	.word	0x24014dbc
 
 08015df0 <__assert_func>:
  8015df0:	b51f      	push	{r0, r1, r2, r3, r4, lr}
@@ -50496,7 +50496,7 @@ uint8_t *puc;
  8015ff4:	080162bb 	.word	0x080162bb
  8015ff8:	080162f3 	.word	0x080162f3
  8015ffc:	08016317 	.word	0x08016317
- 8016000:	24014dc4 	.word	0x24014dc4
+ 8016000:	24014dd4 	.word	0x24014dd4
 
 08016004 <stdio_exit_handler>:
  8016004:	4a02      	ldr	r2, [pc, #8]	@ (8016010 <stdio_exit_handler+0xc>)
@@ -50531,9 +50531,9 @@ uint8_t *puc;
  8016048:	f001 b920 	b.w	801728c <_fflush_r>
  801604c:	bd10      	pop	{r4, pc}
  801604e:	bf00      	nop
- 8016050:	24014dc4 	.word	0x24014dc4
- 8016054:	24014e2c 	.word	0x24014e2c
- 8016058:	24014e94 	.word	0x24014e94
+ 8016050:	24014dd4 	.word	0x24014dd4
+ 8016054:	24014e3c 	.word	0x24014e3c
+ 8016058:	24014ea4 	.word	0x24014ea4
 
 0801605c <global_stdio_init.part.0>:
  801605c:	b510      	push	{r4, lr}
@@ -50554,21 +50554,21 @@ uint8_t *puc;
  8016082:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
  8016086:	2112      	movs	r1, #18
  8016088:	f7ff bf86 	b.w	8015f98 <std>
- 801608c:	24014efc 	.word	0x24014efc
- 8016090:	24014dc4 	.word	0x24014dc4
+ 801608c:	24014f0c 	.word	0x24014f0c
+ 8016090:	24014dd4 	.word	0x24014dd4
  8016094:	08016005 	.word	0x08016005
 
 08016098 <__sfp_lock_acquire>:
  8016098:	4801      	ldr	r0, [pc, #4]	@ (80160a0 <__sfp_lock_acquire+0x8>)
  801609a:	f000 bb2c 	b.w	80166f6 <__retarget_lock_acquire_recursive>
  801609e:	bf00      	nop
- 80160a0:	24014f05 	.word	0x24014f05
+ 80160a0:	24014f15 	.word	0x24014f15
 
 080160a4 <__sfp_lock_release>:
  80160a4:	4801      	ldr	r0, [pc, #4]	@ (80160ac <__sfp_lock_release+0x8>)
  80160a6:	f000 bb27 	b.w	80166f8 <__retarget_lock_release_recursive>
  80160aa:	bf00      	nop
- 80160ac:	24014f05 	.word	0x24014f05
+ 80160ac:	24014f15 	.word	0x24014f15
 
 080160b0 <__sinit>:
  80160b0:	b510      	push	{r4, lr}
@@ -50588,7 +50588,7 @@ uint8_t *puc;
  80160d4:	e7f2      	b.n	80160bc <__sinit+0xc>
  80160d6:	bf00      	nop
  80160d8:	0801601d 	.word	0x0801601d
- 80160dc:	24014efc 	.word	0x24014efc
+ 80160dc:	24014f0c 	.word	0x24014f0c
 
 080160e0 <fiprintf>:
  80160e0:	b40e      	push	{r1, r2, r3}
@@ -51137,7 +51137,7 @@ uint8_t *puc;
  801657e:	b103      	cbz	r3, 8016582 <_close_r+0x1a>
  8016580:	6023      	str	r3, [r4, #0]
  8016582:	bd38      	pop	{r3, r4, r5, pc}
- 8016584:	24014f00 	.word	0x24014f00
+ 8016584:	24014f10 	.word	0x24014f10
 
 08016588 <_reclaim_reent>:
  8016588:	4b29      	ldr	r3, [pc, #164]	@ (8016630 <_reclaim_reent+0xa8>)
@@ -51230,7 +51230,7 @@ uint8_t *puc;
  801664e:	b103      	cbz	r3, 8016652 <_lseek_r+0x1e>
  8016650:	6023      	str	r3, [r4, #0]
  8016652:	bd38      	pop	{r3, r4, r5, pc}
- 8016654:	24014f00 	.word	0x24014f00
+ 8016654:	24014f10 	.word	0x24014f10
 
 08016658 <_read_r>:
  8016658:	b538      	push	{r3, r4, r5, lr}
@@ -51248,7 +51248,7 @@ uint8_t *puc;
  8016672:	b103      	cbz	r3, 8016676 <_read_r+0x1e>
  8016674:	6023      	str	r3, [r4, #0]
  8016676:	bd38      	pop	{r3, r4, r5, pc}
- 8016678:	24014f00 	.word	0x24014f00
+ 8016678:	24014f10 	.word	0x24014f10
 
 0801667c <_write_r>:
  801667c:	b538      	push	{r3, r4, r5, lr}
@@ -51266,7 +51266,7 @@ uint8_t *puc;
  8016696:	b103      	cbz	r3, 801669a <_write_r+0x1e>
  8016698:	6023      	str	r3, [r4, #0]
  801669a:	bd38      	pop	{r3, r4, r5, pc}
- 801669c:	24014f00 	.word	0x24014f00
+ 801669c:	24014f10 	.word	0x24014f10
 
 080166a0 <__errno>:
  80166a0:	4b01      	ldr	r3, [pc, #4]	@ (80166a8 <__errno+0x8>)
@@ -51412,7 +51412,7 @@ uint8_t *puc;
  80167be:	e7ca      	b.n	8016756 <_free_r+0x22>
  80167c0:	bd38      	pop	{r3, r4, r5, pc}
  80167c2:	bf00      	nop
- 80167c4:	24014f0c 	.word	0x24014f0c
+ 80167c4:	24014f1c 	.word	0x24014f1c
 
 080167c8 <malloc>:
  80167c8:	4b02      	ldr	r3, [pc, #8]	@ (80167d4 <malloc+0xc>)
@@ -51450,7 +51450,7 @@ uint8_t *puc;
  8016812:	d1f2      	bne.n	80167fa <sbrk_aligned+0x22>
  8016814:	e7ef      	b.n	80167f6 <sbrk_aligned+0x1e>
  8016816:	bf00      	nop
- 8016818:	24014f08 	.word	0x24014f08
+ 8016818:	24014f18 	.word	0x24014f18
 
 0801681c <_malloc_r>:
  801681c:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
@@ -51560,19 +51560,19 @@ uint8_t *puc;
  8016912:	6005      	str	r5, [r0, #0]
  8016914:	e7d6      	b.n	80168c4 <_malloc_r+0xa8>
  8016916:	bf00      	nop
- 8016918:	24014f0c 	.word	0x24014f0c
+ 8016918:	24014f1c 	.word	0x24014f1c
 
 0801691c <__malloc_lock>:
  801691c:	4801      	ldr	r0, [pc, #4]	@ (8016924 <__malloc_lock+0x8>)
  801691e:	f7ff beea 	b.w	80166f6 <__retarget_lock_acquire_recursive>
  8016922:	bf00      	nop
- 8016924:	24014f04 	.word	0x24014f04
+ 8016924:	24014f14 	.word	0x24014f14
 
 08016928 <__malloc_unlock>:
  8016928:	4801      	ldr	r0, [pc, #4]	@ (8016930 <__malloc_unlock+0x8>)
  801692a:	f7ff bee5 	b.w	80166f8 <__retarget_lock_release_recursive>
  801692e:	bf00      	nop
- 8016930:	24014f04 	.word	0x24014f04
+ 8016930:	24014f14 	.word	0x24014f14
 
 08016934 <__ssputs_r>:
  8016934:	e92d 47f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
@@ -52806,7 +52806,7 @@ uint8_t *puc;
  8017482:	6023      	str	r3, [r4, #0]
  8017484:	bd38      	pop	{r3, r4, r5, pc}
  8017486:	bf00      	nop
- 8017488:	24014f00 	.word	0x24014f00
+ 8017488:	24014f10 	.word	0x24014f10
 
 0801748c <_isatty_r>:
  801748c:	b538      	push	{r3, r4, r5, lr}
@@ -52822,7 +52822,7 @@ uint8_t *puc;
  80174a2:	b103      	cbz	r3, 80174a6 <_isatty_r+0x1a>
  80174a4:	6023      	str	r3, [r4, #0]
  80174a6:	bd38      	pop	{r3, r4, r5, pc}
- 80174a8:	24014f00 	.word	0x24014f00
+ 80174a8:	24014f10 	.word	0x24014f10
 
 080174ac <_kill_r>:
  80174ac:	b538      	push	{r3, r4, r5, lr}
@@ -52840,7 +52840,7 @@ uint8_t *puc;
  80174c6:	6023      	str	r3, [r4, #0]
  80174c8:	bd38      	pop	{r3, r4, r5, pc}
  80174ca:	bf00      	nop
- 80174cc:	24014f00 	.word	0x24014f00
+ 80174cc:	24014f10 	.word	0x24014f10
 
 080174d0 <_getpid_r>:
  80174d0:	f7f5 b9a8 	b.w	800c824 <_getpid>
@@ -52859,7 +52859,7 @@ uint8_t *puc;
  80174ea:	b103      	cbz	r3, 80174ee <_sbrk_r+0x1a>
  80174ec:	6023      	str	r3, [r4, #0]
  80174ee:	bd38      	pop	{r3, r4, r5, pc}
- 80174f0:	24014f00 	.word	0x24014f00
+ 80174f0:	24014f10 	.word	0x24014f10
 
 080174f4 <_realloc_r>:
  80174f4:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
@@ -52926,11 +52926,11 @@ uint8_t *puc;
 
 08017578 <__single_bank_swap_veneer>:
  8017578:	f85f f000 	ldr.w	pc, [pc]	@ 801757c <__single_bank_swap_veneer+0x4>
- 801757c:	24000971 	.word	0x24000971
+ 801757c:	24000981 	.word	0x24000981
 
 08017580 <__set_ip_configurations_veneer>:
  8017580:	f85f f000 	ldr.w	pc, [pc]	@ 8017584 <__set_ip_configurations_veneer+0x4>
- 8017584:	240009e5 	.word	0x240009e5
+ 8017584:	240009f5 	.word	0x240009f5
 
 08017588 <__Flash_Write_Data_veneer>:
  8017588:	f85f f000 	ldr.w	pc, [pc]	@ 801758c <__Flash_Write_Data_veneer+0x4>
@@ -52938,11 +52938,11 @@ uint8_t *puc;
 
 08017590 <__is_dualbank_veneer>:
  8017590:	f85f f000 	ldr.w	pc, [pc]	@ 8017594 <__is_dualbank_veneer+0x4>
- 8017594:	2400044d 	.word	0x2400044d
+ 8017594:	2400045d 	.word	0x2400045d
 
 08017598 <__get_network_settings_veneer>:
  8017598:	f85f f000 	ldr.w	pc, [pc]	@ 801759c <__get_network_settings_veneer+0x4>
- 801759c:	240009c1 	.word	0x240009c1
+ 801759c:	240009d1 	.word	0x240009d1
 
 Disassembly of section .data:
 
@@ -52998,7 +52998,7 @@ Disassembly of section .data:
 
 24000250 <s_mg_flash_stm32h7>:
 24000250:	08000000 00000000 00020000 00000020     ............ ...
-24000260:	24000801 2400077d                       ...$}..$
+24000260:	24000811 2400078d                       ...$...$
 
 24000268 <mg_tcpip_driver_stm32h>:
 24000268:	0800bd79 0800bfe1 00000000 0800c199     y...............
@@ -53022,13 +53022,13 @@ Disassembly of section .data:
 2400028c:	aaaaaaaa                                ....
 
 24000290 <__sglue>:
-24000290:	00000000 00000003 24014dc4              .........M.$
+24000290:	00000000 00000003 24014dd4              .........M.$
 
 2400029c <_impure_ptr>:
 2400029c:	240002a0                                ...$
 
 240002a0 <_impure_data>:
-240002a0:	00000000 24014dc4 24014e2c 24014e94     .....M.$,N.$.N.$
+240002a0:	00000000 24014dd4 24014e3c 24014ea4     .....M.$<N.$.N.$
 	...
 
 240002ec <Flash_Write_Data>:
@@ -53051,1177 +53051,1198 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 	int sofar=0;
 240002fa:	2300      	movs	r3, #0
 240002fc:	627b      	str	r3, [r7, #36]	@ 0x24
+  __ASM volatile ("cpsid i" : : : "memory");
+240002fe:	b672      	cpsid	i
+}
+24000300:	bf00      	nop
 
 	 /* Unlock the Flash to enable the flash control register access *************/
+	  __disable_irq();
 	  HAL_FLASH_Unlock();
-240002fe:	f000 fc27 	bl	24000b50 <__HAL_FLASH_Unlock_veneer>
+24000302:	f000 fc2d 	bl	24000b60 <__HAL_FLASH_Unlock_veneer>
 
 	  /* Erase the user Flash area */
 
 	  /* Get the number of sector to erase from 1st sector */
 
 	  uint32_t StartSector = GetSector(StartSectorAddress);
-24000302:	68f8      	ldr	r0, [r7, #12]
-24000304:	f000 fc30 	bl	24000b68 <__GetSector_veneer>
-24000308:	6238      	str	r0, [r7, #32]
+24000306:	68f8      	ldr	r0, [r7, #12]
+24000308:	f000 fc36 	bl	24000b78 <__GetSector_veneer>
+2400030c:	6238      	str	r0, [r7, #32]
 	  uint32_t EndSectorAddress = StartSectorAddress + numberofwords*4;
-2400030a:	88fb      	ldrh	r3, [r7, #6]
-2400030c:	009b      	lsls	r3, r3, #2
-2400030e:	461a      	mov	r2, r3
-24000310:	68fb      	ldr	r3, [r7, #12]
-24000312:	4413      	add	r3, r2
-24000314:	61fb      	str	r3, [r7, #28]
+2400030e:	88fb      	ldrh	r3, [r7, #6]
+24000310:	009b      	lsls	r3, r3, #2
+24000312:	461a      	mov	r2, r3
+24000314:	68fb      	ldr	r3, [r7, #12]
+24000316:	4413      	add	r3, r2
+24000318:	61fb      	str	r3, [r7, #28]
 	  uint32_t EndSector = GetSector(EndSectorAddress);
-24000316:	69f8      	ldr	r0, [r7, #28]
-24000318:	f000 fc26 	bl	24000b68 <__GetSector_veneer>
-2400031c:	61b8      	str	r0, [r7, #24]
+2400031a:	69f8      	ldr	r0, [r7, #28]
+2400031c:	f000 fc2c 	bl	24000b78 <__GetSector_veneer>
+24000320:	61b8      	str	r0, [r7, #24]
 
 	  /* Fill EraseInit structure*/
 	  EraseInitStruct.TypeErase     = FLASH_TYPEERASE_SECTORS;
-2400031e:	4b20      	ldr	r3, [pc, #128]	@ (240003a0 <Flash_Write_Data+0xb4>)
-24000320:	2200      	movs	r2, #0
-24000322:	601a      	str	r2, [r3, #0]
+24000322:	4b21      	ldr	r3, [pc, #132]	@ (240003a8 <Flash_Write_Data+0xbc>)
+24000324:	2200      	movs	r2, #0
+24000326:	601a      	str	r2, [r3, #0]
 	  EraseInitStruct.VoltageRange  = FLASH_VOLTAGE_RANGE_3;
-24000324:	4b1e      	ldr	r3, [pc, #120]	@ (240003a0 <Flash_Write_Data+0xb4>)
-24000326:	2220      	movs	r2, #32
-24000328:	611a      	str	r2, [r3, #16]
+24000328:	4b1f      	ldr	r3, [pc, #124]	@ (240003a8 <Flash_Write_Data+0xbc>)
+2400032a:	2220      	movs	r2, #32
+2400032c:	611a      	str	r2, [r3, #16]
 	  EraseInitStruct.Sector        = StartSector;
-2400032a:	4a1d      	ldr	r2, [pc, #116]	@ (240003a0 <Flash_Write_Data+0xb4>)
-2400032c:	6a3b      	ldr	r3, [r7, #32]
-2400032e:	6093      	str	r3, [r2, #8]
+2400032e:	4a1e      	ldr	r2, [pc, #120]	@ (240003a8 <Flash_Write_Data+0xbc>)
+24000330:	6a3b      	ldr	r3, [r7, #32]
+24000332:	6093      	str	r3, [r2, #8]
 	  EraseInitStruct.Banks     	= FLASH_BANK_1;
-24000330:	4b1b      	ldr	r3, [pc, #108]	@ (240003a0 <Flash_Write_Data+0xb4>)
-24000332:	2201      	movs	r2, #1
-24000334:	605a      	str	r2, [r3, #4]
+24000334:	4b1c      	ldr	r3, [pc, #112]	@ (240003a8 <Flash_Write_Data+0xbc>)
+24000336:	2201      	movs	r2, #1
+24000338:	605a      	str	r2, [r3, #4]
 	  EraseInitStruct.NbSectors     = (EndSector - StartSector) + 1;
-24000336:	69ba      	ldr	r2, [r7, #24]
-24000338:	6a3b      	ldr	r3, [r7, #32]
-2400033a:	1ad3      	subs	r3, r2, r3
-2400033c:	3301      	adds	r3, #1
-2400033e:	4a18      	ldr	r2, [pc, #96]	@ (240003a0 <Flash_Write_Data+0xb4>)
-24000340:	60d3      	str	r3, [r2, #12]
+2400033a:	69ba      	ldr	r2, [r7, #24]
+2400033c:	6a3b      	ldr	r3, [r7, #32]
+2400033e:	1ad3      	subs	r3, r2, r3
+24000340:	3301      	adds	r3, #1
+24000342:	4a19      	ldr	r2, [pc, #100]	@ (240003a8 <Flash_Write_Data+0xbc>)
+24000344:	60d3      	str	r3, [r2, #12]
 
 
 	  if (HAL_FLASHEx_Erase(&EraseInitStruct, &SECTORError) != HAL_OK)
-24000342:	f107 0314 	add.w	r3, r7, #20
-24000346:	4619      	mov	r1, r3
-24000348:	4815      	ldr	r0, [pc, #84]	@ (240003a0 <Flash_Write_Data+0xb4>)
-2400034a:	f000 fbf9 	bl	24000b40 <__HAL_FLASHEx_Erase_veneer>
-2400034e:	4603      	mov	r3, r0
-24000350:	2b00      	cmp	r3, #0
-24000352:	d01a      	beq.n	2400038a <Flash_Write_Data+0x9e>
+24000346:	f107 0314 	add.w	r3, r7, #20
+2400034a:	4619      	mov	r1, r3
+2400034c:	4816      	ldr	r0, [pc, #88]	@ (240003a8 <Flash_Write_Data+0xbc>)
+2400034e:	f000 fbff 	bl	24000b50 <__HAL_FLASHEx_Erase_veneer>
+24000352:	4603      	mov	r3, r0
+24000354:	2b00      	cmp	r3, #0
+24000356:	d01a      	beq.n	2400038e <Flash_Write_Data+0xa2>
 	  {
 		  return HAL_FLASH_GetError ();
-24000354:	f000 fc10 	bl	24000b78 <__HAL_FLASH_GetError_veneer>
-24000358:	4603      	mov	r3, r0
-2400035a:	e01d      	b.n	24000398 <Flash_Write_Data+0xac>
+24000358:	f000 fc16 	bl	24000b88 <__HAL_FLASH_GetError_veneer>
+2400035c:	4603      	mov	r3, r0
+2400035e:	e01f      	b.n	240003a0 <Flash_Write_Data+0xb4>
 	  /* Program the user Flash area 8 WORDS at a time
 	   * (area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) ***********/
 
 	   while (sofar < numberofwords)
 	   {
 	     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_FLASHWORD, StartSectorAddress, (uint32_t ) &data[sofar]) == HAL_OK)
-2400035c:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
-2400035e:	009b      	lsls	r3, r3, #2
-24000360:	68ba      	ldr	r2, [r7, #8]
-24000362:	4413      	add	r3, r2
-24000364:	461a      	mov	r2, r3
-24000366:	68f9      	ldr	r1, [r7, #12]
-24000368:	2001      	movs	r0, #1
-2400036a:	f000 fc01 	bl	24000b70 <__HAL_FLASH_Program_veneer>
-2400036e:	4603      	mov	r3, r0
-24000370:	2b00      	cmp	r3, #0
-24000372:	d106      	bne.n	24000382 <Flash_Write_Data+0x96>
+24000360:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
+24000362:	009b      	lsls	r3, r3, #2
+24000364:	68ba      	ldr	r2, [r7, #8]
+24000366:	4413      	add	r3, r2
+24000368:	461a      	mov	r2, r3
+2400036a:	68f9      	ldr	r1, [r7, #12]
+2400036c:	2001      	movs	r0, #1
+2400036e:	f000 fc07 	bl	24000b80 <__HAL_FLASH_Program_veneer>
+24000372:	4603      	mov	r3, r0
+24000374:	2b00      	cmp	r3, #0
+24000376:	d106      	bne.n	24000386 <Flash_Write_Data+0x9a>
 	     {
 	    	 StartSectorAddress += 4 * FLASHWORD;  //
-24000374:	68fb      	ldr	r3, [r7, #12]
-24000376:	3320      	adds	r3, #32
-24000378:	60fb      	str	r3, [r7, #12]
+24000378:	68fb      	ldr	r3, [r7, #12]
+2400037a:	3320      	adds	r3, #32
+2400037c:	60fb      	str	r3, [r7, #12]
 	    	 sofar+=FLASHWORD;
-2400037a:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
-2400037c:	3308      	adds	r3, #8
-2400037e:	627b      	str	r3, [r7, #36]	@ 0x24
-24000380:	e003      	b.n	2400038a <Flash_Write_Data+0x9e>
+2400037e:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
+24000380:	3308      	adds	r3, #8
+24000382:	627b      	str	r3, [r7, #36]	@ 0x24
+24000384:	e003      	b.n	2400038e <Flash_Write_Data+0xa2>
 	     }
 	     else
 	     {
 	       /* Error occurred while writing data in Flash memory*/
 	    	 return HAL_FLASH_GetError ();
-24000382:	f000 fbf9 	bl	24000b78 <__HAL_FLASH_GetError_veneer>
-24000386:	4603      	mov	r3, r0
-24000388:	e006      	b.n	24000398 <Flash_Write_Data+0xac>
+24000386:	f000 fbff 	bl	24000b88 <__HAL_FLASH_GetError_veneer>
+2400038a:	4603      	mov	r3, r0
+2400038c:	e008      	b.n	240003a0 <Flash_Write_Data+0xb4>
 	   while (sofar < numberofwords)
-2400038a:	88fb      	ldrh	r3, [r7, #6]
-2400038c:	6a7a      	ldr	r2, [r7, #36]	@ 0x24
-2400038e:	429a      	cmp	r2, r3
-24000390:	dbe4      	blt.n	2400035c <Flash_Write_Data+0x70>
+2400038e:	88fb      	ldrh	r3, [r7, #6]
+24000390:	6a7a      	ldr	r2, [r7, #36]	@ 0x24
+24000392:	429a      	cmp	r2, r3
+24000394:	dbe4      	blt.n	24000360 <Flash_Write_Data+0x74>
 	     }
 	   }
 
 	  /* Lock the Flash to disable the flash control register access (recommended
 	     to protect the FLASH memory against possible unwanted operation) *********/
 	  HAL_FLASH_Lock();
-24000392:	f000 fbc9 	bl	24000b28 <__HAL_FLASH_Lock_veneer>
+24000396:	f000 fbcf 	bl	24000b38 <__HAL_FLASH_Lock_veneer>
+  __ASM volatile ("cpsie i" : : : "memory");
+2400039a:	b662      	cpsie	i
+}
+2400039c:	bf00      	nop
+	  __enable_irq();
 
 	   return 0;
-24000396:	2300      	movs	r3, #0
+2400039e:	2300      	movs	r3, #0
 }
-24000398:	4618      	mov	r0, r3
-2400039a:	3728      	adds	r7, #40	@ 0x28
-2400039c:	46bd      	mov	sp, r7
-2400039e:	bd80      	pop	{r7, pc}
-240003a0:	24000c68 	.word	0x24000c68
+240003a0:	4618      	mov	r0, r3
+240003a2:	3728      	adds	r7, #40	@ 0x28
+240003a4:	46bd      	mov	sp, r7
+240003a6:	bd80      	pop	{r7, pc}
+240003a8:	24000c78 	.word	0x24000c78
 
-240003a4 <Flash_Read_Data>:
+240003ac <Flash_Read_Data>:
 //		if (!(numberofwords--)) break;
 //	}
 //}
 
 
 MG_IRAM void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
-240003a4:	b480      	push	{r7}
-240003a6:	b087      	sub	sp, #28
-240003a8:	af00      	add	r7, sp, #0
-240003aa:	60f8      	str	r0, [r7, #12]
-240003ac:	60b9      	str	r1, [r7, #8]
-240003ae:	4613      	mov	r3, r2
-240003b0:	80fb      	strh	r3, [r7, #6]
+240003ac:	b480      	push	{r7}
+240003ae:	b087      	sub	sp, #28
+240003b0:	af00      	add	r7, sp, #0
+240003b2:	60f8      	str	r0, [r7, #12]
+240003b4:	60b9      	str	r1, [r7, #8]
+240003b6:	4613      	mov	r3, r2
+240003b8:	80fb      	strh	r3, [r7, #6]
+  __ASM volatile ("cpsid i" : : : "memory");
+240003ba:	b672      	cpsid	i
+}
+240003bc:	bf00      	nop
+	__disable_irq();
 	for (uint16_t i = 0; i < numberofwords; i++) {
-240003b2:	2300      	movs	r3, #0
-240003b4:	82fb      	strh	r3, [r7, #22]
-240003b6:	e00e      	b.n	240003d6 <Flash_Read_Data+0x32>
+240003be:	2300      	movs	r3, #0
+240003c0:	82fb      	strh	r3, [r7, #22]
+240003c2:	e00e      	b.n	240003e2 <Flash_Read_Data+0x36>
 		data[i] = *(__IO uint32_t *)(StartSectorAddress + i * 4);
-240003b8:	8afb      	ldrh	r3, [r7, #22]
-240003ba:	009b      	lsls	r3, r3, #2
-240003bc:	461a      	mov	r2, r3
-240003be:	68fb      	ldr	r3, [r7, #12]
-240003c0:	4413      	add	r3, r2
-240003c2:	4619      	mov	r1, r3
 240003c4:	8afb      	ldrh	r3, [r7, #22]
 240003c6:	009b      	lsls	r3, r3, #2
-240003c8:	68ba      	ldr	r2, [r7, #8]
-240003ca:	4413      	add	r3, r2
-240003cc:	680a      	ldr	r2, [r1, #0]
-240003ce:	601a      	str	r2, [r3, #0]
-	for (uint16_t i = 0; i < numberofwords; i++) {
+240003c8:	461a      	mov	r2, r3
+240003ca:	68fb      	ldr	r3, [r7, #12]
+240003cc:	4413      	add	r3, r2
+240003ce:	4619      	mov	r1, r3
 240003d0:	8afb      	ldrh	r3, [r7, #22]
-240003d2:	3301      	adds	r3, #1
-240003d4:	82fb      	strh	r3, [r7, #22]
-240003d6:	8afa      	ldrh	r2, [r7, #22]
-240003d8:	88fb      	ldrh	r3, [r7, #6]
-240003da:	429a      	cmp	r2, r3
-240003dc:	d3ec      	bcc.n	240003b8 <Flash_Read_Data+0x14>
-	}
+240003d2:	009b      	lsls	r3, r3, #2
+240003d4:	68ba      	ldr	r2, [r7, #8]
+240003d6:	4413      	add	r3, r2
+240003d8:	680a      	ldr	r2, [r1, #0]
+240003da:	601a      	str	r2, [r3, #0]
+	for (uint16_t i = 0; i < numberofwords; i++) {
+240003dc:	8afb      	ldrh	r3, [r7, #22]
+240003de:	3301      	adds	r3, #1
+240003e0:	82fb      	strh	r3, [r7, #22]
+240003e2:	8afa      	ldrh	r2, [r7, #22]
+240003e4:	88fb      	ldrh	r3, [r7, #6]
+240003e6:	429a      	cmp	r2, r3
+240003e8:	d3ec      	bcc.n	240003c4 <Flash_Read_Data+0x18>
+  __ASM volatile ("cpsie i" : : : "memory");
+240003ea:	b662      	cpsie	i
 }
-240003de:	bf00      	nop
-240003e0:	bf00      	nop
-240003e2:	371c      	adds	r7, #28
-240003e4:	46bd      	mov	sp, r7
-240003e6:	f85d 7b04 	ldr.w	r7, [sp], #4
-240003ea:	4770      	bx	lr
+240003ec:	bf00      	nop
+	}
+    __enable_irq();
 
-240003ec <Flash_Write_NUM>:
+}
+240003ee:	bf00      	nop
+240003f0:	371c      	adds	r7, #28
+240003f2:	46bd      	mov	sp, r7
+240003f4:	f85d 7b04 	ldr.w	r7, [sp], #4
+240003f8:	4770      	bx	lr
+
+240003fa <Flash_Write_NUM>:
 	}
 }
 
 
 MG_IRAM void Flash_Write_NUM (uint32_t StartSectorAddress, float Num)
 {
-240003ec:	b580      	push	{r7, lr}
-240003ee:	b082      	sub	sp, #8
-240003f0:	af00      	add	r7, sp, #0
-240003f2:	6078      	str	r0, [r7, #4]
-240003f4:	ed87 0a00 	vstr	s0, [r7]
+240003fa:	b580      	push	{r7, lr}
+240003fc:	b082      	sub	sp, #8
+240003fe:	af00      	add	r7, sp, #0
+24000400:	6078      	str	r0, [r7, #4]
+24000402:	ed87 0a00 	vstr	s0, [r7]
 
 	float2Bytes(bytes_temp, Num);
-240003f8:	ed97 0a00 	vldr	s0, [r7]
-240003fc:	4805      	ldr	r0, [pc, #20]	@ (24000414 <Flash_Write_NUM+0x28>)
-240003fe:	f000 fbbf 	bl	24000b80 <__float2Bytes_veneer>
+24000406:	ed97 0a00 	vldr	s0, [r7]
+2400040a:	4806      	ldr	r0, [pc, #24]	@ (24000424 <Flash_Write_NUM+0x2a>)
+2400040c:	f000 fbc0 	bl	24000b90 <__float2Bytes_veneer>
 	Flash_Write_Data (StartSectorAddress, (uint32_t *)bytes_temp, 1);
-24000402:	2201      	movs	r2, #1
-24000404:	4903      	ldr	r1, [pc, #12]	@ (24000414 <Flash_Write_NUM+0x28>)
-24000406:	6878      	ldr	r0, [r7, #4]
-24000408:	f7ff ff70 	bl	240002ec <Flash_Write_Data>
+24000410:	2201      	movs	r2, #1
+24000412:	4904      	ldr	r1, [pc, #16]	@ (24000424 <Flash_Write_NUM+0x2a>)
+24000414:	6878      	ldr	r0, [r7, #4]
+24000416:	f7ff ff69 	bl	240002ec <Flash_Write_Data>
 }
-2400040c:	bf00      	nop
-2400040e:	3708      	adds	r7, #8
-24000410:	46bd      	mov	sp, r7
-24000412:	bd80      	pop	{r7, pc}
-24000414:	24000c64 	.word	0x24000c64
+2400041a:	bf00      	nop
+2400041c:	3708      	adds	r7, #8
+2400041e:	46bd      	mov	sp, r7
+24000420:	bd80      	pop	{r7, pc}
+24000422:	bf00      	nop
+24000424:	24000c74 	.word	0x24000c74
 
-24000418 <Flash_Read_NUM>:
+24000428 <Flash_Read_NUM>:
 
 
 MG_IRAM float Flash_Read_NUM (uint32_t StartSectorAddress)
 {
-24000418:	b580      	push	{r7, lr}
-2400041a:	b084      	sub	sp, #16
-2400041c:	af00      	add	r7, sp, #0
-2400041e:	6078      	str	r0, [r7, #4]
+24000428:	b580      	push	{r7, lr}
+2400042a:	b084      	sub	sp, #16
+2400042c:	af00      	add	r7, sp, #0
+2400042e:	6078      	str	r0, [r7, #4]
 	uint8_t buffer[4];
 	float value;
 
 	Flash_Read_Data(StartSectorAddress, (uint32_t *)buffer, 1);
-24000420:	f107 0308 	add.w	r3, r7, #8
-24000424:	2201      	movs	r2, #1
-24000426:	4619      	mov	r1, r3
-24000428:	6878      	ldr	r0, [r7, #4]
-2400042a:	f7ff ffbb 	bl	240003a4 <Flash_Read_Data>
+24000430:	f107 0308 	add.w	r3, r7, #8
+24000434:	2201      	movs	r2, #1
+24000436:	4619      	mov	r1, r3
+24000438:	6878      	ldr	r0, [r7, #4]
+2400043a:	f7ff ffb7 	bl	240003ac <Flash_Read_Data>
 	value = Bytes2float(buffer);
-2400042e:	f107 0308 	add.w	r3, r7, #8
-24000432:	4618      	mov	r0, r3
-24000434:	f000 fb7c 	bl	24000b30 <__Bytes2float_veneer>
-24000438:	ed87 0a03 	vstr	s0, [r7, #12]
+2400043e:	f107 0308 	add.w	r3, r7, #8
+24000442:	4618      	mov	r0, r3
+24000444:	f000 fb7c 	bl	24000b40 <__Bytes2float_veneer>
+24000448:	ed87 0a03 	vstr	s0, [r7, #12]
 	return value;
-2400043c:	68fb      	ldr	r3, [r7, #12]
-2400043e:	ee07 3a90 	vmov	s15, r3
+2400044c:	68fb      	ldr	r3, [r7, #12]
+2400044e:	ee07 3a90 	vmov	s15, r3
 }
-24000442:	eeb0 0a67 	vmov.f32	s0, s15
-24000446:	3710      	adds	r7, #16
-24000448:	46bd      	mov	sp, r7
-2400044a:	bd80      	pop	{r7, pc}
+24000452:	eeb0 0a67 	vmov.f32	s0, s15
+24000456:	3710      	adds	r7, #16
+24000458:	46bd      	mov	sp, r7
+2400045a:	bd80      	pop	{r7, pc}
 
-2400044c <is_dualbank>:
+2400045c <is_dualbank>:
 MG_IRAM static bool is_dualbank(void) {
-2400044c:	b480      	push	{r7}
-2400044e:	af00      	add	r7, sp, #0
+2400045c:	b480      	push	{r7}
+2400045e:	af00      	add	r7, sp, #0
   return (s_mg_flash_stm32h7.size < 2 * 1024 * 1024) ? false : true;
-24000450:	4b06      	ldr	r3, [pc, #24]	@ (2400046c <is_dualbank+0x20>)
-24000452:	685b      	ldr	r3, [r3, #4]
-24000454:	f5b3 1f00 	cmp.w	r3, #2097152	@ 0x200000
-24000458:	bf2c      	ite	cs
-2400045a:	2301      	movcs	r3, #1
-2400045c:	2300      	movcc	r3, #0
-2400045e:	b2db      	uxtb	r3, r3
+24000460:	4b06      	ldr	r3, [pc, #24]	@ (2400047c <is_dualbank+0x20>)
+24000462:	685b      	ldr	r3, [r3, #4]
+24000464:	f5b3 1f00 	cmp.w	r3, #2097152	@ 0x200000
+24000468:	bf2c      	ite	cs
+2400046a:	2301      	movcs	r3, #1
+2400046c:	2300      	movcc	r3, #0
+2400046e:	b2db      	uxtb	r3, r3
 }
-24000460:	4618      	mov	r0, r3
-24000462:	46bd      	mov	sp, r7
-24000464:	f85d 7b04 	ldr.w	r7, [sp], #4
-24000468:	4770      	bx	lr
-2400046a:	bf00      	nop
-2400046c:	24000250 	.word	0x24000250
+24000470:	4618      	mov	r0, r3
+24000472:	46bd      	mov	sp, r7
+24000474:	f85d 7b04 	ldr.w	r7, [sp], #4
+24000478:	4770      	bx	lr
+2400047a:	bf00      	nop
+2400047c:	24000250 	.word	0x24000250
 
-24000470 <flash_unlock>:
+24000480 <flash_unlock>:
 MG_IRAM static void flash_unlock(void) {
-24000470:	b580      	push	{r7, lr}
-24000472:	af00      	add	r7, sp, #0
+24000480:	b580      	push	{r7, lr}
+24000482:	af00      	add	r7, sp, #0
   if (unlocked == false) {
-24000474:	4b11      	ldr	r3, [pc, #68]	@ (240004bc <flash_unlock+0x4c>)
-24000476:	781b      	ldrb	r3, [r3, #0]
-24000478:	f083 0301 	eor.w	r3, r3, #1
-2400047c:	b2db      	uxtb	r3, r3
-2400047e:	2b00      	cmp	r3, #0
-24000480:	d019      	beq.n	240004b6 <flash_unlock+0x46>
+24000484:	4b11      	ldr	r3, [pc, #68]	@ (240004cc <flash_unlock+0x4c>)
+24000486:	781b      	ldrb	r3, [r3, #0]
+24000488:	f083 0301 	eor.w	r3, r3, #1
+2400048c:	b2db      	uxtb	r3, r3
+2400048e:	2b00      	cmp	r3, #0
+24000490:	d019      	beq.n	240004c6 <flash_unlock+0x46>
     MG_REG(FLASH_BASE1 + FLASH_KEYR) = 0x45670123;
-24000482:	4b0f      	ldr	r3, [pc, #60]	@ (240004c0 <flash_unlock+0x50>)
-24000484:	4a0f      	ldr	r2, [pc, #60]	@ (240004c4 <flash_unlock+0x54>)
-24000486:	601a      	str	r2, [r3, #0]
+24000492:	4b0f      	ldr	r3, [pc, #60]	@ (240004d0 <flash_unlock+0x50>)
+24000494:	4a0f      	ldr	r2, [pc, #60]	@ (240004d4 <flash_unlock+0x54>)
+24000496:	601a      	str	r2, [r3, #0]
     MG_REG(FLASH_BASE1 + FLASH_KEYR) = 0xcdef89ab;
-24000488:	4b0d      	ldr	r3, [pc, #52]	@ (240004c0 <flash_unlock+0x50>)
-2400048a:	4a0f      	ldr	r2, [pc, #60]	@ (240004c8 <flash_unlock+0x58>)
-2400048c:	601a      	str	r2, [r3, #0]
-    if (is_dualbank()) {
-2400048e:	f7ff ffdd 	bl	2400044c <is_dualbank>
-24000492:	4603      	mov	r3, r0
-24000494:	2b00      	cmp	r3, #0
-24000496:	d005      	beq.n	240004a4 <flash_unlock+0x34>
-      MG_REG(FLASH_BASE2 + FLASH_KEYR) = 0x45670123;
-24000498:	4b0c      	ldr	r3, [pc, #48]	@ (240004cc <flash_unlock+0x5c>)
-2400049a:	4a0a      	ldr	r2, [pc, #40]	@ (240004c4 <flash_unlock+0x54>)
+24000498:	4b0d      	ldr	r3, [pc, #52]	@ (240004d0 <flash_unlock+0x50>)
+2400049a:	4a0f      	ldr	r2, [pc, #60]	@ (240004d8 <flash_unlock+0x58>)
 2400049c:	601a      	str	r2, [r3, #0]
+    if (is_dualbank()) {
+2400049e:	f7ff ffdd 	bl	2400045c <is_dualbank>
+240004a2:	4603      	mov	r3, r0
+240004a4:	2b00      	cmp	r3, #0
+240004a6:	d005      	beq.n	240004b4 <flash_unlock+0x34>
+      MG_REG(FLASH_BASE2 + FLASH_KEYR) = 0x45670123;
+240004a8:	4b0c      	ldr	r3, [pc, #48]	@ (240004dc <flash_unlock+0x5c>)
+240004aa:	4a0a      	ldr	r2, [pc, #40]	@ (240004d4 <flash_unlock+0x54>)
+240004ac:	601a      	str	r2, [r3, #0]
       MG_REG(FLASH_BASE2 + FLASH_KEYR) = 0xcdef89ab;
-2400049e:	4b0b      	ldr	r3, [pc, #44]	@ (240004cc <flash_unlock+0x5c>)
-240004a0:	4a09      	ldr	r2, [pc, #36]	@ (240004c8 <flash_unlock+0x58>)
-240004a2:	601a      	str	r2, [r3, #0]
+240004ae:	4b0b      	ldr	r3, [pc, #44]	@ (240004dc <flash_unlock+0x5c>)
+240004b0:	4a09      	ldr	r2, [pc, #36]	@ (240004d8 <flash_unlock+0x58>)
+240004b2:	601a      	str	r2, [r3, #0]
     MG_REG(FLASH_BASE1 + FLASH_OPTKEYR) = 0x08192a3b;  // opt reg is "shared"
-240004a4:	4b0a      	ldr	r3, [pc, #40]	@ (240004d0 <flash_unlock+0x60>)
-240004a6:	4a0b      	ldr	r2, [pc, #44]	@ (240004d4 <flash_unlock+0x64>)
-240004a8:	601a      	str	r2, [r3, #0]
+240004b4:	4b0a      	ldr	r3, [pc, #40]	@ (240004e0 <flash_unlock+0x60>)
+240004b6:	4a0b      	ldr	r2, [pc, #44]	@ (240004e4 <flash_unlock+0x64>)
+240004b8:	601a      	str	r2, [r3, #0]
     MG_REG(FLASH_BASE1 + FLASH_OPTKEYR) = 0x4c5d6e7f;  // thus unlock once
-240004aa:	4b09      	ldr	r3, [pc, #36]	@ (240004d0 <flash_unlock+0x60>)
-240004ac:	4a0a      	ldr	r2, [pc, #40]	@ (240004d8 <flash_unlock+0x68>)
-240004ae:	601a      	str	r2, [r3, #0]
+240004ba:	4b09      	ldr	r3, [pc, #36]	@ (240004e0 <flash_unlock+0x60>)
+240004bc:	4a0a      	ldr	r2, [pc, #40]	@ (240004e8 <flash_unlock+0x68>)
+240004be:	601a      	str	r2, [r3, #0]
     unlocked = true;
-240004b0:	4b02      	ldr	r3, [pc, #8]	@ (240004bc <flash_unlock+0x4c>)
-240004b2:	2201      	movs	r2, #1
-240004b4:	701a      	strb	r2, [r3, #0]
+240004c0:	4b02      	ldr	r3, [pc, #8]	@ (240004cc <flash_unlock+0x4c>)
+240004c2:	2201      	movs	r2, #1
+240004c4:	701a      	strb	r2, [r3, #0]
 }
-240004b6:	bf00      	nop
-240004b8:	bd80      	pop	{r7, pc}
-240004ba:	bf00      	nop
-240004bc:	24003f68 	.word	0x24003f68
-240004c0:	52002004 	.word	0x52002004
-240004c4:	45670123 	.word	0x45670123
-240004c8:	cdef89ab 	.word	0xcdef89ab
-240004cc:	52002104 	.word	0x52002104
-240004d0:	52002008 	.word	0x52002008
-240004d4:	08192a3b 	.word	0x08192a3b
-240004d8:	4c5d6e7f 	.word	0x4c5d6e7f
+240004c6:	bf00      	nop
+240004c8:	bd80      	pop	{r7, pc}
+240004ca:	bf00      	nop
+240004cc:	24003f78 	.word	0x24003f78
+240004d0:	52002004 	.word	0x52002004
+240004d4:	45670123 	.word	0x45670123
+240004d8:	cdef89ab 	.word	0xcdef89ab
+240004dc:	52002104 	.word	0x52002104
+240004e0:	52002008 	.word	0x52002008
+240004e4:	08192a3b 	.word	0x08192a3b
+240004e8:	4c5d6e7f 	.word	0x4c5d6e7f
 
-240004dc <flash_page_start>:
+240004ec <flash_page_start>:
 MG_IRAM static bool flash_page_start(volatile uint32_t *dst) {
-240004dc:	b480      	push	{r7}
-240004de:	b087      	sub	sp, #28
-240004e0:	af00      	add	r7, sp, #0
-240004e2:	6078      	str	r0, [r7, #4]
+240004ec:	b480      	push	{r7}
+240004ee:	b087      	sub	sp, #28
+240004f0:	af00      	add	r7, sp, #0
+240004f2:	6078      	str	r0, [r7, #4]
   char *base = (char *) s_mg_flash_stm32h7.start,
-240004e4:	4b15      	ldr	r3, [pc, #84]	@ (2400053c <flash_page_start+0x60>)
-240004e6:	681b      	ldr	r3, [r3, #0]
-240004e8:	617b      	str	r3, [r7, #20]
+240004f4:	4b15      	ldr	r3, [pc, #84]	@ (2400054c <flash_page_start+0x60>)
+240004f6:	681b      	ldr	r3, [r3, #0]
+240004f8:	617b      	str	r3, [r7, #20]
        *end = base + s_mg_flash_stm32h7.size;
-240004ea:	4b14      	ldr	r3, [pc, #80]	@ (2400053c <flash_page_start+0x60>)
-240004ec:	685b      	ldr	r3, [r3, #4]
-240004ee:	697a      	ldr	r2, [r7, #20]
-240004f0:	4413      	add	r3, r2
-240004f2:	613b      	str	r3, [r7, #16]
+240004fa:	4b14      	ldr	r3, [pc, #80]	@ (2400054c <flash_page_start+0x60>)
+240004fc:	685b      	ldr	r3, [r3, #4]
+240004fe:	697a      	ldr	r2, [r7, #20]
+24000500:	4413      	add	r3, r2
+24000502:	613b      	str	r3, [r7, #16]
   volatile char *p = (char *) dst;
-240004f4:	687b      	ldr	r3, [r7, #4]
-240004f6:	60fb      	str	r3, [r7, #12]
+24000504:	687b      	ldr	r3, [r7, #4]
+24000506:	60fb      	str	r3, [r7, #12]
   return p >= base && p < end && ((p - base) % s_mg_flash_stm32h7.secsz) == 0;
-240004f8:	68fa      	ldr	r2, [r7, #12]
-240004fa:	697b      	ldr	r3, [r7, #20]
-240004fc:	429a      	cmp	r2, r3
-240004fe:	d312      	bcc.n	24000526 <flash_page_start+0x4a>
-24000500:	68fa      	ldr	r2, [r7, #12]
-24000502:	693b      	ldr	r3, [r7, #16]
-24000504:	429a      	cmp	r2, r3
-24000506:	d20e      	bcs.n	24000526 <flash_page_start+0x4a>
 24000508:	68fa      	ldr	r2, [r7, #12]
 2400050a:	697b      	ldr	r3, [r7, #20]
-2400050c:	1ad3      	subs	r3, r2, r3
-2400050e:	461a      	mov	r2, r3
-24000510:	4b0a      	ldr	r3, [pc, #40]	@ (2400053c <flash_page_start+0x60>)
-24000512:	689b      	ldr	r3, [r3, #8]
-24000514:	fbb2 f1f3 	udiv	r1, r2, r3
-24000518:	fb01 f303 	mul.w	r3, r1, r3
+2400050c:	429a      	cmp	r2, r3
+2400050e:	d312      	bcc.n	24000536 <flash_page_start+0x4a>
+24000510:	68fa      	ldr	r2, [r7, #12]
+24000512:	693b      	ldr	r3, [r7, #16]
+24000514:	429a      	cmp	r2, r3
+24000516:	d20e      	bcs.n	24000536 <flash_page_start+0x4a>
+24000518:	68fa      	ldr	r2, [r7, #12]
+2400051a:	697b      	ldr	r3, [r7, #20]
 2400051c:	1ad3      	subs	r3, r2, r3
-2400051e:	2b00      	cmp	r3, #0
-24000520:	d101      	bne.n	24000526 <flash_page_start+0x4a>
-24000522:	2301      	movs	r3, #1
-24000524:	e000      	b.n	24000528 <flash_page_start+0x4c>
-24000526:	2300      	movs	r3, #0
-24000528:	f003 0301 	and.w	r3, r3, #1
-2400052c:	b2db      	uxtb	r3, r3
+2400051e:	461a      	mov	r2, r3
+24000520:	4b0a      	ldr	r3, [pc, #40]	@ (2400054c <flash_page_start+0x60>)
+24000522:	689b      	ldr	r3, [r3, #8]
+24000524:	fbb2 f1f3 	udiv	r1, r2, r3
+24000528:	fb01 f303 	mul.w	r3, r1, r3
+2400052c:	1ad3      	subs	r3, r2, r3
+2400052e:	2b00      	cmp	r3, #0
+24000530:	d101      	bne.n	24000536 <flash_page_start+0x4a>
+24000532:	2301      	movs	r3, #1
+24000534:	e000      	b.n	24000538 <flash_page_start+0x4c>
+24000536:	2300      	movs	r3, #0
+24000538:	f003 0301 	and.w	r3, r3, #1
+2400053c:	b2db      	uxtb	r3, r3
 }
-2400052e:	4618      	mov	r0, r3
-24000530:	371c      	adds	r7, #28
-24000532:	46bd      	mov	sp, r7
-24000534:	f85d 7b04 	ldr.w	r7, [sp], #4
-24000538:	4770      	bx	lr
-2400053a:	bf00      	nop
-2400053c:	24000250 	.word	0x24000250
+2400053e:	4618      	mov	r0, r3
+24000540:	371c      	adds	r7, #28
+24000542:	46bd      	mov	sp, r7
+24000544:	f85d 7b04 	ldr.w	r7, [sp], #4
+24000548:	4770      	bx	lr
+2400054a:	bf00      	nop
+2400054c:	24000250 	.word	0x24000250
 
-24000540 <flash_is_err>:
+24000550 <flash_is_err>:
 MG_IRAM static bool flash_is_err(uint32_t bank) {
-24000540:	b480      	push	{r7}
-24000542:	b083      	sub	sp, #12
-24000544:	af00      	add	r7, sp, #0
-24000546:	6078      	str	r0, [r7, #4]
+24000550:	b480      	push	{r7}
+24000552:	b083      	sub	sp, #12
+24000554:	af00      	add	r7, sp, #0
+24000556:	6078      	str	r0, [r7, #4]
   return MG_REG(bank + FLASH_SR) & ((MG_BIT(11) - 1) << 17);  // RM0433 4.9.5
-24000548:	687b      	ldr	r3, [r7, #4]
-2400054a:	3310      	adds	r3, #16
-2400054c:	681a      	ldr	r2, [r3, #0]
-2400054e:	4b06      	ldr	r3, [pc, #24]	@ (24000568 <flash_is_err+0x28>)
-24000550:	4013      	ands	r3, r2
-24000552:	2b00      	cmp	r3, #0
-24000554:	bf14      	ite	ne
-24000556:	2301      	movne	r3, #1
-24000558:	2300      	moveq	r3, #0
-2400055a:	b2db      	uxtb	r3, r3
+24000558:	687b      	ldr	r3, [r7, #4]
+2400055a:	3310      	adds	r3, #16
+2400055c:	681a      	ldr	r2, [r3, #0]
+2400055e:	4b06      	ldr	r3, [pc, #24]	@ (24000578 <flash_is_err+0x28>)
+24000560:	4013      	ands	r3, r2
+24000562:	2b00      	cmp	r3, #0
+24000564:	bf14      	ite	ne
+24000566:	2301      	movne	r3, #1
+24000568:	2300      	moveq	r3, #0
+2400056a:	b2db      	uxtb	r3, r3
 }
-2400055c:	4618      	mov	r0, r3
-2400055e:	370c      	adds	r7, #12
-24000560:	46bd      	mov	sp, r7
-24000562:	f85d 7b04 	ldr.w	r7, [sp], #4
-24000566:	4770      	bx	lr
-24000568:	0ffe0000 	.word	0x0ffe0000
+2400056c:	4618      	mov	r0, r3
+2400056e:	370c      	adds	r7, #12
+24000570:	46bd      	mov	sp, r7
+24000572:	f85d 7b04 	ldr.w	r7, [sp], #4
+24000576:	4770      	bx	lr
+24000578:	0ffe0000 	.word	0x0ffe0000
 
-2400056c <flash_wait>:
+2400057c <flash_wait>:
 MG_IRAM static void flash_wait(uint32_t bank) {
-2400056c:	b480      	push	{r7}
-2400056e:	b083      	sub	sp, #12
-24000570:	af00      	add	r7, sp, #0
-24000572:	6078      	str	r0, [r7, #4]
+2400057c:	b480      	push	{r7}
+2400057e:	b083      	sub	sp, #12
+24000580:	af00      	add	r7, sp, #0
+24000582:	6078      	str	r0, [r7, #4]
   while (MG_REG(bank + FLASH_SR) & (MG_BIT(0) | MG_BIT(2))) (void) 0;
-24000574:	bf00      	nop
-24000576:	687b      	ldr	r3, [r7, #4]
-24000578:	3310      	adds	r3, #16
-2400057a:	681b      	ldr	r3, [r3, #0]
-2400057c:	f003 0305 	and.w	r3, r3, #5
-24000580:	2b00      	cmp	r3, #0
-24000582:	d1f8      	bne.n	24000576 <flash_wait+0xa>
-}
 24000584:	bf00      	nop
-24000586:	bf00      	nop
-24000588:	370c      	adds	r7, #12
-2400058a:	46bd      	mov	sp, r7
-2400058c:	f85d 7b04 	ldr.w	r7, [sp], #4
-24000590:	4770      	bx	lr
+24000586:	687b      	ldr	r3, [r7, #4]
+24000588:	3310      	adds	r3, #16
+2400058a:	681b      	ldr	r3, [r3, #0]
+2400058c:	f003 0305 	and.w	r3, r3, #5
+24000590:	2b00      	cmp	r3, #0
+24000592:	d1f8      	bne.n	24000586 <flash_wait+0xa>
+}
+24000594:	bf00      	nop
+24000596:	bf00      	nop
+24000598:	370c      	adds	r7, #12
+2400059a:	46bd      	mov	sp, r7
+2400059c:	f85d 7b04 	ldr.w	r7, [sp], #4
+240005a0:	4770      	bx	lr
 
-24000592 <flash_clear_err>:
+240005a2 <flash_clear_err>:
 MG_IRAM static void flash_clear_err(uint32_t bank) {
-24000592:	b580      	push	{r7, lr}
-24000594:	b082      	sub	sp, #8
-24000596:	af00      	add	r7, sp, #0
-24000598:	6078      	str	r0, [r7, #4]
+240005a2:	b580      	push	{r7, lr}
+240005a4:	b082      	sub	sp, #8
+240005a6:	af00      	add	r7, sp, #0
+240005a8:	6078      	str	r0, [r7, #4]
   flash_wait(bank);                                      // Wait until ready
-2400059a:	6878      	ldr	r0, [r7, #4]
-2400059c:	f7ff ffe6 	bl	2400056c <flash_wait>
+240005aa:	6878      	ldr	r0, [r7, #4]
+240005ac:	f7ff ffe6 	bl	2400057c <flash_wait>
   MG_REG(bank + FLASH_CCR) = ((MG_BIT(11) - 1) << 16U);  // Clear all errors
-240005a0:	687b      	ldr	r3, [r7, #4]
-240005a2:	3314      	adds	r3, #20
-240005a4:	461a      	mov	r2, r3
-240005a6:	4b03      	ldr	r3, [pc, #12]	@ (240005b4 <flash_clear_err+0x22>)
-240005a8:	6013      	str	r3, [r2, #0]
+240005b0:	687b      	ldr	r3, [r7, #4]
+240005b2:	3314      	adds	r3, #20
+240005b4:	461a      	mov	r2, r3
+240005b6:	4b03      	ldr	r3, [pc, #12]	@ (240005c4 <flash_clear_err+0x22>)
+240005b8:	6013      	str	r3, [r2, #0]
 }
-240005aa:	bf00      	nop
-240005ac:	3708      	adds	r7, #8
-240005ae:	46bd      	mov	sp, r7
-240005b0:	bd80      	pop	{r7, pc}
-240005b2:	bf00      	nop
-240005b4:	07ff0000 	.word	0x07ff0000
+240005ba:	bf00      	nop
+240005bc:	3708      	adds	r7, #8
+240005be:	46bd      	mov	sp, r7
+240005c0:	bd80      	pop	{r7, pc}
+240005c2:	bf00      	nop
+240005c4:	07ff0000 	.word	0x07ff0000
 
-240005b8 <flash_bank_is_swapped>:
+240005c8 <flash_bank_is_swapped>:
 MG_IRAM static bool flash_bank_is_swapped(uint32_t bank) {
-240005b8:	b480      	push	{r7}
-240005ba:	b083      	sub	sp, #12
-240005bc:	af00      	add	r7, sp, #0
-240005be:	6078      	str	r0, [r7, #4]
+240005c8:	b480      	push	{r7}
+240005ca:	b083      	sub	sp, #12
+240005cc:	af00      	add	r7, sp, #0
+240005ce:	6078      	str	r0, [r7, #4]
   return MG_REG(bank + FLASH_OPTCR) & MG_BIT(31);  // RM0433 4.9.7
-240005c0:	687b      	ldr	r3, [r7, #4]
-240005c2:	3318      	adds	r3, #24
-240005c4:	681b      	ldr	r3, [r3, #0]
-240005c6:	f003 4300 	and.w	r3, r3, #2147483648	@ 0x80000000
-240005ca:	2b00      	cmp	r3, #0
-240005cc:	bf14      	ite	ne
-240005ce:	2301      	movne	r3, #1
-240005d0:	2300      	moveq	r3, #0
-240005d2:	b2db      	uxtb	r3, r3
+240005d0:	687b      	ldr	r3, [r7, #4]
+240005d2:	3318      	adds	r3, #24
+240005d4:	681b      	ldr	r3, [r3, #0]
+240005d6:	f003 4300 	and.w	r3, r3, #2147483648	@ 0x80000000
+240005da:	2b00      	cmp	r3, #0
+240005dc:	bf14      	ite	ne
+240005de:	2301      	movne	r3, #1
+240005e0:	2300      	moveq	r3, #0
+240005e2:	b2db      	uxtb	r3, r3
 }
-240005d4:	4618      	mov	r0, r3
-240005d6:	370c      	adds	r7, #12
-240005d8:	46bd      	mov	sp, r7
-240005da:	f85d 7b04 	ldr.w	r7, [sp], #4
-240005de:	4770      	bx	lr
+240005e4:	4618      	mov	r0, r3
+240005e6:	370c      	adds	r7, #12
+240005e8:	46bd      	mov	sp, r7
+240005ea:	f85d 7b04 	ldr.w	r7, [sp], #4
+240005ee:	4770      	bx	lr
 
-240005e0 <flash_bank>:
+240005f0 <flash_bank>:
 MG_IRAM static uint32_t flash_bank(void *addr) {
-240005e0:	b580      	push	{r7, lr}
-240005e2:	b084      	sub	sp, #16
-240005e4:	af00      	add	r7, sp, #0
-240005e6:	6078      	str	r0, [r7, #4]
+240005f0:	b580      	push	{r7, lr}
+240005f2:	b084      	sub	sp, #16
+240005f4:	af00      	add	r7, sp, #0
+240005f6:	6078      	str	r0, [r7, #4]
   size_t ofs = (char *) addr - (char *) s_mg_flash_stm32h7.start;
-240005e8:	4b0d      	ldr	r3, [pc, #52]	@ (24000620 <flash_bank+0x40>)
-240005ea:	681b      	ldr	r3, [r3, #0]
-240005ec:	687a      	ldr	r2, [r7, #4]
-240005ee:	1ad3      	subs	r3, r2, r3
-240005f0:	60fb      	str	r3, [r7, #12]
+240005f8:	4b0d      	ldr	r3, [pc, #52]	@ (24000630 <flash_bank+0x40>)
+240005fa:	681b      	ldr	r3, [r3, #0]
+240005fc:	687a      	ldr	r2, [r7, #4]
+240005fe:	1ad3      	subs	r3, r2, r3
+24000600:	60fb      	str	r3, [r7, #12]
   if (!is_dualbank()) return FLASH_BASE1;
-240005f2:	f7ff ff2b 	bl	2400044c <is_dualbank>
-240005f6:	4603      	mov	r3, r0
-240005f8:	f083 0301 	eor.w	r3, r3, #1
-240005fc:	b2db      	uxtb	r3, r3
-240005fe:	2b00      	cmp	r3, #0
-24000600:	d001      	beq.n	24000606 <flash_bank+0x26>
-24000602:	4b08      	ldr	r3, [pc, #32]	@ (24000624 <flash_bank+0x44>)
-24000604:	e008      	b.n	24000618 <flash_bank+0x38>
+24000602:	f7ff ff2b 	bl	2400045c <is_dualbank>
+24000606:	4603      	mov	r3, r0
+24000608:	f083 0301 	eor.w	r3, r3, #1
+2400060c:	b2db      	uxtb	r3, r3
+2400060e:	2b00      	cmp	r3, #0
+24000610:	d001      	beq.n	24000616 <flash_bank+0x26>
+24000612:	4b08      	ldr	r3, [pc, #32]	@ (24000634 <flash_bank+0x44>)
+24000614:	e008      	b.n	24000628 <flash_bank+0x38>
   return ofs < s_mg_flash_stm32h7.size / 2 ? FLASH_BASE1 : FLASH_BASE2;
-24000606:	4b06      	ldr	r3, [pc, #24]	@ (24000620 <flash_bank+0x40>)
-24000608:	685b      	ldr	r3, [r3, #4]
-2400060a:	085b      	lsrs	r3, r3, #1
-2400060c:	68fa      	ldr	r2, [r7, #12]
-2400060e:	429a      	cmp	r2, r3
-24000610:	d201      	bcs.n	24000616 <flash_bank+0x36>
-24000612:	4b04      	ldr	r3, [pc, #16]	@ (24000624 <flash_bank+0x44>)
-24000614:	e000      	b.n	24000618 <flash_bank+0x38>
-24000616:	4b04      	ldr	r3, [pc, #16]	@ (24000628 <flash_bank+0x48>)
+24000616:	4b06      	ldr	r3, [pc, #24]	@ (24000630 <flash_bank+0x40>)
+24000618:	685b      	ldr	r3, [r3, #4]
+2400061a:	085b      	lsrs	r3, r3, #1
+2400061c:	68fa      	ldr	r2, [r7, #12]
+2400061e:	429a      	cmp	r2, r3
+24000620:	d201      	bcs.n	24000626 <flash_bank+0x36>
+24000622:	4b04      	ldr	r3, [pc, #16]	@ (24000634 <flash_bank+0x44>)
+24000624:	e000      	b.n	24000628 <flash_bank+0x38>
+24000626:	4b04      	ldr	r3, [pc, #16]	@ (24000638 <flash_bank+0x48>)
 }
-24000618:	4618      	mov	r0, r3
-2400061a:	3710      	adds	r7, #16
-2400061c:	46bd      	mov	sp, r7
-2400061e:	bd80      	pop	{r7, pc}
-24000620:	24000250 	.word	0x24000250
-24000624:	52002000 	.word	0x52002000
-24000628:	52002100 	.word	0x52002100
+24000628:	4618      	mov	r0, r3
+2400062a:	3710      	adds	r7, #16
+2400062c:	46bd      	mov	sp, r7
+2400062e:	bd80      	pop	{r7, pc}
+24000630:	24000250 	.word	0x24000250
+24000634:	52002000 	.word	0x52002000
+24000638:	52002100 	.word	0x52002100
 
-2400062c <mg_stm32h7_erase>:
+2400063c <mg_stm32h7_erase>:
 MG_IRAM static bool mg_stm32h7_erase(void *addr) {
-2400062c:	b580      	push	{r7, lr}
-2400062e:	b08a      	sub	sp, #40	@ 0x28
-24000630:	af02      	add	r7, sp, #8
-24000632:	6078      	str	r0, [r7, #4]
+2400063c:	b580      	push	{r7, lr}
+2400063e:	b08a      	sub	sp, #40	@ 0x28
+24000640:	af02      	add	r7, sp, #8
+24000642:	6078      	str	r0, [r7, #4]
   bool ok = false;
-24000634:	2300      	movs	r3, #0
-24000636:	77fb      	strb	r3, [r7, #31]
+24000644:	2300      	movs	r3, #0
+24000646:	77fb      	strb	r3, [r7, #31]
   if (flash_page_start(addr) == false) {
-24000638:	6878      	ldr	r0, [r7, #4]
-2400063a:	f7ff ff4f 	bl	240004dc <flash_page_start>
-2400063e:	4603      	mov	r3, r0
-24000640:	f083 0301 	eor.w	r3, r3, #1
-24000644:	b2db      	uxtb	r3, r3
-24000646:	2b00      	cmp	r3, #0
-24000648:	d00f      	beq.n	2400066a <mg_stm32h7_erase+0x3e>
+24000648:	6878      	ldr	r0, [r7, #4]
+2400064a:	f7ff ff4f 	bl	240004ec <flash_page_start>
+2400064e:	4603      	mov	r3, r0
+24000650:	f083 0301 	eor.w	r3, r3, #1
+24000654:	b2db      	uxtb	r3, r3
+24000656:	2b00      	cmp	r3, #0
+24000658:	d00f      	beq.n	2400067a <mg_stm32h7_erase+0x3e>
     MG_ERROR(("%p is not on a sector boundary", addr));
-2400064a:	4b44      	ldr	r3, [pc, #272]	@ (2400075c <mg_stm32h7_erase+0x130>)
-2400064c:	681b      	ldr	r3, [r3, #0]
-2400064e:	2b00      	cmp	r3, #0
-24000650:	dd7e      	ble.n	24000750 <mg_stm32h7_erase+0x124>
-24000652:	4b43      	ldr	r3, [pc, #268]	@ (24000760 <mg_stm32h7_erase+0x134>)
-24000654:	f641 3238 	movw	r2, #6968	@ 0x1b38
-24000658:	4942      	ldr	r1, [pc, #264]	@ (24000764 <mg_stm32h7_erase+0x138>)
-2400065a:	2001      	movs	r0, #1
-2400065c:	f000 fa74 	bl	24000b48 <__mg_log_prefix_veneer>
-24000660:	6879      	ldr	r1, [r7, #4]
-24000662:	4841      	ldr	r0, [pc, #260]	@ (24000768 <mg_stm32h7_erase+0x13c>)
-24000664:	f000 fa78 	bl	24000b58 <__mg_log_veneer>
-24000668:	e072      	b.n	24000750 <mg_stm32h7_erase+0x124>
+2400065a:	4b44      	ldr	r3, [pc, #272]	@ (2400076c <mg_stm32h7_erase+0x130>)
+2400065c:	681b      	ldr	r3, [r3, #0]
+2400065e:	2b00      	cmp	r3, #0
+24000660:	dd7e      	ble.n	24000760 <mg_stm32h7_erase+0x124>
+24000662:	4b43      	ldr	r3, [pc, #268]	@ (24000770 <mg_stm32h7_erase+0x134>)
+24000664:	f641 3238 	movw	r2, #6968	@ 0x1b38
+24000668:	4942      	ldr	r1, [pc, #264]	@ (24000774 <mg_stm32h7_erase+0x138>)
+2400066a:	2001      	movs	r0, #1
+2400066c:	f000 fa74 	bl	24000b58 <__mg_log_prefix_veneer>
+24000670:	6879      	ldr	r1, [r7, #4]
+24000672:	4841      	ldr	r0, [pc, #260]	@ (24000778 <mg_stm32h7_erase+0x13c>)
+24000674:	f000 fa78 	bl	24000b68 <__mg_log_veneer>
+24000678:	e072      	b.n	24000760 <mg_stm32h7_erase+0x124>
     uintptr_t diff = (char *) addr - (char *) s_mg_flash_stm32h7.start;
-2400066a:	4b40      	ldr	r3, [pc, #256]	@ (2400076c <mg_stm32h7_erase+0x140>)
-2400066c:	681b      	ldr	r3, [r3, #0]
-2400066e:	687a      	ldr	r2, [r7, #4]
-24000670:	1ad3      	subs	r3, r2, r3
-24000672:	617b      	str	r3, [r7, #20]
+2400067a:	4b40      	ldr	r3, [pc, #256]	@ (2400077c <mg_stm32h7_erase+0x140>)
+2400067c:	681b      	ldr	r3, [r3, #0]
+2400067e:	687a      	ldr	r2, [r7, #4]
+24000680:	1ad3      	subs	r3, r2, r3
+24000682:	617b      	str	r3, [r7, #20]
     uint32_t sector = diff / s_mg_flash_stm32h7.secsz;
-24000674:	4b3d      	ldr	r3, [pc, #244]	@ (2400076c <mg_stm32h7_erase+0x140>)
-24000676:	689b      	ldr	r3, [r3, #8]
-24000678:	697a      	ldr	r2, [r7, #20]
-2400067a:	fbb2 f3f3 	udiv	r3, r2, r3
-2400067e:	61bb      	str	r3, [r7, #24]
+24000684:	4b3d      	ldr	r3, [pc, #244]	@ (2400077c <mg_stm32h7_erase+0x140>)
+24000686:	689b      	ldr	r3, [r3, #8]
+24000688:	697a      	ldr	r2, [r7, #20]
+2400068a:	fbb2 f3f3 	udiv	r3, r2, r3
+2400068e:	61bb      	str	r3, [r7, #24]
     uint32_t bank = flash_bank(addr);
-24000680:	6878      	ldr	r0, [r7, #4]
-24000682:	f7ff ffad 	bl	240005e0 <flash_bank>
-24000686:	6138      	str	r0, [r7, #16]
+24000690:	6878      	ldr	r0, [r7, #4]
+24000692:	f7ff ffad 	bl	240005f0 <flash_bank>
+24000696:	6138      	str	r0, [r7, #16]
     uint32_t saved_cr = MG_REG(bank + FLASH_CR);  // Save CR value
-24000688:	693b      	ldr	r3, [r7, #16]
-2400068a:	330c      	adds	r3, #12
-2400068c:	681b      	ldr	r3, [r3, #0]
-2400068e:	60fb      	str	r3, [r7, #12]
+24000698:	693b      	ldr	r3, [r7, #16]
+2400069a:	330c      	adds	r3, #12
+2400069c:	681b      	ldr	r3, [r3, #0]
+2400069e:	60fb      	str	r3, [r7, #12]
     flash_unlock();
-24000690:	f7ff feee 	bl	24000470 <flash_unlock>
+240006a0:	f7ff feee 	bl	24000480 <flash_unlock>
     if (sector > 7) sector -= 8;
-24000694:	69bb      	ldr	r3, [r7, #24]
-24000696:	2b07      	cmp	r3, #7
-24000698:	d902      	bls.n	240006a0 <mg_stm32h7_erase+0x74>
-2400069a:	69bb      	ldr	r3, [r7, #24]
-2400069c:	3b08      	subs	r3, #8
-2400069e:	61bb      	str	r3, [r7, #24]
+240006a4:	69bb      	ldr	r3, [r7, #24]
+240006a6:	2b07      	cmp	r3, #7
+240006a8:	d902      	bls.n	240006b0 <mg_stm32h7_erase+0x74>
+240006aa:	69bb      	ldr	r3, [r7, #24]
+240006ac:	3b08      	subs	r3, #8
+240006ae:	61bb      	str	r3, [r7, #24]
     flash_clear_err(bank);
-240006a0:	6938      	ldr	r0, [r7, #16]
-240006a2:	f7ff ff76 	bl	24000592 <flash_clear_err>
+240006b0:	6938      	ldr	r0, [r7, #16]
+240006b2:	f7ff ff76 	bl	240005a2 <flash_clear_err>
     MG_REG(bank + FLASH_CR) = MG_BIT(5);             // 32-bit write parallelism
-240006a6:	693b      	ldr	r3, [r7, #16]
-240006a8:	330c      	adds	r3, #12
-240006aa:	461a      	mov	r2, r3
-240006ac:	2320      	movs	r3, #32
-240006ae:	6013      	str	r3, [r2, #0]
+240006b6:	693b      	ldr	r3, [r7, #16]
+240006b8:	330c      	adds	r3, #12
+240006ba:	461a      	mov	r2, r3
+240006bc:	2320      	movs	r3, #32
+240006be:	6013      	str	r3, [r2, #0]
     MG_REG(bank + FLASH_CR) |= (sector & 7U) << 8U;  // Sector to erase
-240006b0:	693b      	ldr	r3, [r7, #16]
-240006b2:	330c      	adds	r3, #12
-240006b4:	681a      	ldr	r2, [r3, #0]
-240006b6:	69bb      	ldr	r3, [r7, #24]
-240006b8:	021b      	lsls	r3, r3, #8
-240006ba:	f403 63e0 	and.w	r3, r3, #1792	@ 0x700
-240006be:	6939      	ldr	r1, [r7, #16]
-240006c0:	310c      	adds	r1, #12
-240006c2:	4313      	orrs	r3, r2
-240006c4:	600b      	str	r3, [r1, #0]
+240006c0:	693b      	ldr	r3, [r7, #16]
+240006c2:	330c      	adds	r3, #12
+240006c4:	681a      	ldr	r2, [r3, #0]
+240006c6:	69bb      	ldr	r3, [r7, #24]
+240006c8:	021b      	lsls	r3, r3, #8
+240006ca:	f403 63e0 	and.w	r3, r3, #1792	@ 0x700
+240006ce:	6939      	ldr	r1, [r7, #16]
+240006d0:	310c      	adds	r1, #12
+240006d2:	4313      	orrs	r3, r2
+240006d4:	600b      	str	r3, [r1, #0]
     MG_REG(bank + FLASH_CR) |= MG_BIT(2);            // Sector erase bit
-240006c6:	693b      	ldr	r3, [r7, #16]
-240006c8:	330c      	adds	r3, #12
-240006ca:	681b      	ldr	r3, [r3, #0]
-240006cc:	693a      	ldr	r2, [r7, #16]
-240006ce:	320c      	adds	r2, #12
-240006d0:	f043 0304 	orr.w	r3, r3, #4
-240006d4:	6013      	str	r3, [r2, #0]
-    MG_REG(bank + FLASH_CR) |= MG_BIT(7);            // Start erasing
 240006d6:	693b      	ldr	r3, [r7, #16]
 240006d8:	330c      	adds	r3, #12
 240006da:	681b      	ldr	r3, [r3, #0]
 240006dc:	693a      	ldr	r2, [r7, #16]
 240006de:	320c      	adds	r2, #12
-240006e0:	f043 0380 	orr.w	r3, r3, #128	@ 0x80
+240006e0:	f043 0304 	orr.w	r3, r3, #4
 240006e4:	6013      	str	r3, [r2, #0]
+    MG_REG(bank + FLASH_CR) |= MG_BIT(7);            // Start erasing
+240006e6:	693b      	ldr	r3, [r7, #16]
+240006e8:	330c      	adds	r3, #12
+240006ea:	681b      	ldr	r3, [r3, #0]
+240006ec:	693a      	ldr	r2, [r7, #16]
+240006ee:	320c      	adds	r2, #12
+240006f0:	f043 0380 	orr.w	r3, r3, #128	@ 0x80
+240006f4:	6013      	str	r3, [r2, #0]
     ok = !flash_is_err(bank);
-240006e6:	6938      	ldr	r0, [r7, #16]
-240006e8:	f7ff ff2a 	bl	24000540 <flash_is_err>
-240006ec:	4603      	mov	r3, r0
-240006ee:	2b00      	cmp	r3, #0
-240006f0:	bf14      	ite	ne
-240006f2:	2301      	movne	r3, #1
-240006f4:	2300      	moveq	r3, #0
-240006f6:	b2db      	uxtb	r3, r3
-240006f8:	f083 0301 	eor.w	r3, r3, #1
-240006fc:	b2db      	uxtb	r3, r3
-240006fe:	77fb      	strb	r3, [r7, #31]
-24000700:	7ffb      	ldrb	r3, [r7, #31]
-24000702:	f003 0301 	and.w	r3, r3, #1
-24000706:	77fb      	strb	r3, [r7, #31]
+240006f6:	6938      	ldr	r0, [r7, #16]
+240006f8:	f7ff ff2a 	bl	24000550 <flash_is_err>
+240006fc:	4603      	mov	r3, r0
+240006fe:	2b00      	cmp	r3, #0
+24000700:	bf14      	ite	ne
+24000702:	2301      	movne	r3, #1
+24000704:	2300      	moveq	r3, #0
+24000706:	b2db      	uxtb	r3, r3
+24000708:	f083 0301 	eor.w	r3, r3, #1
+2400070c:	b2db      	uxtb	r3, r3
+2400070e:	77fb      	strb	r3, [r7, #31]
+24000710:	7ffb      	ldrb	r3, [r7, #31]
+24000712:	f003 0301 	and.w	r3, r3, #1
+24000716:	77fb      	strb	r3, [r7, #31]
     MG_DEBUG(("Erase sector %lu @ %p %s. CR %#lx SR %#lx", sector, addr,
-24000708:	4b14      	ldr	r3, [pc, #80]	@ (2400075c <mg_stm32h7_erase+0x130>)
-2400070a:	681b      	ldr	r3, [r3, #0]
-2400070c:	2b02      	cmp	r3, #2
-2400070e:	dd1a      	ble.n	24000746 <mg_stm32h7_erase+0x11a>
-24000710:	4b13      	ldr	r3, [pc, #76]	@ (24000760 <mg_stm32h7_erase+0x134>)
-24000712:	f641 3248 	movw	r2, #6984	@ 0x1b48
-24000716:	4913      	ldr	r1, [pc, #76]	@ (24000764 <mg_stm32h7_erase+0x138>)
-24000718:	2003      	movs	r0, #3
-2400071a:	f000 fa15 	bl	24000b48 <__mg_log_prefix_veneer>
-2400071e:	7ffb      	ldrb	r3, [r7, #31]
-24000720:	2b00      	cmp	r3, #0
-24000722:	d001      	beq.n	24000728 <mg_stm32h7_erase+0xfc>
-24000724:	4912      	ldr	r1, [pc, #72]	@ (24000770 <mg_stm32h7_erase+0x144>)
-24000726:	e000      	b.n	2400072a <mg_stm32h7_erase+0xfe>
-24000728:	4912      	ldr	r1, [pc, #72]	@ (24000774 <mg_stm32h7_erase+0x148>)
-2400072a:	693b      	ldr	r3, [r7, #16]
-2400072c:	330c      	adds	r3, #12
-2400072e:	681b      	ldr	r3, [r3, #0]
-24000730:	693a      	ldr	r2, [r7, #16]
-24000732:	3210      	adds	r2, #16
-24000734:	6812      	ldr	r2, [r2, #0]
-24000736:	9201      	str	r2, [sp, #4]
-24000738:	9300      	str	r3, [sp, #0]
-2400073a:	460b      	mov	r3, r1
-2400073c:	687a      	ldr	r2, [r7, #4]
-2400073e:	69b9      	ldr	r1, [r7, #24]
-24000740:	480d      	ldr	r0, [pc, #52]	@ (24000778 <mg_stm32h7_erase+0x14c>)
-24000742:	f000 fa09 	bl	24000b58 <__mg_log_veneer>
+24000718:	4b14      	ldr	r3, [pc, #80]	@ (2400076c <mg_stm32h7_erase+0x130>)
+2400071a:	681b      	ldr	r3, [r3, #0]
+2400071c:	2b02      	cmp	r3, #2
+2400071e:	dd1a      	ble.n	24000756 <mg_stm32h7_erase+0x11a>
+24000720:	4b13      	ldr	r3, [pc, #76]	@ (24000770 <mg_stm32h7_erase+0x134>)
+24000722:	f641 3248 	movw	r2, #6984	@ 0x1b48
+24000726:	4913      	ldr	r1, [pc, #76]	@ (24000774 <mg_stm32h7_erase+0x138>)
+24000728:	2003      	movs	r0, #3
+2400072a:	f000 fa15 	bl	24000b58 <__mg_log_prefix_veneer>
+2400072e:	7ffb      	ldrb	r3, [r7, #31]
+24000730:	2b00      	cmp	r3, #0
+24000732:	d001      	beq.n	24000738 <mg_stm32h7_erase+0xfc>
+24000734:	4912      	ldr	r1, [pc, #72]	@ (24000780 <mg_stm32h7_erase+0x144>)
+24000736:	e000      	b.n	2400073a <mg_stm32h7_erase+0xfe>
+24000738:	4912      	ldr	r1, [pc, #72]	@ (24000784 <mg_stm32h7_erase+0x148>)
+2400073a:	693b      	ldr	r3, [r7, #16]
+2400073c:	330c      	adds	r3, #12
+2400073e:	681b      	ldr	r3, [r3, #0]
+24000740:	693a      	ldr	r2, [r7, #16]
+24000742:	3210      	adds	r2, #16
+24000744:	6812      	ldr	r2, [r2, #0]
+24000746:	9201      	str	r2, [sp, #4]
+24000748:	9300      	str	r3, [sp, #0]
+2400074a:	460b      	mov	r3, r1
+2400074c:	687a      	ldr	r2, [r7, #4]
+2400074e:	69b9      	ldr	r1, [r7, #24]
+24000750:	480d      	ldr	r0, [pc, #52]	@ (24000788 <mg_stm32h7_erase+0x14c>)
+24000752:	f000 fa09 	bl	24000b68 <__mg_log_veneer>
     MG_REG(bank + FLASH_CR) = saved_cr;  // Restore CR
-24000746:	693b      	ldr	r3, [r7, #16]
-24000748:	330c      	adds	r3, #12
-2400074a:	461a      	mov	r2, r3
-2400074c:	68fb      	ldr	r3, [r7, #12]
-2400074e:	6013      	str	r3, [r2, #0]
+24000756:	693b      	ldr	r3, [r7, #16]
+24000758:	330c      	adds	r3, #12
+2400075a:	461a      	mov	r2, r3
+2400075c:	68fb      	ldr	r3, [r7, #12]
+2400075e:	6013      	str	r3, [r2, #0]
   return ok;
-24000750:	7ffb      	ldrb	r3, [r7, #31]
+24000760:	7ffb      	ldrb	r3, [r7, #31]
 }
-24000752:	4618      	mov	r0, r3
-24000754:	3720      	adds	r7, #32
-24000756:	46bd      	mov	sp, r7
-24000758:	bd80      	pop	{r7, pc}
-2400075a:	bf00      	nop
-2400075c:	24000248 	.word	0x24000248
-24000760:	08019854 	.word	0x08019854
-24000764:	080175cc 	.word	0x080175cc
-24000768:	08018b4c 	.word	0x08018b4c
-2400076c:	24000250 	.word	0x24000250
-24000770:	080177e0 	.word	0x080177e0
-24000774:	080177e4 	.word	0x080177e4
-24000778:	08018b6c 	.word	0x08018b6c
+24000762:	4618      	mov	r0, r3
+24000764:	3720      	adds	r7, #32
+24000766:	46bd      	mov	sp, r7
+24000768:	bd80      	pop	{r7, pc}
+2400076a:	bf00      	nop
+2400076c:	24000248 	.word	0x24000248
+24000770:	08019854 	.word	0x08019854
+24000774:	080175cc 	.word	0x080175cc
+24000778:	08018b4c 	.word	0x08018b4c
+2400077c:	24000250 	.word	0x24000250
+24000780:	080177e0 	.word	0x080177e0
+24000784:	080177e4 	.word	0x080177e4
+24000788:	08018b6c 	.word	0x08018b6c
 
-2400077c <mg_stm32h7_swap>:
+2400078c <mg_stm32h7_swap>:
 MG_IRAM static bool mg_stm32h7_swap(void) {
-2400077c:	b580      	push	{r7, lr}
-2400077e:	b082      	sub	sp, #8
-24000780:	af00      	add	r7, sp, #0
+2400078c:	b580      	push	{r7, lr}
+2400078e:	b082      	sub	sp, #8
+24000790:	af00      	add	r7, sp, #0
   if (!is_dualbank()) return true;
-24000782:	f7ff fe63 	bl	2400044c <is_dualbank>
-24000786:	4603      	mov	r3, r0
-24000788:	f083 0301 	eor.w	r3, r3, #1
-2400078c:	b2db      	uxtb	r3, r3
-2400078e:	2b00      	cmp	r3, #0
-24000790:	d001      	beq.n	24000796 <mg_stm32h7_swap+0x1a>
-24000792:	2301      	movs	r3, #1
-24000794:	e02e      	b.n	240007f4 <mg_stm32h7_swap+0x78>
+24000792:	f7ff fe63 	bl	2400045c <is_dualbank>
+24000796:	4603      	mov	r3, r0
+24000798:	f083 0301 	eor.w	r3, r3, #1
+2400079c:	b2db      	uxtb	r3, r3
+2400079e:	2b00      	cmp	r3, #0
+240007a0:	d001      	beq.n	240007a6 <mg_stm32h7_swap+0x1a>
+240007a2:	2301      	movs	r3, #1
+240007a4:	e02e      	b.n	24000804 <mg_stm32h7_swap+0x78>
   uint32_t bank = FLASH_BASE1;
-24000796:	4b19      	ldr	r3, [pc, #100]	@ (240007fc <mg_stm32h7_swap+0x80>)
-24000798:	607b      	str	r3, [r7, #4]
+240007a6:	4b19      	ldr	r3, [pc, #100]	@ (2400080c <mg_stm32h7_swap+0x80>)
+240007a8:	607b      	str	r3, [r7, #4]
   uint32_t desired = flash_bank_is_swapped(bank) ? 0 : MG_BIT(31);
-2400079a:	6878      	ldr	r0, [r7, #4]
-2400079c:	f7ff ff0c 	bl	240005b8 <flash_bank_is_swapped>
-240007a0:	4603      	mov	r3, r0
-240007a2:	2b00      	cmp	r3, #0
-240007a4:	d001      	beq.n	240007aa <mg_stm32h7_swap+0x2e>
-240007a6:	2300      	movs	r3, #0
-240007a8:	e001      	b.n	240007ae <mg_stm32h7_swap+0x32>
-240007aa:	f04f 4300 	mov.w	r3, #2147483648	@ 0x80000000
-240007ae:	603b      	str	r3, [r7, #0]
+240007aa:	6878      	ldr	r0, [r7, #4]
+240007ac:	f7ff ff0c 	bl	240005c8 <flash_bank_is_swapped>
+240007b0:	4603      	mov	r3, r0
+240007b2:	2b00      	cmp	r3, #0
+240007b4:	d001      	beq.n	240007ba <mg_stm32h7_swap+0x2e>
+240007b6:	2300      	movs	r3, #0
+240007b8:	e001      	b.n	240007be <mg_stm32h7_swap+0x32>
+240007ba:	f04f 4300 	mov.w	r3, #2147483648	@ 0x80000000
+240007be:	603b      	str	r3, [r7, #0]
   flash_unlock();
-240007b0:	f7ff fe5e 	bl	24000470 <flash_unlock>
+240007c0:	f7ff fe5e 	bl	24000480 <flash_unlock>
   flash_clear_err(bank);
-240007b4:	6878      	ldr	r0, [r7, #4]
-240007b6:	f7ff feec 	bl	24000592 <flash_clear_err>
+240007c4:	6878      	ldr	r0, [r7, #4]
+240007c6:	f7ff feec 	bl	240005a2 <flash_clear_err>
   MG_SET_BITS(MG_REG(bank + FLASH_OPTSR_PRG), MG_BIT(31), desired);
-240007ba:	687b      	ldr	r3, [r7, #4]
-240007bc:	3320      	adds	r3, #32
-240007be:	681b      	ldr	r3, [r3, #0]
-240007c0:	f023 4200 	bic.w	r2, r3, #2147483648	@ 0x80000000
-240007c4:	687b      	ldr	r3, [r7, #4]
-240007c6:	3320      	adds	r3, #32
-240007c8:	4619      	mov	r1, r3
-240007ca:	683b      	ldr	r3, [r7, #0]
-240007cc:	4313      	orrs	r3, r2
-240007ce:	600b      	str	r3, [r1, #0]
+240007ca:	687b      	ldr	r3, [r7, #4]
+240007cc:	3320      	adds	r3, #32
+240007ce:	681b      	ldr	r3, [r3, #0]
+240007d0:	f023 4200 	bic.w	r2, r3, #2147483648	@ 0x80000000
+240007d4:	687b      	ldr	r3, [r7, #4]
+240007d6:	3320      	adds	r3, #32
+240007d8:	4619      	mov	r1, r3
+240007da:	683b      	ldr	r3, [r7, #0]
+240007dc:	4313      	orrs	r3, r2
+240007de:	600b      	str	r3, [r1, #0]
   MG_REG(bank + FLASH_OPTCR) |= MG_BIT(1);  // OPTSTART
-240007d0:	687b      	ldr	r3, [r7, #4]
-240007d2:	3318      	adds	r3, #24
-240007d4:	681b      	ldr	r3, [r3, #0]
-240007d6:	687a      	ldr	r2, [r7, #4]
-240007d8:	3218      	adds	r2, #24
-240007da:	f043 0302 	orr.w	r3, r3, #2
-240007de:	6013      	str	r3, [r2, #0]
+240007e0:	687b      	ldr	r3, [r7, #4]
+240007e2:	3318      	adds	r3, #24
+240007e4:	681b      	ldr	r3, [r3, #0]
+240007e6:	687a      	ldr	r2, [r7, #4]
+240007e8:	3218      	adds	r2, #24
+240007ea:	f043 0302 	orr.w	r3, r3, #2
+240007ee:	6013      	str	r3, [r2, #0]
   while ((MG_REG(bank + FLASH_OPTSR_CUR) & MG_BIT(31)) != desired) (void) 0;
-240007e0:	bf00      	nop
-240007e2:	687b      	ldr	r3, [r7, #4]
-240007e4:	331c      	adds	r3, #28
-240007e6:	681b      	ldr	r3, [r3, #0]
-240007e8:	f003 4300 	and.w	r3, r3, #2147483648	@ 0x80000000
-240007ec:	683a      	ldr	r2, [r7, #0]
-240007ee:	429a      	cmp	r2, r3
-240007f0:	d1f7      	bne.n	240007e2 <mg_stm32h7_swap+0x66>
+240007f0:	bf00      	nop
+240007f2:	687b      	ldr	r3, [r7, #4]
+240007f4:	331c      	adds	r3, #28
+240007f6:	681b      	ldr	r3, [r3, #0]
+240007f8:	f003 4300 	and.w	r3, r3, #2147483648	@ 0x80000000
+240007fc:	683a      	ldr	r2, [r7, #0]
+240007fe:	429a      	cmp	r2, r3
+24000800:	d1f7      	bne.n	240007f2 <mg_stm32h7_swap+0x66>
   return true;
-240007f2:	2301      	movs	r3, #1
+24000802:	2301      	movs	r3, #1
 }
-240007f4:	4618      	mov	r0, r3
-240007f6:	3708      	adds	r7, #8
-240007f8:	46bd      	mov	sp, r7
-240007fa:	bd80      	pop	{r7, pc}
-240007fc:	52002000 	.word	0x52002000
+24000804:	4618      	mov	r0, r3
+24000806:	3708      	adds	r7, #8
+24000808:	46bd      	mov	sp, r7
+2400080a:	bd80      	pop	{r7, pc}
+2400080c:	52002000 	.word	0x52002000
 
-24000800 <mg_stm32h7_write>:
+24000810 <mg_stm32h7_write>:
 MG_IRAM static bool mg_stm32h7_write(void *addr, const void *buf, size_t len) {
-24000800:	b580      	push	{r7, lr}
-24000802:	b08c      	sub	sp, #48	@ 0x30
-24000804:	af02      	add	r7, sp, #8
-24000806:	60f8      	str	r0, [r7, #12]
-24000808:	60b9      	str	r1, [r7, #8]
-2400080a:	607a      	str	r2, [r7, #4]
+24000810:	b580      	push	{r7, lr}
+24000812:	b08c      	sub	sp, #48	@ 0x30
+24000814:	af02      	add	r7, sp, #8
+24000816:	60f8      	str	r0, [r7, #12]
+24000818:	60b9      	str	r1, [r7, #8]
+2400081a:	607a      	str	r2, [r7, #4]
   if ((len % s_mg_flash_stm32h7.align) != 0) {
-2400080c:	4b4f      	ldr	r3, [pc, #316]	@ (2400094c <mg_stm32h7_write+0x14c>)
-2400080e:	68da      	ldr	r2, [r3, #12]
-24000810:	687b      	ldr	r3, [r7, #4]
-24000812:	fbb3 f1f2 	udiv	r1, r3, r2
-24000816:	fb01 f202 	mul.w	r2, r1, r2
-2400081a:	1a9b      	subs	r3, r3, r2
-2400081c:	2b00      	cmp	r3, #0
-2400081e:	d013      	beq.n	24000848 <mg_stm32h7_write+0x48>
+2400081c:	4b4f      	ldr	r3, [pc, #316]	@ (2400095c <mg_stm32h7_write+0x14c>)
+2400081e:	68da      	ldr	r2, [r3, #12]
+24000820:	687b      	ldr	r3, [r7, #4]
+24000822:	fbb3 f1f2 	udiv	r1, r3, r2
+24000826:	fb01 f202 	mul.w	r2, r1, r2
+2400082a:	1a9b      	subs	r3, r3, r2
+2400082c:	2b00      	cmp	r3, #0
+2400082e:	d013      	beq.n	24000858 <mg_stm32h7_write+0x48>
     MG_ERROR(("%lu is not aligned to %lu", len, s_mg_flash_stm32h7.align));
-24000820:	4b4b      	ldr	r3, [pc, #300]	@ (24000950 <mg_stm32h7_write+0x150>)
-24000822:	681b      	ldr	r3, [r3, #0]
-24000824:	2b00      	cmp	r3, #0
-24000826:	dd0d      	ble.n	24000844 <mg_stm32h7_write+0x44>
-24000828:	4b4a      	ldr	r3, [pc, #296]	@ (24000954 <mg_stm32h7_write+0x154>)
-2400082a:	f641 3262 	movw	r2, #7010	@ 0x1b62
-2400082e:	494a      	ldr	r1, [pc, #296]	@ (24000958 <mg_stm32h7_write+0x158>)
-24000830:	2001      	movs	r0, #1
-24000832:	f000 f989 	bl	24000b48 <__mg_log_prefix_veneer>
-24000836:	4b45      	ldr	r3, [pc, #276]	@ (2400094c <mg_stm32h7_write+0x14c>)
-24000838:	68db      	ldr	r3, [r3, #12]
-2400083a:	461a      	mov	r2, r3
-2400083c:	6879      	ldr	r1, [r7, #4]
-2400083e:	4847      	ldr	r0, [pc, #284]	@ (2400095c <mg_stm32h7_write+0x15c>)
-24000840:	f000 f98a 	bl	24000b58 <__mg_log_veneer>
+24000830:	4b4b      	ldr	r3, [pc, #300]	@ (24000960 <mg_stm32h7_write+0x150>)
+24000832:	681b      	ldr	r3, [r3, #0]
+24000834:	2b00      	cmp	r3, #0
+24000836:	dd0d      	ble.n	24000854 <mg_stm32h7_write+0x44>
+24000838:	4b4a      	ldr	r3, [pc, #296]	@ (24000964 <mg_stm32h7_write+0x154>)
+2400083a:	f641 3262 	movw	r2, #7010	@ 0x1b62
+2400083e:	494a      	ldr	r1, [pc, #296]	@ (24000968 <mg_stm32h7_write+0x158>)
+24000840:	2001      	movs	r0, #1
+24000842:	f000 f989 	bl	24000b58 <__mg_log_prefix_veneer>
+24000846:	4b45      	ldr	r3, [pc, #276]	@ (2400095c <mg_stm32h7_write+0x14c>)
+24000848:	68db      	ldr	r3, [r3, #12]
+2400084a:	461a      	mov	r2, r3
+2400084c:	6879      	ldr	r1, [r7, #4]
+2400084e:	4847      	ldr	r0, [pc, #284]	@ (2400096c <mg_stm32h7_write+0x15c>)
+24000850:	f000 f98a 	bl	24000b68 <__mg_log_veneer>
     return false;
-24000844:	2300      	movs	r3, #0
-24000846:	e07d      	b.n	24000944 <mg_stm32h7_write+0x144>
+24000854:	2300      	movs	r3, #0
+24000856:	e07d      	b.n	24000954 <mg_stm32h7_write+0x144>
   uint32_t bank = flash_bank(addr);
-24000848:	68f8      	ldr	r0, [r7, #12]
-2400084a:	f7ff fec9 	bl	240005e0 <flash_bank>
-2400084e:	61b8      	str	r0, [r7, #24]
+24000858:	68f8      	ldr	r0, [r7, #12]
+2400085a:	f7ff fec9 	bl	240005f0 <flash_bank>
+2400085e:	61b8      	str	r0, [r7, #24]
   uint32_t *dst = (uint32_t *) addr;
-24000850:	68fb      	ldr	r3, [r7, #12]
-24000852:	627b      	str	r3, [r7, #36]	@ 0x24
+24000860:	68fb      	ldr	r3, [r7, #12]
+24000862:	627b      	str	r3, [r7, #36]	@ 0x24
   uint32_t *src = (uint32_t *) buf;
-24000854:	68bb      	ldr	r3, [r7, #8]
-24000856:	623b      	str	r3, [r7, #32]
+24000864:	68bb      	ldr	r3, [r7, #8]
+24000866:	623b      	str	r3, [r7, #32]
   uint32_t *end = (uint32_t *) ((char *) buf + len);
-24000858:	68ba      	ldr	r2, [r7, #8]
-2400085a:	687b      	ldr	r3, [r7, #4]
-2400085c:	4413      	add	r3, r2
-2400085e:	617b      	str	r3, [r7, #20]
+24000868:	68ba      	ldr	r2, [r7, #8]
+2400086a:	687b      	ldr	r3, [r7, #4]
+2400086c:	4413      	add	r3, r2
+2400086e:	617b      	str	r3, [r7, #20]
   bool ok = true;
-24000860:	2301      	movs	r3, #1
-24000862:	77fb      	strb	r3, [r7, #31]
+24000870:	2301      	movs	r3, #1
+24000872:	77fb      	strb	r3, [r7, #31]
   MG_ARM_DISABLE_IRQ();
-24000864:	b672      	cpsid	i
+24000874:	b672      	cpsid	i
   flash_unlock();
-24000866:	f7ff fe03 	bl	24000470 <flash_unlock>
+24000876:	f7ff fe03 	bl	24000480 <flash_unlock>
   flash_clear_err(bank);
-2400086a:	69b8      	ldr	r0, [r7, #24]
-2400086c:	f7ff fe91 	bl	24000592 <flash_clear_err>
+2400087a:	69b8      	ldr	r0, [r7, #24]
+2400087c:	f7ff fe91 	bl	240005a2 <flash_clear_err>
   MG_REG(bank + FLASH_CR) = MG_BIT(1);   // Set programming flag
-24000870:	69bb      	ldr	r3, [r7, #24]
-24000872:	330c      	adds	r3, #12
-24000874:	461a      	mov	r2, r3
-24000876:	2302      	movs	r3, #2
-24000878:	6013      	str	r3, [r2, #0]
-  MG_REG(bank + FLASH_CR) |= MG_BIT(5);  // 32-bit write parallelism
-2400087a:	69bb      	ldr	r3, [r7, #24]
-2400087c:	330c      	adds	r3, #12
-2400087e:	681b      	ldr	r3, [r3, #0]
-24000880:	69ba      	ldr	r2, [r7, #24]
-24000882:	320c      	adds	r2, #12
-24000884:	f043 0320 	orr.w	r3, r3, #32
+24000880:	69bb      	ldr	r3, [r7, #24]
+24000882:	330c      	adds	r3, #12
+24000884:	461a      	mov	r2, r3
+24000886:	2302      	movs	r3, #2
 24000888:	6013      	str	r3, [r2, #0]
+  MG_REG(bank + FLASH_CR) |= MG_BIT(5);  // 32-bit write parallelism
+2400088a:	69bb      	ldr	r3, [r7, #24]
+2400088c:	330c      	adds	r3, #12
+2400088e:	681b      	ldr	r3, [r3, #0]
+24000890:	69ba      	ldr	r2, [r7, #24]
+24000892:	320c      	adds	r2, #12
+24000894:	f043 0320 	orr.w	r3, r3, #32
+24000898:	6013      	str	r3, [r2, #0]
   while (ok && src < end) {
-2400088a:	e024      	b.n	240008d6 <mg_stm32h7_write+0xd6>
+2400089a:	e024      	b.n	240008e6 <mg_stm32h7_write+0xd6>
     if (flash_page_start(dst) && mg_stm32h7_erase(dst) == false) {
-2400088c:	6a78      	ldr	r0, [r7, #36]	@ 0x24
-2400088e:	f7ff fe25 	bl	240004dc <flash_page_start>
-24000892:	4603      	mov	r3, r0
-24000894:	2b00      	cmp	r3, #0
-24000896:	d00b      	beq.n	240008b0 <mg_stm32h7_write+0xb0>
-24000898:	6a78      	ldr	r0, [r7, #36]	@ 0x24
-2400089a:	f7ff fec7 	bl	2400062c <mg_stm32h7_erase>
-2400089e:	4603      	mov	r3, r0
-240008a0:	f083 0301 	eor.w	r3, r3, #1
-240008a4:	b2db      	uxtb	r3, r3
-240008a6:	2b00      	cmp	r3, #0
-240008a8:	d002      	beq.n	240008b0 <mg_stm32h7_write+0xb0>
+2400089c:	6a78      	ldr	r0, [r7, #36]	@ 0x24
+2400089e:	f7ff fe25 	bl	240004ec <flash_page_start>
+240008a2:	4603      	mov	r3, r0
+240008a4:	2b00      	cmp	r3, #0
+240008a6:	d00b      	beq.n	240008c0 <mg_stm32h7_write+0xb0>
+240008a8:	6a78      	ldr	r0, [r7, #36]	@ 0x24
+240008aa:	f7ff fec7 	bl	2400063c <mg_stm32h7_erase>
+240008ae:	4603      	mov	r3, r0
+240008b0:	f083 0301 	eor.w	r3, r3, #1
+240008b4:	b2db      	uxtb	r3, r3
+240008b6:	2b00      	cmp	r3, #0
+240008b8:	d002      	beq.n	240008c0 <mg_stm32h7_write+0xb0>
       ok = false;
-240008aa:	2300      	movs	r3, #0
-240008ac:	77fb      	strb	r3, [r7, #31]
+240008ba:	2300      	movs	r3, #0
+240008bc:	77fb      	strb	r3, [r7, #31]
       break;
-240008ae:	e019      	b.n	240008e4 <mg_stm32h7_write+0xe4>
+240008be:	e019      	b.n	240008f4 <mg_stm32h7_write+0xe4>
     *(volatile uint32_t *) dst++ = *src++;
-240008b0:	6a3a      	ldr	r2, [r7, #32]
-240008b2:	1d13      	adds	r3, r2, #4
-240008b4:	623b      	str	r3, [r7, #32]
-240008b6:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
-240008b8:	1d19      	adds	r1, r3, #4
-240008ba:	6279      	str	r1, [r7, #36]	@ 0x24
-240008bc:	6812      	ldr	r2, [r2, #0]
-240008be:	601a      	str	r2, [r3, #0]
+240008c0:	6a3a      	ldr	r2, [r7, #32]
+240008c2:	1d13      	adds	r3, r2, #4
+240008c4:	623b      	str	r3, [r7, #32]
+240008c6:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
+240008c8:	1d19      	adds	r1, r3, #4
+240008ca:	6279      	str	r1, [r7, #36]	@ 0x24
+240008cc:	6812      	ldr	r2, [r2, #0]
+240008ce:	601a      	str	r2, [r3, #0]
     flash_wait(bank);
-240008c0:	69b8      	ldr	r0, [r7, #24]
-240008c2:	f7ff fe53 	bl	2400056c <flash_wait>
+240008d0:	69b8      	ldr	r0, [r7, #24]
+240008d2:	f7ff fe53 	bl	2400057c <flash_wait>
     if (flash_is_err(bank)) ok = false;
-240008c6:	69b8      	ldr	r0, [r7, #24]
-240008c8:	f7ff fe3a 	bl	24000540 <flash_is_err>
-240008cc:	4603      	mov	r3, r0
-240008ce:	2b00      	cmp	r3, #0
-240008d0:	d001      	beq.n	240008d6 <mg_stm32h7_write+0xd6>
-240008d2:	2300      	movs	r3, #0
-240008d4:	77fb      	strb	r3, [r7, #31]
+240008d6:	69b8      	ldr	r0, [r7, #24]
+240008d8:	f7ff fe3a 	bl	24000550 <flash_is_err>
+240008dc:	4603      	mov	r3, r0
+240008de:	2b00      	cmp	r3, #0
+240008e0:	d001      	beq.n	240008e6 <mg_stm32h7_write+0xd6>
+240008e2:	2300      	movs	r3, #0
+240008e4:	77fb      	strb	r3, [r7, #31]
   while (ok && src < end) {
-240008d6:	7ffb      	ldrb	r3, [r7, #31]
-240008d8:	2b00      	cmp	r3, #0
-240008da:	d003      	beq.n	240008e4 <mg_stm32h7_write+0xe4>
-240008dc:	6a3a      	ldr	r2, [r7, #32]
-240008de:	697b      	ldr	r3, [r7, #20]
-240008e0:	429a      	cmp	r2, r3
-240008e2:	d3d3      	bcc.n	2400088c <mg_stm32h7_write+0x8c>
+240008e6:	7ffb      	ldrb	r3, [r7, #31]
+240008e8:	2b00      	cmp	r3, #0
+240008ea:	d003      	beq.n	240008f4 <mg_stm32h7_write+0xe4>
+240008ec:	6a3a      	ldr	r2, [r7, #32]
+240008ee:	697b      	ldr	r3, [r7, #20]
+240008f0:	429a      	cmp	r2, r3
+240008f2:	d3d3      	bcc.n	2400089c <mg_stm32h7_write+0x8c>
   if (!s_flash_irq_disabled) MG_ARM_ENABLE_IRQ();
-240008e4:	4b1e      	ldr	r3, [pc, #120]	@ (24000960 <mg_stm32h7_write+0x160>)
-240008e6:	781b      	ldrb	r3, [r3, #0]
-240008e8:	f083 0301 	eor.w	r3, r3, #1
-240008ec:	b2db      	uxtb	r3, r3
-240008ee:	2b00      	cmp	r3, #0
-240008f0:	d000      	beq.n	240008f4 <mg_stm32h7_write+0xf4>
-240008f2:	b662      	cpsie	i
+240008f4:	4b1e      	ldr	r3, [pc, #120]	@ (24000970 <mg_stm32h7_write+0x160>)
+240008f6:	781b      	ldrb	r3, [r3, #0]
+240008f8:	f083 0301 	eor.w	r3, r3, #1
+240008fc:	b2db      	uxtb	r3, r3
+240008fe:	2b00      	cmp	r3, #0
+24000900:	d000      	beq.n	24000904 <mg_stm32h7_write+0xf4>
+24000902:	b662      	cpsie	i
   MG_DEBUG(("Flash write %lu bytes @ %p: %s. CR %#lx SR %#lx", len, dst,
-240008f4:	4b16      	ldr	r3, [pc, #88]	@ (24000950 <mg_stm32h7_write+0x150>)
-240008f6:	681b      	ldr	r3, [r3, #0]
-240008f8:	2b02      	cmp	r3, #2
-240008fa:	dd1a      	ble.n	24000932 <mg_stm32h7_write+0x132>
-240008fc:	4b15      	ldr	r3, [pc, #84]	@ (24000954 <mg_stm32h7_write+0x154>)
-240008fe:	f641 3279 	movw	r2, #7033	@ 0x1b79
-24000902:	4915      	ldr	r1, [pc, #84]	@ (24000958 <mg_stm32h7_write+0x158>)
-24000904:	2003      	movs	r0, #3
-24000906:	f000 f91f 	bl	24000b48 <__mg_log_prefix_veneer>
-2400090a:	7ffb      	ldrb	r3, [r7, #31]
-2400090c:	2b00      	cmp	r3, #0
-2400090e:	d001      	beq.n	24000914 <mg_stm32h7_write+0x114>
-24000910:	4914      	ldr	r1, [pc, #80]	@ (24000964 <mg_stm32h7_write+0x164>)
-24000912:	e000      	b.n	24000916 <mg_stm32h7_write+0x116>
-24000914:	4914      	ldr	r1, [pc, #80]	@ (24000968 <mg_stm32h7_write+0x168>)
-24000916:	69bb      	ldr	r3, [r7, #24]
-24000918:	330c      	adds	r3, #12
-2400091a:	681b      	ldr	r3, [r3, #0]
-2400091c:	69ba      	ldr	r2, [r7, #24]
-2400091e:	3210      	adds	r2, #16
-24000920:	6812      	ldr	r2, [r2, #0]
-24000922:	9201      	str	r2, [sp, #4]
-24000924:	9300      	str	r3, [sp, #0]
-24000926:	460b      	mov	r3, r1
-24000928:	6a7a      	ldr	r2, [r7, #36]	@ 0x24
-2400092a:	6879      	ldr	r1, [r7, #4]
-2400092c:	480f      	ldr	r0, [pc, #60]	@ (2400096c <mg_stm32h7_write+0x16c>)
-2400092e:	f000 f913 	bl	24000b58 <__mg_log_veneer>
+24000904:	4b16      	ldr	r3, [pc, #88]	@ (24000960 <mg_stm32h7_write+0x150>)
+24000906:	681b      	ldr	r3, [r3, #0]
+24000908:	2b02      	cmp	r3, #2
+2400090a:	dd1a      	ble.n	24000942 <mg_stm32h7_write+0x132>
+2400090c:	4b15      	ldr	r3, [pc, #84]	@ (24000964 <mg_stm32h7_write+0x154>)
+2400090e:	f641 3279 	movw	r2, #7033	@ 0x1b79
+24000912:	4915      	ldr	r1, [pc, #84]	@ (24000968 <mg_stm32h7_write+0x158>)
+24000914:	2003      	movs	r0, #3
+24000916:	f000 f91f 	bl	24000b58 <__mg_log_prefix_veneer>
+2400091a:	7ffb      	ldrb	r3, [r7, #31]
+2400091c:	2b00      	cmp	r3, #0
+2400091e:	d001      	beq.n	24000924 <mg_stm32h7_write+0x114>
+24000920:	4914      	ldr	r1, [pc, #80]	@ (24000974 <mg_stm32h7_write+0x164>)
+24000922:	e000      	b.n	24000926 <mg_stm32h7_write+0x116>
+24000924:	4914      	ldr	r1, [pc, #80]	@ (24000978 <mg_stm32h7_write+0x168>)
+24000926:	69bb      	ldr	r3, [r7, #24]
+24000928:	330c      	adds	r3, #12
+2400092a:	681b      	ldr	r3, [r3, #0]
+2400092c:	69ba      	ldr	r2, [r7, #24]
+2400092e:	3210      	adds	r2, #16
+24000930:	6812      	ldr	r2, [r2, #0]
+24000932:	9201      	str	r2, [sp, #4]
+24000934:	9300      	str	r3, [sp, #0]
+24000936:	460b      	mov	r3, r1
+24000938:	6a7a      	ldr	r2, [r7, #36]	@ 0x24
+2400093a:	6879      	ldr	r1, [r7, #4]
+2400093c:	480f      	ldr	r0, [pc, #60]	@ (2400097c <mg_stm32h7_write+0x16c>)
+2400093e:	f000 f913 	bl	24000b68 <__mg_log_veneer>
   MG_REG(bank + FLASH_CR) &= ~MG_BIT(1);  // Clear programming flag
-24000932:	69bb      	ldr	r3, [r7, #24]
-24000934:	330c      	adds	r3, #12
-24000936:	681b      	ldr	r3, [r3, #0]
-24000938:	69ba      	ldr	r2, [r7, #24]
-2400093a:	320c      	adds	r2, #12
-2400093c:	f023 0302 	bic.w	r3, r3, #2
-24000940:	6013      	str	r3, [r2, #0]
+24000942:	69bb      	ldr	r3, [r7, #24]
+24000944:	330c      	adds	r3, #12
+24000946:	681b      	ldr	r3, [r3, #0]
+24000948:	69ba      	ldr	r2, [r7, #24]
+2400094a:	320c      	adds	r2, #12
+2400094c:	f023 0302 	bic.w	r3, r3, #2
+24000950:	6013      	str	r3, [r2, #0]
   return ok;
-24000942:	7ffb      	ldrb	r3, [r7, #31]
+24000952:	7ffb      	ldrb	r3, [r7, #31]
 }
-24000944:	4618      	mov	r0, r3
-24000946:	3728      	adds	r7, #40	@ 0x28
-24000948:	46bd      	mov	sp, r7
-2400094a:	bd80      	pop	{r7, pc}
-2400094c:	24000250 	.word	0x24000250
-24000950:	24000248 	.word	0x24000248
-24000954:	08019868 	.word	0x08019868
-24000958:	080175cc 	.word	0x080175cc
-2400095c:	08018b98 	.word	0x08018b98
-24000960:	24000e28 	.word	0x24000e28
-24000964:	080177e0 	.word	0x080177e0
-24000968:	080177e4 	.word	0x080177e4
-2400096c:	08018bb4 	.word	0x08018bb4
+24000954:	4618      	mov	r0, r3
+24000956:	3728      	adds	r7, #40	@ 0x28
+24000958:	46bd      	mov	sp, r7
+2400095a:	bd80      	pop	{r7, pc}
+2400095c:	24000250 	.word	0x24000250
+24000960:	24000248 	.word	0x24000248
+24000964:	08019868 	.word	0x08019868
+24000968:	080175cc 	.word	0x080175cc
+2400096c:	08018b98 	.word	0x08018b98
+24000970:	24000e38 	.word	0x24000e38
+24000974:	080177e0 	.word	0x080177e0
+24000978:	080177e4 	.word	0x080177e4
+2400097c:	08018bb4 	.word	0x08018bb4
 
-24000970 <single_bank_swap>:
+24000980 <single_bank_swap>:
 MG_IRAM static void single_bank_swap(char *p1, char *p2, size_t s, size_t ss) {
-24000970:	b580      	push	{r7, lr}
-24000972:	b086      	sub	sp, #24
-24000974:	af00      	add	r7, sp, #0
-24000976:	60f8      	str	r0, [r7, #12]
-24000978:	60b9      	str	r1, [r7, #8]
-2400097a:	607a      	str	r2, [r7, #4]
-2400097c:	603b      	str	r3, [r7, #0]
+24000980:	b580      	push	{r7, lr}
+24000982:	b086      	sub	sp, #24
+24000984:	af00      	add	r7, sp, #0
+24000986:	60f8      	str	r0, [r7, #12]
+24000988:	60b9      	str	r1, [r7, #8]
+2400098a:	607a      	str	r2, [r7, #4]
+2400098c:	603b      	str	r3, [r7, #0]
   for (size_t ofs = 0; ofs < s; ofs += ss) {
-2400097e:	2300      	movs	r3, #0
-24000980:	617b      	str	r3, [r7, #20]
-24000982:	e00d      	b.n	240009a0 <single_bank_swap+0x30>
+2400098e:	2300      	movs	r3, #0
+24000990:	617b      	str	r3, [r7, #20]
+24000992:	e00d      	b.n	240009b0 <single_bank_swap+0x30>
     mg_stm32h7_write(p1 + ofs, p2 + ofs, ss);
-24000984:	68fa      	ldr	r2, [r7, #12]
-24000986:	697b      	ldr	r3, [r7, #20]
-24000988:	18d0      	adds	r0, r2, r3
-2400098a:	68ba      	ldr	r2, [r7, #8]
-2400098c:	697b      	ldr	r3, [r7, #20]
-2400098e:	4413      	add	r3, r2
-24000990:	683a      	ldr	r2, [r7, #0]
-24000992:	4619      	mov	r1, r3
-24000994:	f7ff ff34 	bl	24000800 <mg_stm32h7_write>
+24000994:	68fa      	ldr	r2, [r7, #12]
+24000996:	697b      	ldr	r3, [r7, #20]
+24000998:	18d0      	adds	r0, r2, r3
+2400099a:	68ba      	ldr	r2, [r7, #8]
+2400099c:	697b      	ldr	r3, [r7, #20]
+2400099e:	4413      	add	r3, r2
+240009a0:	683a      	ldr	r2, [r7, #0]
+240009a2:	4619      	mov	r1, r3
+240009a4:	f7ff ff34 	bl	24000810 <mg_stm32h7_write>
   for (size_t ofs = 0; ofs < s; ofs += ss) {
-24000998:	697a      	ldr	r2, [r7, #20]
-2400099a:	683b      	ldr	r3, [r7, #0]
-2400099c:	4413      	add	r3, r2
-2400099e:	617b      	str	r3, [r7, #20]
-240009a0:	697a      	ldr	r2, [r7, #20]
-240009a2:	687b      	ldr	r3, [r7, #4]
-240009a4:	429a      	cmp	r2, r3
-240009a6:	d3ed      	bcc.n	24000984 <single_bank_swap+0x14>
+240009a8:	697a      	ldr	r2, [r7, #20]
+240009aa:	683b      	ldr	r3, [r7, #0]
+240009ac:	4413      	add	r3, r2
+240009ae:	617b      	str	r3, [r7, #20]
+240009b0:	697a      	ldr	r2, [r7, #20]
+240009b2:	687b      	ldr	r3, [r7, #4]
+240009b4:	429a      	cmp	r2, r3
+240009b6:	d3ed      	bcc.n	24000994 <single_bank_swap+0x14>
   *(volatile unsigned long *) 0xe000ed0c = 0x5fa0004;
-240009a8:	4b03      	ldr	r3, [pc, #12]	@ (240009b8 <single_bank_swap+0x48>)
-240009aa:	4a04      	ldr	r2, [pc, #16]	@ (240009bc <single_bank_swap+0x4c>)
-240009ac:	601a      	str	r2, [r3, #0]
+240009b8:	4b03      	ldr	r3, [pc, #12]	@ (240009c8 <single_bank_swap+0x48>)
+240009ba:	4a04      	ldr	r2, [pc, #16]	@ (240009cc <single_bank_swap+0x4c>)
+240009bc:	601a      	str	r2, [r3, #0]
 }
-240009ae:	bf00      	nop
-240009b0:	3718      	adds	r7, #24
-240009b2:	46bd      	mov	sp, r7
-240009b4:	bd80      	pop	{r7, pc}
-240009b6:	bf00      	nop
-240009b8:	e000ed0c 	.word	0xe000ed0c
-240009bc:	05fa0004 	.word	0x05fa0004
+240009be:	bf00      	nop
+240009c0:	3718      	adds	r7, #24
+240009c2:	46bd      	mov	sp, r7
+240009c4:	bd80      	pop	{r7, pc}
+240009c6:	bf00      	nop
+240009c8:	e000ed0c 	.word	0xe000ed0c
+240009cc:	05fa0004 	.word	0x05fa0004
 
-240009c0 <get_network_settings>:
+240009d0 <get_network_settings>:
 MG_IRAM void get_network_settings(network_settings *data) {
-240009c0:	b580      	push	{r7, lr}
-240009c2:	b084      	sub	sp, #16
-240009c4:	af00      	add	r7, sp, #0
-240009c6:	6078      	str	r0, [r7, #4]
+240009d0:	b580      	push	{r7, lr}
+240009d2:	b084      	sub	sp, #16
+240009d4:	af00      	add	r7, sp, #0
+240009d6:	6078      	str	r0, [r7, #4]
 	uint16_t numofwords = (sizeof(network_settings) / 4) + ((sizeof(network_settings) % 4) != 0);
-240009c8:	230d      	movs	r3, #13
-240009ca:	81fb      	strh	r3, [r7, #14]
+240009d8:	230d      	movs	r3, #13
+240009da:	81fb      	strh	r3, [r7, #14]
 	Flash_Read_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, numofwords);
-240009cc:	89fb      	ldrh	r3, [r7, #14]
-240009ce:	461a      	mov	r2, r3
-240009d0:	6879      	ldr	r1, [r7, #4]
-240009d2:	4803      	ldr	r0, [pc, #12]	@ (240009e0 <get_network_settings+0x20>)
-240009d4:	f7ff fce6 	bl	240003a4 <Flash_Read_Data>
+240009dc:	89fb      	ldrh	r3, [r7, #14]
+240009de:	461a      	mov	r2, r3
+240009e0:	6879      	ldr	r1, [r7, #4]
+240009e2:	4803      	ldr	r0, [pc, #12]	@ (240009f0 <get_network_settings+0x20>)
+240009e4:	f7ff fce2 	bl	240003ac <Flash_Read_Data>
 }
-240009d8:	bf00      	nop
-240009da:	3710      	adds	r7, #16
-240009dc:	46bd      	mov	sp, r7
-240009de:	bd80      	pop	{r7, pc}
-240009e0:	080a0000 	.word	0x080a0000
+240009e8:	bf00      	nop
+240009ea:	3710      	adds	r7, #16
+240009ec:	46bd      	mov	sp, r7
+240009ee:	bd80      	pop	{r7, pc}
+240009f0:	080a0000 	.word	0x080a0000
 
-240009e4 <set_ip_configurations>:
+240009f4 <set_ip_configurations>:
 MG_IRAM void set_ip_configurations(void *arg) {
-240009e4:	b580      	push	{r7, lr}
-240009e6:	b09c      	sub	sp, #112	@ 0x70
-240009e8:	af00      	add	r7, sp, #0
-240009ea:	6078      	str	r0, [r7, #4]
+240009f4:	b580      	push	{r7, lr}
+240009f6:	b09c      	sub	sp, #112	@ 0x70
+240009f8:	af00      	add	r7, sp, #0
+240009fa:	6078      	str	r0, [r7, #4]
 	struct mg_mgr *mgr = (struct mg_mgr *)arg;
-240009ec:	687b      	ldr	r3, [r7, #4]
-240009ee:	66bb      	str	r3, [r7, #104]	@ 0x68
+240009fc:	687b      	ldr	r3, [r7, #4]
+240009fe:	66bb      	str	r3, [r7, #104]	@ 0x68
 	get_network_settings(&settings);
-240009f0:	f107 031c 	add.w	r3, r7, #28
-240009f4:	4618      	mov	r0, r3
-240009f6:	f7ff ffe3 	bl	240009c0 <get_network_settings>
+24000a00:	f107 031c 	add.w	r3, r7, #28
+24000a04:	4618      	mov	r0, r3
+24000a06:	f7ff ffe3 	bl	240009d0 <get_network_settings>
 	if (!settings.settings_initialized){
-240009fa:	f897 304d 	ldrb.w	r3, [r7, #77]	@ 0x4d
-240009fe:	f083 0301 	eor.w	r3, r3, #1
-24000a02:	b2db      	uxtb	r3, r3
-24000a04:	2b00      	cmp	r3, #0
-24000a06:	f000 8087 	beq.w	24000b18 <set_ip_configurations+0x134>
+24000a0a:	f897 304d 	ldrb.w	r3, [r7, #77]	@ 0x4d
+24000a0e:	f083 0301 	eor.w	r3, r3, #1
+24000a12:	b2db      	uxtb	r3, r3
+24000a14:	2b00      	cmp	r3, #0
+24000a16:	f000 8087 	beq.w	24000b28 <set_ip_configurations+0x134>
 			if (settings.dhcp){
-24000a0a:	f897 304c 	ldrb.w	r3, [r7, #76]	@ 0x4c
-24000a0e:	2b00      	cmp	r3, #0
-24000a10:	d01c      	beq.n	24000a4c <set_ip_configurations+0x68>
+24000a1a:	f897 304c 	ldrb.w	r3, [r7, #76]	@ 0x4c
+24000a1e:	2b00      	cmp	r3, #0
+24000a20:	d01c      	beq.n	24000a5c <set_ip_configurations+0x68>
 				mgr->ifp->enable_dhcp_client = true;
-24000a12:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
-24000a14:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000a16:	2201      	movs	r2, #1
-24000a18:	771a      	strb	r2, [r3, #28]
+24000a22:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
+24000a24:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+24000a26:	2201      	movs	r2, #1
+24000a28:	771a      	strb	r2, [r3, #28]
 				memset(&mgr->ifp->ip, 0, sizeof(mgr->ifp->ip));        // mgr->ifp->ip = {0,0,0,0} ?
-24000a1a:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
-24000a1c:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000a1e:	3308      	adds	r3, #8
-24000a20:	2204      	movs	r2, #4
-24000a22:	2100      	movs	r1, #0
-24000a24:	4618      	mov	r0, r3
-24000a26:	f000 f87b 	bl	24000b20 <__memset_veneer>
-				memset(&mgr->ifp->mask, 0, sizeof(mgr->ifp->mask));
 24000a2a:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
 24000a2c:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000a2e:	330c      	adds	r3, #12
+24000a2e:	3308      	adds	r3, #8
 24000a30:	2204      	movs	r2, #4
 24000a32:	2100      	movs	r1, #0
 24000a34:	4618      	mov	r0, r3
-24000a36:	f000 f873 	bl	24000b20 <__memset_veneer>
-				memset(&mgr->ifp->gw, 0, sizeof(mgr->ifp->gw));
+24000a36:	f000 f87b 	bl	24000b30 <__memset_veneer>
+				memset(&mgr->ifp->mask, 0, sizeof(mgr->ifp->mask));
 24000a3a:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
 24000a3c:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000a3e:	3310      	adds	r3, #16
+24000a3e:	330c      	adds	r3, #12
 24000a40:	2204      	movs	r2, #4
 24000a42:	2100      	movs	r1, #0
 24000a44:	4618      	mov	r0, r3
-24000a46:	f000 f86b 	bl	24000b20 <__memset_veneer>
-24000a4a:	e047      	b.n	24000adc <set_ip_configurations+0xf8>
+24000a46:	f000 f873 	bl	24000b30 <__memset_veneer>
+				memset(&mgr->ifp->gw, 0, sizeof(mgr->ifp->gw));
+24000a4a:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
+24000a4c:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+24000a4e:	3310      	adds	r3, #16
+24000a50:	2204      	movs	r2, #4
+24000a52:	2100      	movs	r1, #0
+24000a54:	4618      	mov	r0, r3
+24000a56:	f000 f86b 	bl	24000b30 <__memset_veneer>
+24000a5a:	e047      	b.n	24000aec <set_ip_configurations+0xf8>
 				mgr->ifp->enable_dhcp_client = false;
-24000a4c:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
-24000a4e:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000a50:	2200      	movs	r2, #0
-24000a52:	771a      	strb	r2, [r3, #28]
+24000a5c:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
+24000a5e:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+24000a60:	2200      	movs	r2, #0
+24000a62:	771a      	strb	r2, [r3, #28]
 				mg_aton(mg_str(settings.ip), &new_addr);
-24000a54:	f107 0250 	add.w	r2, r7, #80	@ 0x50
-24000a58:	f107 031c 	add.w	r3, r7, #28
-24000a5c:	3320      	adds	r3, #32
-24000a5e:	4619      	mov	r1, r3
-24000a60:	4610      	mov	r0, r2
-24000a62:	f000 f869 	bl	24000b38 <__mg_str_s_veneer>
-24000a66:	f107 0308 	add.w	r3, r7, #8
-24000a6a:	461a      	mov	r2, r3
-24000a6c:	f107 0350 	add.w	r3, r7, #80	@ 0x50
-24000a70:	e893 0003 	ldmia.w	r3, {r0, r1}
-24000a74:	f000 f874 	bl	24000b60 <__mg_aton_veneer>
+24000a64:	f107 0250 	add.w	r2, r7, #80	@ 0x50
+24000a68:	f107 031c 	add.w	r3, r7, #28
+24000a6c:	3320      	adds	r3, #32
+24000a6e:	4619      	mov	r1, r3
+24000a70:	4610      	mov	r0, r2
+24000a72:	f000 f869 	bl	24000b48 <__mg_str_s_veneer>
+24000a76:	f107 0308 	add.w	r3, r7, #8
+24000a7a:	461a      	mov	r2, r3
+24000a7c:	f107 0350 	add.w	r3, r7, #80	@ 0x50
+24000a80:	e893 0003 	ldmia.w	r3, {r0, r1}
+24000a84:	f000 f874 	bl	24000b70 <__mg_aton_veneer>
 				memcpy(&mgr->ifp->ip, &new_addr.ip, sizeof(mgr->ifp->ip));
-24000a78:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
-24000a7a:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000a7c:	3308      	adds	r3, #8
-24000a7e:	68ba      	ldr	r2, [r7, #8]
-24000a80:	601a      	str	r2, [r3, #0]
+24000a88:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
+24000a8a:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+24000a8c:	3308      	adds	r3, #8
+24000a8e:	68ba      	ldr	r2, [r7, #8]
+24000a90:	601a      	str	r2, [r3, #0]
 				mg_aton(mg_str(settings.gateway), &new_addr);
-24000a82:	f107 0258 	add.w	r2, r7, #88	@ 0x58
-24000a86:	f107 031c 	add.w	r3, r7, #28
-24000a8a:	3310      	adds	r3, #16
-24000a8c:	4619      	mov	r1, r3
-24000a8e:	4610      	mov	r0, r2
-24000a90:	f000 f852 	bl	24000b38 <__mg_str_s_veneer>
-24000a94:	f107 0308 	add.w	r3, r7, #8
-24000a98:	461a      	mov	r2, r3
-24000a9a:	f107 0358 	add.w	r3, r7, #88	@ 0x58
-24000a9e:	e893 0003 	ldmia.w	r3, {r0, r1}
-24000aa2:	f000 f85d 	bl	24000b60 <__mg_aton_veneer>
+24000a92:	f107 0258 	add.w	r2, r7, #88	@ 0x58
+24000a96:	f107 031c 	add.w	r3, r7, #28
+24000a9a:	3310      	adds	r3, #16
+24000a9c:	4619      	mov	r1, r3
+24000a9e:	4610      	mov	r0, r2
+24000aa0:	f000 f852 	bl	24000b48 <__mg_str_s_veneer>
+24000aa4:	f107 0308 	add.w	r3, r7, #8
+24000aa8:	461a      	mov	r2, r3
+24000aaa:	f107 0358 	add.w	r3, r7, #88	@ 0x58
+24000aae:	e893 0003 	ldmia.w	r3, {r0, r1}
+24000ab2:	f000 f85d 	bl	24000b70 <__mg_aton_veneer>
 				memcpy(&mgr->ifp->gw, &new_addr.ip, sizeof(mgr->ifp->ip));
-24000aa6:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
-24000aa8:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000aaa:	3310      	adds	r3, #16
-24000aac:	68ba      	ldr	r2, [r7, #8]
-24000aae:	601a      	str	r2, [r3, #0]
+24000ab6:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
+24000ab8:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+24000aba:	3310      	adds	r3, #16
+24000abc:	68ba      	ldr	r2, [r7, #8]
+24000abe:	601a      	str	r2, [r3, #0]
 				mg_aton(mg_str(settings.netmask), &new_addr);
-24000ab0:	f107 0360 	add.w	r3, r7, #96	@ 0x60
-24000ab4:	f107 021c 	add.w	r2, r7, #28
-24000ab8:	4611      	mov	r1, r2
-24000aba:	4618      	mov	r0, r3
-24000abc:	f000 f83c 	bl	24000b38 <__mg_str_s_veneer>
-24000ac0:	f107 0308 	add.w	r3, r7, #8
-24000ac4:	461a      	mov	r2, r3
-24000ac6:	f107 0360 	add.w	r3, r7, #96	@ 0x60
-24000aca:	e893 0003 	ldmia.w	r3, {r0, r1}
-24000ace:	f000 f847 	bl	24000b60 <__mg_aton_veneer>
+24000ac0:	f107 0360 	add.w	r3, r7, #96	@ 0x60
+24000ac4:	f107 021c 	add.w	r2, r7, #28
+24000ac8:	4611      	mov	r1, r2
+24000aca:	4618      	mov	r0, r3
+24000acc:	f000 f83c 	bl	24000b48 <__mg_str_s_veneer>
+24000ad0:	f107 0308 	add.w	r3, r7, #8
+24000ad4:	461a      	mov	r2, r3
+24000ad6:	f107 0360 	add.w	r3, r7, #96	@ 0x60
+24000ada:	e893 0003 	ldmia.w	r3, {r0, r1}
+24000ade:	f000 f847 	bl	24000b70 <__mg_aton_veneer>
 				memcpy(&mgr->ifp->mask, &new_addr.ip, sizeof(mgr->ifp->ip));
-24000ad2:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
-24000ad4:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000ad6:	330c      	adds	r3, #12
-24000ad8:	68ba      	ldr	r2, [r7, #8]
-24000ada:	601a      	str	r2, [r3, #0]
+24000ae2:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
+24000ae4:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+24000ae6:	330c      	adds	r3, #12
+24000ae8:	68ba      	ldr	r2, [r7, #8]
+24000aea:	601a      	str	r2, [r3, #0]
 			for (struct mg_connection *c = mgr->conns; c != NULL; c = c->next){
-24000adc:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
-24000ade:	681b      	ldr	r3, [r3, #0]
-24000ae0:	66fb      	str	r3, [r7, #108]	@ 0x6c
-24000ae2:	e011      	b.n	24000b08 <set_ip_configurations+0x124>
+24000aec:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
+24000aee:	681b      	ldr	r3, [r3, #0]
+24000af0:	66fb      	str	r3, [r7, #108]	@ 0x6c
+24000af2:	e011      	b.n	24000b18 <set_ip_configurations+0x124>
 				if (c->is_listening == 0) c->is_closing = 1;
-24000ae4:	6efb      	ldr	r3, [r7, #108]	@ 0x6c
-24000ae6:	f893 30ac 	ldrb.w	r3, [r3, #172]	@ 0xac
-24000aea:	f003 0301 	and.w	r3, r3, #1
-24000aee:	b2db      	uxtb	r3, r3
-24000af0:	2b00      	cmp	r3, #0
-24000af2:	d106      	bne.n	24000b02 <set_ip_configurations+0x11e>
-24000af4:	6efa      	ldr	r2, [r7, #108]	@ 0x6c
-24000af6:	f892 30ad 	ldrb.w	r3, [r2, #173]	@ 0xad
-24000afa:	f043 0320 	orr.w	r3, r3, #32
-24000afe:	f882 30ad 	strb.w	r3, [r2, #173]	@ 0xad
+24000af4:	6efb      	ldr	r3, [r7, #108]	@ 0x6c
+24000af6:	f893 30ac 	ldrb.w	r3, [r3, #172]	@ 0xac
+24000afa:	f003 0301 	and.w	r3, r3, #1
+24000afe:	b2db      	uxtb	r3, r3
+24000b00:	2b00      	cmp	r3, #0
+24000b02:	d106      	bne.n	24000b12 <set_ip_configurations+0x11e>
+24000b04:	6efa      	ldr	r2, [r7, #108]	@ 0x6c
+24000b06:	f892 30ad 	ldrb.w	r3, [r2, #173]	@ 0xad
+24000b0a:	f043 0320 	orr.w	r3, r3, #32
+24000b0e:	f882 30ad 	strb.w	r3, [r2, #173]	@ 0xad
 			for (struct mg_connection *c = mgr->conns; c != NULL; c = c->next){
-24000b02:	6efb      	ldr	r3, [r7, #108]	@ 0x6c
-24000b04:	681b      	ldr	r3, [r3, #0]
-24000b06:	66fb      	str	r3, [r7, #108]	@ 0x6c
-24000b08:	6efb      	ldr	r3, [r7, #108]	@ 0x6c
-24000b0a:	2b00      	cmp	r3, #0
-24000b0c:	d1ea      	bne.n	24000ae4 <set_ip_configurations+0x100>
+24000b12:	6efb      	ldr	r3, [r7, #108]	@ 0x6c
+24000b14:	681b      	ldr	r3, [r3, #0]
+24000b16:	66fb      	str	r3, [r7, #108]	@ 0x6c
+24000b18:	6efb      	ldr	r3, [r7, #108]	@ 0x6c
+24000b1a:	2b00      	cmp	r3, #0
+24000b1c:	d1ea      	bne.n	24000af4 <set_ip_configurations+0x100>
 			mgr->ifp->state = MG_TCPIP_STATE_DOWN;
-24000b0e:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
-24000b10:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
-24000b12:	2200      	movs	r2, #0
-24000b14:	f883 2084 	strb.w	r2, [r3, #132]	@ 0x84
+24000b1e:	6ebb      	ldr	r3, [r7, #104]	@ 0x68
+24000b20:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+24000b22:	2200      	movs	r2, #0
+24000b24:	f883 2084 	strb.w	r2, [r3, #132]	@ 0x84
 }
-24000b18:	bf00      	nop
-24000b1a:	3770      	adds	r7, #112	@ 0x70
-24000b1c:	46bd      	mov	sp, r7
-24000b1e:	bd80      	pop	{r7, pc}
+24000b28:	bf00      	nop
+24000b2a:	3770      	adds	r7, #112	@ 0x70
+24000b2c:	46bd      	mov	sp, r7
+24000b2e:	bd80      	pop	{r7, pc}
 
-24000b20 <__memset_veneer>:
-24000b20:	f85f f000 	ldr.w	pc, [pc]	@ 24000b24 <__memset_veneer+0x4>
-24000b24:	0801649d 	.word	0x0801649d
+24000b30 <__memset_veneer>:
+24000b30:	f85f f000 	ldr.w	pc, [pc]	@ 24000b34 <__memset_veneer+0x4>
+24000b34:	0801649d 	.word	0x0801649d
 
-24000b28 <__HAL_FLASH_Lock_veneer>:
-24000b28:	f85f f000 	ldr.w	pc, [pc]	@ 24000b2c <__HAL_FLASH_Lock_veneer+0x4>
-24000b2c:	0800e231 	.word	0x0800e231
+24000b38 <__HAL_FLASH_Lock_veneer>:
+24000b38:	f85f f000 	ldr.w	pc, [pc]	@ 24000b3c <__HAL_FLASH_Lock_veneer+0x4>
+24000b3c:	0800e231 	.word	0x0800e231
 
-24000b30 <__Bytes2float_veneer>:
-24000b30:	f85f f000 	ldr.w	pc, [pc]	@ 24000b34 <__Bytes2float_veneer+0x4>
-24000b34:	080007f7 	.word	0x080007f7
+24000b40 <__Bytes2float_veneer>:
+24000b40:	f85f f000 	ldr.w	pc, [pc]	@ 24000b44 <__Bytes2float_veneer+0x4>
+24000b44:	080007f7 	.word	0x080007f7
 
-24000b38 <__mg_str_s_veneer>:
-24000b38:	f85f f000 	ldr.w	pc, [pc]	@ 24000b3c <__mg_str_s_veneer+0x4>
-24000b3c:	0800a955 	.word	0x0800a955
+24000b48 <__mg_str_s_veneer>:
+24000b48:	f85f f000 	ldr.w	pc, [pc]	@ 24000b4c <__mg_str_s_veneer+0x4>
+24000b4c:	0800a955 	.word	0x0800a955
 
-24000b40 <__HAL_FLASHEx_Erase_veneer>:
-24000b40:	f85f f000 	ldr.w	pc, [pc]	@ 24000b44 <__HAL_FLASHEx_Erase_veneer+0x4>
-24000b44:	0800e325 	.word	0x0800e325
+24000b50 <__HAL_FLASHEx_Erase_veneer>:
+24000b50:	f85f f000 	ldr.w	pc, [pc]	@ 24000b54 <__HAL_FLASHEx_Erase_veneer+0x4>
+24000b54:	0800e325 	.word	0x0800e325
 
-24000b48 <__mg_log_prefix_veneer>:
-24000b48:	f85f f000 	ldr.w	pc, [pc]	@ 24000b4c <__mg_log_prefix_veneer+0x4>
-24000b4c:	080062cd 	.word	0x080062cd
+24000b58 <__mg_log_prefix_veneer>:
+24000b58:	f85f f000 	ldr.w	pc, [pc]	@ 24000b5c <__mg_log_prefix_veneer+0x4>
+24000b5c:	080062cd 	.word	0x080062cd
 
-24000b50 <__HAL_FLASH_Unlock_veneer>:
-24000b50:	f85f f000 	ldr.w	pc, [pc]	@ 24000b54 <__HAL_FLASH_Unlock_veneer+0x4>
-24000b54:	0800e1ed 	.word	0x0800e1ed
+24000b60 <__HAL_FLASH_Unlock_veneer>:
+24000b60:	f85f f000 	ldr.w	pc, [pc]	@ 24000b64 <__HAL_FLASH_Unlock_veneer+0x4>
+24000b64:	0800e1ed 	.word	0x0800e1ed
 
-24000b58 <__mg_log_veneer>:
-24000b58:	f85f f000 	ldr.w	pc, [pc]	@ 24000b5c <__mg_log_veneer+0x4>
-24000b5c:	0800636d 	.word	0x0800636d
+24000b68 <__mg_log_veneer>:
+24000b68:	f85f f000 	ldr.w	pc, [pc]	@ 24000b6c <__mg_log_veneer+0x4>
+24000b6c:	0800636d 	.word	0x0800636d
 
-24000b60 <__mg_aton_veneer>:
-24000b60:	f85f f000 	ldr.w	pc, [pc]	@ 24000b64 <__mg_aton_veneer+0x4>
-24000b64:	08006a1f 	.word	0x08006a1f
+24000b70 <__mg_aton_veneer>:
+24000b70:	f85f f000 	ldr.w	pc, [pc]	@ 24000b74 <__mg_aton_veneer+0x4>
+24000b74:	08006a1f 	.word	0x08006a1f
 
-24000b68 <__GetSector_veneer>:
-24000b68:	f85f f000 	ldr.w	pc, [pc]	@ 24000b6c <__GetSector_veneer+0x4>
-24000b6c:	080006d1 	.word	0x080006d1
+24000b78 <__GetSector_veneer>:
+24000b78:	f85f f000 	ldr.w	pc, [pc]	@ 24000b7c <__GetSector_veneer+0x4>
+24000b7c:	080006d1 	.word	0x080006d1
 
-24000b70 <__HAL_FLASH_Program_veneer>:
-24000b70:	f85f f000 	ldr.w	pc, [pc]	@ 24000b74 <__HAL_FLASH_Program_veneer+0x4>
-24000b74:	0800e10d 	.word	0x0800e10d
+24000b80 <__HAL_FLASH_Program_veneer>:
+24000b80:	f85f f000 	ldr.w	pc, [pc]	@ 24000b84 <__HAL_FLASH_Program_veneer+0x4>
+24000b84:	0800e10d 	.word	0x0800e10d
 
-24000b78 <__HAL_FLASH_GetError_veneer>:
-24000b78:	f85f f000 	ldr.w	pc, [pc]	@ 24000b7c <__HAL_FLASH_GetError_veneer+0x4>
-24000b7c:	0800e261 	.word	0x0800e261
+24000b88 <__HAL_FLASH_GetError_veneer>:
+24000b88:	f85f f000 	ldr.w	pc, [pc]	@ 24000b8c <__HAL_FLASH_GetError_veneer+0x4>
+24000b8c:	0800e261 	.word	0x0800e261
 
-24000b80 <__float2Bytes_veneer>:
-24000b80:	f85f f000 	ldr.w	pc, [pc]	@ 24000b84 <__float2Bytes_veneer+0x4>
-24000b84:	080007b5 	.word	0x080007b5
+24000b90 <__float2Bytes_veneer>:
+24000b90:	f85f f000 	ldr.w	pc, [pc]	@ 24000b94 <__float2Bytes_veneer+0x4>
+24000b94:	080007b5 	.word	0x080007b5
