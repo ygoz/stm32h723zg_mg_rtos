@@ -11,6 +11,7 @@
 #include "flash/internal_flash.h"
 #include "string.h"
 #include "stdio.h"
+#include "mongoose.h"
 
 
 #define FLASHWORD		8
@@ -125,7 +126,7 @@ If you try to write a single 32 bit word, it will automatically write 0's for th
 *
 */
 
-uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords)  //  ==> num_words
+MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords)  //  ==> num_words
 {
 
 	static FLASH_EraseInitTypeDef EraseInitStruct;
@@ -181,14 +182,22 @@ uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t
 }
 
 
-void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
-	while (1) {
-		*data = *(__IO uint32_t *)StartSectorAddress;
-		StartSectorAddress += 4;
-		data++;
-		if (!(numberofwords--)) break;
+//MG_IRAM void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
+//	while (1) {
+//		*data = *(__IO uint32_t *)StartSectorAddress;
+//		StartSectorAddress += 4;
+//		data++;
+//		if (!(numberofwords--)) break;
+//	}
+//}
+
+
+MG_IRAM void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
+	for (uint16_t i = 0; i < numberofwords; i++) {
+		data[i] = *(__IO uint32_t *)(StartSectorAddress + i * 4);
 	}
 }
+
 
 void Convert_To_Str (uint32_t *Data, char *Buf)
 {
@@ -201,7 +210,7 @@ void Convert_To_Str (uint32_t *Data, char *Buf)
 }
 
 
-void Flash_Write_NUM (uint32_t StartSectorAddress, float Num)
+MG_IRAM void Flash_Write_NUM (uint32_t StartSectorAddress, float Num)
 {
 
 	float2Bytes(bytes_temp, Num);
@@ -209,7 +218,7 @@ void Flash_Write_NUM (uint32_t StartSectorAddress, float Num)
 }
 
 
-float Flash_Read_NUM (uint32_t StartSectorAddress)
+MG_IRAM float Flash_Read_NUM (uint32_t StartSectorAddress)
 {
 	uint8_t buffer[4];
 	float value;

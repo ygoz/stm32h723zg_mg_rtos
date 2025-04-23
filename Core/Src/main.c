@@ -106,29 +106,20 @@ int _write(int fd, unsigned char *buf, int len) {
   return len;
 }
 
-// maybe put to network.c
-static void load_network_configurations(struct mg_mgr *mgr){
-	printf("dshfchdscbjdxbjfhhvjdbjv===================================\r\n\r\n");
-  	network_settings settings;
-	get_network_settings(&settings);  // Read settings from flash and convert to struct
-
-	if (!settings.settings_initialized) {
-			// Settings were never initialized, return 400 Bad Request
-			printf("gggggggggggggggggggggggggggggggg");
-		}
-}
-
 
 // In RTOS environment, run this function in a separate task. Give it 8k stack
 static void run_mongoose(void) {
-  struct mg_mgr mgr;        // Mongoose event manager
+  struct mg_mgr mgr = {0};        // Mongoose event manager
   mg_mgr_init(&mgr);        // Initialise event manager
+
+
+  mg_http_listen(&mgr, "http://0.0.0.0:80", event_handler, "");
+  set_ip_configurations(&mgr);
+
+
   mg_log_set(MG_LL_DEBUG);  // Set log level to debug
 //  HAL_GPIO_WritePin(GPIOB, LED_GREEN_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
-  mg_http_listen(&mgr, "http://0.0.0.0:80", event_handler, "");
-
-//  mg_timer_add(&mgr, 6000, 0, load_network_configurations, &mgr); // Non-blocking delay to func set_ip_configurations
 
   for (;;) {                // Infinite event loop
     mg_mgr_poll(&mgr, 10);   // Process network events
