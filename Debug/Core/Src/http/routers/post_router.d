@@ -49,7 +49,8 @@ Core/Src/http/routers/post_router.o: \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- ../Core/Inc/http/settings/network.h
+ ../Core/Inc/http/settings/network.h \
+ ../Core/Inc/HaGeneral/HaGeneral_config.h
 ../Core/Inc/http/routers/post_router.h:
 ../Core/Inc/mongoose.h:
 ../Core/Inc/mongoose_config.h:
@@ -101,3 +102,4 @@ Core/Src/http/routers/post_router.o: \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 ../Core/Inc/http/settings/network.h:
+../Core/Inc/HaGeneral/HaGeneral_config.h:

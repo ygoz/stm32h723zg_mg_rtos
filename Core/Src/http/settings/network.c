@@ -14,19 +14,19 @@
 #include "http/routers/main_router.h"
 
 
-#define NETWORK_SETTINGS_ADDR 0x080A0000
-#define GENERAL_SETTINGS_ADDR (NETWORK_SETTINGS_ADDR + sizeof(network_settings))
-
-
-
 
 static network_settings default_network_settings = {
-    .netmask            = "255.255.255.0",
-    .gateway            = "192.168.1.1",
-    .ip                 = "192.168.1.10",
-    .dhcp               = false,
+    .netmask            = HAGENRAL_DEFAULT_SUBNETMASK,
+    .gateway            = HAGENRAL_DEFAULT_GATEWAY,
+    .ip                 = HAGENRAL_DEFAULT_IP,
+    .dhcp               = HAGENRAL_DEFAULT_DHCP,
     .is_initialized 	= 0xDEADBEEF
 };
+
+
+void network_settings_init(network_settings *settings) {
+    *settings = default_network_settings;
+}
 
 
 
@@ -35,6 +35,19 @@ MG_IRAM void get_network_settings(network_settings *data) {
 	uint16_t numofwords = (sizeof(network_settings) / 4) + ((sizeof(network_settings) % 4) != 0);
 	Flash_Read_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, numofwords);
 }
+
+
+void set_network_settings(network_settings *data, struct mg_mgr *mgr) {
+
+
+    // Calculate how many 32-bit words are needed to store the struct
+    uint16_t num_words = sizeof(network_settings) / 4 + (sizeof(network_settings) % 4 != 0);
+
+    // Write the struct directly to flash
+    Flash_Write_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
+    mg_timer_add(mgr, 500, 0, set_ip_configurations,  mgr); // Non-blocking delay to func set_ip_configurations
+}
+
 
 
 
@@ -49,18 +62,18 @@ MG_IRAM void set_ip_configurations(void *arg) {
 	uint32_t raw = settings.is_initialized;
 	printf("DEBUG: is_initialized = %u, !value = %d\n", raw, !raw);
 	if (raw == 0xDEADBEEF){//(!settings.is_not_initialized){
-		apply_network_settings(&settings, mgr);
+		change_driver_settings(&settings, mgr);
 
     // You now have both mgr and settings
 	}
 	else{
 		printf("setting not init, using default settings\r\n\r\n\r\n");
-		apply_network_settings(&default_network_settings, mgr);
+		change_driver_settings(&default_network_settings, mgr);
 	}
 }
 
 
-void apply_network_settings(network_settings *settings, struct mg_mgr *mgr){
+void change_driver_settings(network_settings *settings, struct mg_mgr *mgr){
 	if (settings->dhcp){
 		mgr->ifp->enable_dhcp_client = true;
 		memset(&mgr->ifp->ip, 0, sizeof(mgr->ifp->ip));        // mgr->ifp->ip = {0,0,0,0} ?
@@ -91,14 +104,4 @@ void apply_network_settings(network_settings *settings, struct mg_mgr *mgr){
 
 
 
-void set_network_settings(network_settings *data, struct mg_mgr *mgr) {
-
-
-    // Calculate how many 32-bit words are needed to store the struct
-    uint16_t num_words = sizeof(network_settings) / 4 + (sizeof(network_settings) % 4 != 0);
-
-    // Write the struct directly to flash
-    Flash_Write_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
-    mg_timer_add(mgr, 500, 0, set_ip_configurations,  mgr); // Non-blocking delay to func set_ip_configurations
-}
 

@@ -27,25 +27,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 0000002e  00000000  00000000  00028bc0  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00038f06  00000000  00000000  00028bee  2**0
+ 12 .debug_info   00038efc  00000000  00000000  00028bee  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00005c69  00000000  00000000  00061af4  2**0
+ 13 .debug_abbrev 00005c53  00000000  00000000  00061aea  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000029d0  00000000  00000000  00067760  2**3
+ 14 .debug_aranges 000029d8  00000000  00000000  00067740  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 0000219e  00000000  00000000  0006a130  2**0
+ 15 .debug_rnglists 000021a4  00000000  00000000  0006a118  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0003a959  00000000  00000000  0006c2ce  2**0
+ 16 .debug_macro  0003a99f  00000000  00000000  0006c2bc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0003444b  00000000  00000000  000a6c27  2**0
+ 17 .debug_line   00034514  00000000  00000000  000a6c5b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    001670a9  00000000  00000000  000db072  2**0
+ 18 .debug_str    00167121  00000000  00000000  000db16f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  0024211b  2**0
+ 19 .comment      00000043  00000000  00000000  00242290  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  0000c550  00000000  00000000  00242160  2**2
+ 20 .debug_frame  0000c57c  00000000  00000000  002422d4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000005a  00000000  00000000  0024e6b0  2**0
+ 21 .debug_line_str 0000005a  00000000  00000000  0024e850  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -786,7 +786,7 @@ static void run_mongoose(void) {
   set_ip_configurations(&mgr);
  80008d6:	463b      	mov	r3, r7
  80008d8:	4618      	mov	r0, r3
- 80008da:	f016 feed 	bl	80176b8 <__set_ip_configurations_veneer>
+ 80008da:	f016 fee5 	bl	80176a8 <__set_ip_configurations_veneer>
 
 
   mg_log_set(MG_LL_DEBUG);  // Set log level to debug
@@ -20282,7 +20282,7 @@ bool mg_ota_end(void) {
  800a1fc:	2b00      	cmp	r3, #0
  800a1fe:	d042      	beq.n	800a286 <mg_ota_end+0x96>
     if (is_dualbank()) {
- 800a200:	f00d fa4a 	bl	8017698 <__is_dualbank_veneer>
+ 800a200:	f00d fa56 	bl	80176b0 <__is_dualbank_veneer>
  800a204:	4603      	mov	r3, r0
  800a206:	2b00      	cmp	r3, #0
  800a208:	d003      	beq.n	800a212 <mg_ota_end+0x22>
@@ -20356,7 +20356,7 @@ bool mg_ota_end(void) {
  800a27c:	085a      	lsrs	r2, r3, #1
  800a27e:	4b03      	ldr	r3, [pc, #12]	@ (800a28c <mg_ota_end+0x9c>)
  800a280:	689b      	ldr	r3, [r3, #8]
- 800a282:	f00d fa11 	bl	80176a8 <__single_bank_swap_veneer>
+ 800a282:	f00d fa09 	bl	8017698 <__single_bank_swap_veneer>
     }
   }
   return false;
@@ -26570,7 +26570,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		get_network_settings(&settings);  // Read settings from flash and convert to struct
  800cdde:	f107 0308 	add.w	r3, r7, #8
  800cde2:	4618      	mov	r0, r3
- 800cde4:	f00a fc64 	bl	80176b0 <__get_network_settings_veneer>
+ 800cde4:	f00a fc68 	bl	80176b8 <__get_network_settings_veneer>
 		if (settings.is_initialized != 0xDEADBEEF) {
  800cde8:	f507 73c4 	add.w	r3, r7, #392	@ 0x188
  800cdec:	f5a3 73c0 	sub.w	r3, r3, #384	@ 0x180
@@ -27244,7 +27244,7 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
  800d37a:	f107 0308 	add.w	r3, r7, #8
  800d37e:	4611      	mov	r1, r2
  800d380:	4618      	mov	r0, r3
- 800d382:	f000 f8f5 	bl	800d570 <set_network_settings>
+ 800d382:	f000 f865 	bl	800d450 <set_network_settings>
 		char response[200] = {0};
  800d386:	2300      	movs	r3, #0
  800d388:	643b      	str	r3, [r7, #64]	@ 0x40
@@ -27319,197 +27319,197 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
  800d448:	08019778 	.word	0x08019778
  800d44c:	0801977c 	.word	0x0801977c
 
-0800d450 <apply_network_settings>:
-		apply_network_settings(&default_network_settings, mgr);
-	}
+0800d450 <set_network_settings>:
+	uint16_t numofwords = (sizeof(network_settings) / 4) + ((sizeof(network_settings) % 4) != 0);
+	Flash_Read_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, numofwords);
 }
-
-
-void apply_network_settings(network_settings *settings, struct mg_mgr *mgr){
- 800d450:	b580      	push	{r7, lr}
- 800d452:	b08e      	sub	sp, #56	@ 0x38
- 800d454:	af00      	add	r7, sp, #0
- 800d456:	6078      	str	r0, [r7, #4]
- 800d458:	6039      	str	r1, [r7, #0]
-	if (settings->dhcp){
- 800d45a:	687b      	ldr	r3, [r7, #4]
- 800d45c:	f893 3030 	ldrb.w	r3, [r3, #48]	@ 0x30
- 800d460:	2b00      	cmp	r3, #0
- 800d462:	d01c      	beq.n	800d49e <apply_network_settings+0x4e>
-		mgr->ifp->enable_dhcp_client = true;
- 800d464:	683b      	ldr	r3, [r7, #0]
- 800d466:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d468:	2201      	movs	r2, #1
- 800d46a:	771a      	strb	r2, [r3, #28]
-		memset(&mgr->ifp->ip, 0, sizeof(mgr->ifp->ip));        // mgr->ifp->ip = {0,0,0,0} ?
- 800d46c:	683b      	ldr	r3, [r7, #0]
- 800d46e:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d470:	3308      	adds	r3, #8
- 800d472:	2204      	movs	r2, #4
- 800d474:	2100      	movs	r1, #0
- 800d476:	4618      	mov	r0, r3
- 800d478:	f009 f8a0 	bl	80165bc <memset>
-		memset(&mgr->ifp->mask, 0, sizeof(mgr->ifp->mask));
- 800d47c:	683b      	ldr	r3, [r7, #0]
- 800d47e:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d480:	330c      	adds	r3, #12
- 800d482:	2204      	movs	r2, #4
- 800d484:	2100      	movs	r1, #0
- 800d486:	4618      	mov	r0, r3
- 800d488:	f009 f898 	bl	80165bc <memset>
-		memset(&mgr->ifp->gw, 0, sizeof(mgr->ifp->gw));
- 800d48c:	683b      	ldr	r3, [r7, #0]
- 800d48e:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d490:	3310      	adds	r3, #16
- 800d492:	2204      	movs	r2, #4
- 800d494:	2100      	movs	r1, #0
- 800d496:	4618      	mov	r0, r3
- 800d498:	f009 f890 	bl	80165bc <memset>
- 800d49c:	e046      	b.n	800d52c <apply_network_settings+0xdc>
-	} else {
-		// Disable DHCP client
-		struct mg_addr new_addr;
-		mgr->ifp->enable_dhcp_client = false;
- 800d49e:	683b      	ldr	r3, [r7, #0]
- 800d4a0:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d4a2:	2200      	movs	r2, #0
- 800d4a4:	771a      	strb	r2, [r3, #28]
-
-		mg_aton(mg_str(settings->ip), &new_addr);
- 800d4a6:	687b      	ldr	r3, [r7, #4]
- 800d4a8:	f103 0220 	add.w	r2, r3, #32
- 800d4ac:	f107 031c 	add.w	r3, r7, #28
- 800d4b0:	4611      	mov	r1, r2
- 800d4b2:	4618      	mov	r0, r3
- 800d4b4:	f7fd fa4e 	bl	800a954 <mg_str_s>
- 800d4b8:	f107 0308 	add.w	r3, r7, #8
- 800d4bc:	461a      	mov	r2, r3
- 800d4be:	f107 031c 	add.w	r3, r7, #28
- 800d4c2:	e893 0003 	ldmia.w	r3, {r0, r1}
- 800d4c6:	f7f9 faaa 	bl	8006a1e <mg_aton>
-		memcpy(&mgr->ifp->ip, &new_addr.ip, sizeof(mgr->ifp->ip));
- 800d4ca:	683b      	ldr	r3, [r7, #0]
- 800d4cc:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d4ce:	3308      	adds	r3, #8
- 800d4d0:	68ba      	ldr	r2, [r7, #8]
- 800d4d2:	601a      	str	r2, [r3, #0]
-
-		mg_aton(mg_str(settings->gateway), &new_addr);
- 800d4d4:	687b      	ldr	r3, [r7, #4]
- 800d4d6:	f103 0210 	add.w	r2, r3, #16
- 800d4da:	f107 0324 	add.w	r3, r7, #36	@ 0x24
- 800d4de:	4611      	mov	r1, r2
- 800d4e0:	4618      	mov	r0, r3
- 800d4e2:	f7fd fa37 	bl	800a954 <mg_str_s>
- 800d4e6:	f107 0308 	add.w	r3, r7, #8
- 800d4ea:	461a      	mov	r2, r3
- 800d4ec:	f107 0324 	add.w	r3, r7, #36	@ 0x24
- 800d4f0:	e893 0003 	ldmia.w	r3, {r0, r1}
- 800d4f4:	f7f9 fa93 	bl	8006a1e <mg_aton>
-		memcpy(&mgr->ifp->gw, &new_addr.ip, sizeof(mgr->ifp->ip));
- 800d4f8:	683b      	ldr	r3, [r7, #0]
- 800d4fa:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d4fc:	3310      	adds	r3, #16
- 800d4fe:	68ba      	ldr	r2, [r7, #8]
- 800d500:	601a      	str	r2, [r3, #0]
-
-		mg_aton(mg_str(settings->netmask), &new_addr);
- 800d502:	687a      	ldr	r2, [r7, #4]
- 800d504:	f107 032c 	add.w	r3, r7, #44	@ 0x2c
- 800d508:	4611      	mov	r1, r2
- 800d50a:	4618      	mov	r0, r3
- 800d50c:	f7fd fa22 	bl	800a954 <mg_str_s>
- 800d510:	f107 0308 	add.w	r3, r7, #8
- 800d514:	461a      	mov	r2, r3
- 800d516:	f107 032c 	add.w	r3, r7, #44	@ 0x2c
- 800d51a:	e893 0003 	ldmia.w	r3, {r0, r1}
- 800d51e:	f7f9 fa7e 	bl	8006a1e <mg_aton>
-		memcpy(&mgr->ifp->mask, &new_addr.ip, sizeof(mgr->ifp->ip));
- 800d522:	683b      	ldr	r3, [r7, #0]
- 800d524:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d526:	330c      	adds	r3, #12
- 800d528:	68ba      	ldr	r2, [r7, #8]
- 800d52a:	601a      	str	r2, [r3, #0]
-	}
-	for (struct mg_connection *c = mgr->conns; c != NULL; c = c->next){
- 800d52c:	683b      	ldr	r3, [r7, #0]
- 800d52e:	681b      	ldr	r3, [r3, #0]
- 800d530:	637b      	str	r3, [r7, #52]	@ 0x34
- 800d532:	e011      	b.n	800d558 <apply_network_settings+0x108>
-		if (c->is_listening == 0) c->is_closing = 1;
- 800d534:	6b7b      	ldr	r3, [r7, #52]	@ 0x34
- 800d536:	f893 30ac 	ldrb.w	r3, [r3, #172]	@ 0xac
- 800d53a:	f003 0301 	and.w	r3, r3, #1
- 800d53e:	b2db      	uxtb	r3, r3
- 800d540:	2b00      	cmp	r3, #0
- 800d542:	d106      	bne.n	800d552 <apply_network_settings+0x102>
- 800d544:	6b7a      	ldr	r2, [r7, #52]	@ 0x34
- 800d546:	f892 30ad 	ldrb.w	r3, [r2, #173]	@ 0xad
- 800d54a:	f043 0320 	orr.w	r3, r3, #32
- 800d54e:	f882 30ad 	strb.w	r3, [r2, #173]	@ 0xad
-	for (struct mg_connection *c = mgr->conns; c != NULL; c = c->next){
- 800d552:	6b7b      	ldr	r3, [r7, #52]	@ 0x34
- 800d554:	681b      	ldr	r3, [r3, #0]
- 800d556:	637b      	str	r3, [r7, #52]	@ 0x34
- 800d558:	6b7b      	ldr	r3, [r7, #52]	@ 0x34
- 800d55a:	2b00      	cmp	r3, #0
- 800d55c:	d1ea      	bne.n	800d534 <apply_network_settings+0xe4>
-	}
-	mgr->ifp->state = MG_TCPIP_STATE_DOWN;
- 800d55e:	683b      	ldr	r3, [r7, #0]
- 800d560:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
- 800d562:	2200      	movs	r2, #0
- 800d564:	f883 2084 	strb.w	r2, [r3, #132]	@ 0x84
-}
- 800d568:	bf00      	nop
- 800d56a:	3738      	adds	r7, #56	@ 0x38
- 800d56c:	46bd      	mov	sp, r7
- 800d56e:	bd80      	pop	{r7, pc}
-
-0800d570 <set_network_settings>:
-
-
-
 
 
 void set_network_settings(network_settings *data, struct mg_mgr *mgr) {
- 800d570:	b580      	push	{r7, lr}
- 800d572:	b088      	sub	sp, #32
- 800d574:	af04      	add	r7, sp, #16
- 800d576:	6078      	str	r0, [r7, #4]
- 800d578:	6039      	str	r1, [r7, #0]
+ 800d450:	b580      	push	{r7, lr}
+ 800d452:	b088      	sub	sp, #32
+ 800d454:	af04      	add	r7, sp, #16
+ 800d456:	6078      	str	r0, [r7, #4]
+ 800d458:	6039      	str	r1, [r7, #0]
 
 
     // Calculate how many 32-bit words are needed to store the struct
     uint16_t num_words = sizeof(network_settings) / 4 + (sizeof(network_settings) % 4 != 0);
- 800d57a:	230e      	movs	r3, #14
- 800d57c:	81fb      	strh	r3, [r7, #14]
+ 800d45a:	230e      	movs	r3, #14
+ 800d45c:	81fb      	strh	r3, [r7, #14]
 
     // Write the struct directly to flash
     Flash_Write_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
- 800d57e:	89fb      	ldrh	r3, [r7, #14]
- 800d580:	461a      	mov	r2, r3
- 800d582:	6879      	ldr	r1, [r7, #4]
- 800d584:	4809      	ldr	r0, [pc, #36]	@ (800d5ac <set_network_settings+0x3c>)
- 800d586:	f00a f88b 	bl	80176a0 <__Flash_Write_Data_veneer>
+ 800d45e:	89fb      	ldrh	r3, [r7, #14]
+ 800d460:	461a      	mov	r2, r3
+ 800d462:	6879      	ldr	r1, [r7, #4]
+ 800d464:	4809      	ldr	r0, [pc, #36]	@ (800d48c <set_network_settings+0x3c>)
+ 800d466:	f00a f91b 	bl	80176a0 <__Flash_Write_Data_veneer>
     mg_timer_add(mgr, 500, 0, set_ip_configurations,  mgr); // Non-blocking delay to func set_ip_configurations
- 800d58a:	683b      	ldr	r3, [r7, #0]
- 800d58c:	9302      	str	r3, [sp, #8]
- 800d58e:	4b08      	ldr	r3, [pc, #32]	@ (800d5b0 <set_network_settings+0x40>)
- 800d590:	9301      	str	r3, [sp, #4]
- 800d592:	2300      	movs	r3, #0
- 800d594:	9300      	str	r3, [sp, #0]
- 800d596:	f44f 72fa 	mov.w	r2, #500	@ 0x1f4
- 800d59a:	f04f 0300 	mov.w	r3, #0
- 800d59e:	6838      	ldr	r0, [r7, #0]
- 800d5a0:	f7f9 fbae 	bl	8006d00 <mg_timer_add>
+ 800d46a:	683b      	ldr	r3, [r7, #0]
+ 800d46c:	9302      	str	r3, [sp, #8]
+ 800d46e:	4b08      	ldr	r3, [pc, #32]	@ (800d490 <set_network_settings+0x40>)
+ 800d470:	9301      	str	r3, [sp, #4]
+ 800d472:	2300      	movs	r3, #0
+ 800d474:	9300      	str	r3, [sp, #0]
+ 800d476:	f44f 72fa 	mov.w	r2, #500	@ 0x1f4
+ 800d47a:	f04f 0300 	mov.w	r3, #0
+ 800d47e:	6838      	ldr	r0, [r7, #0]
+ 800d480:	f7f9 fc3e 	bl	8006d00 <mg_timer_add>
 }
- 800d5a4:	bf00      	nop
- 800d5a6:	3710      	adds	r7, #16
- 800d5a8:	46bd      	mov	sp, r7
- 800d5aa:	bd80      	pop	{r7, pc}
- 800d5ac:	080a0000 	.word	0x080a0000
- 800d5b0:	24000a2d 	.word	0x24000a2d
+ 800d484:	bf00      	nop
+ 800d486:	3710      	adds	r7, #16
+ 800d488:	46bd      	mov	sp, r7
+ 800d48a:	bd80      	pop	{r7, pc}
+ 800d48c:	080a0000 	.word	0x080a0000
+ 800d490:	24000a2d 	.word	0x24000a2d
+
+0800d494 <change_driver_settings>:
+		change_driver_settings(&default_network_settings, mgr);
+	}
+}
+
+
+void change_driver_settings(network_settings *settings, struct mg_mgr *mgr){
+ 800d494:	b580      	push	{r7, lr}
+ 800d496:	b08e      	sub	sp, #56	@ 0x38
+ 800d498:	af00      	add	r7, sp, #0
+ 800d49a:	6078      	str	r0, [r7, #4]
+ 800d49c:	6039      	str	r1, [r7, #0]
+	if (settings->dhcp){
+ 800d49e:	687b      	ldr	r3, [r7, #4]
+ 800d4a0:	f893 3030 	ldrb.w	r3, [r3, #48]	@ 0x30
+ 800d4a4:	2b00      	cmp	r3, #0
+ 800d4a6:	d01c      	beq.n	800d4e2 <change_driver_settings+0x4e>
+		mgr->ifp->enable_dhcp_client = true;
+ 800d4a8:	683b      	ldr	r3, [r7, #0]
+ 800d4aa:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d4ac:	2201      	movs	r2, #1
+ 800d4ae:	771a      	strb	r2, [r3, #28]
+		memset(&mgr->ifp->ip, 0, sizeof(mgr->ifp->ip));        // mgr->ifp->ip = {0,0,0,0} ?
+ 800d4b0:	683b      	ldr	r3, [r7, #0]
+ 800d4b2:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d4b4:	3308      	adds	r3, #8
+ 800d4b6:	2204      	movs	r2, #4
+ 800d4b8:	2100      	movs	r1, #0
+ 800d4ba:	4618      	mov	r0, r3
+ 800d4bc:	f009 f87e 	bl	80165bc <memset>
+		memset(&mgr->ifp->mask, 0, sizeof(mgr->ifp->mask));
+ 800d4c0:	683b      	ldr	r3, [r7, #0]
+ 800d4c2:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d4c4:	330c      	adds	r3, #12
+ 800d4c6:	2204      	movs	r2, #4
+ 800d4c8:	2100      	movs	r1, #0
+ 800d4ca:	4618      	mov	r0, r3
+ 800d4cc:	f009 f876 	bl	80165bc <memset>
+		memset(&mgr->ifp->gw, 0, sizeof(mgr->ifp->gw));
+ 800d4d0:	683b      	ldr	r3, [r7, #0]
+ 800d4d2:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d4d4:	3310      	adds	r3, #16
+ 800d4d6:	2204      	movs	r2, #4
+ 800d4d8:	2100      	movs	r1, #0
+ 800d4da:	4618      	mov	r0, r3
+ 800d4dc:	f009 f86e 	bl	80165bc <memset>
+ 800d4e0:	e046      	b.n	800d570 <change_driver_settings+0xdc>
+	} else {
+		// Disable DHCP client
+		struct mg_addr new_addr;
+		mgr->ifp->enable_dhcp_client = false;
+ 800d4e2:	683b      	ldr	r3, [r7, #0]
+ 800d4e4:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d4e6:	2200      	movs	r2, #0
+ 800d4e8:	771a      	strb	r2, [r3, #28]
+
+		mg_aton(mg_str(settings->ip), &new_addr);
+ 800d4ea:	687b      	ldr	r3, [r7, #4]
+ 800d4ec:	f103 0220 	add.w	r2, r3, #32
+ 800d4f0:	f107 031c 	add.w	r3, r7, #28
+ 800d4f4:	4611      	mov	r1, r2
+ 800d4f6:	4618      	mov	r0, r3
+ 800d4f8:	f7fd fa2c 	bl	800a954 <mg_str_s>
+ 800d4fc:	f107 0308 	add.w	r3, r7, #8
+ 800d500:	461a      	mov	r2, r3
+ 800d502:	f107 031c 	add.w	r3, r7, #28
+ 800d506:	e893 0003 	ldmia.w	r3, {r0, r1}
+ 800d50a:	f7f9 fa88 	bl	8006a1e <mg_aton>
+		memcpy(&mgr->ifp->ip, &new_addr.ip, sizeof(mgr->ifp->ip));
+ 800d50e:	683b      	ldr	r3, [r7, #0]
+ 800d510:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d512:	3308      	adds	r3, #8
+ 800d514:	68ba      	ldr	r2, [r7, #8]
+ 800d516:	601a      	str	r2, [r3, #0]
+
+		mg_aton(mg_str(settings->gateway), &new_addr);
+ 800d518:	687b      	ldr	r3, [r7, #4]
+ 800d51a:	f103 0210 	add.w	r2, r3, #16
+ 800d51e:	f107 0324 	add.w	r3, r7, #36	@ 0x24
+ 800d522:	4611      	mov	r1, r2
+ 800d524:	4618      	mov	r0, r3
+ 800d526:	f7fd fa15 	bl	800a954 <mg_str_s>
+ 800d52a:	f107 0308 	add.w	r3, r7, #8
+ 800d52e:	461a      	mov	r2, r3
+ 800d530:	f107 0324 	add.w	r3, r7, #36	@ 0x24
+ 800d534:	e893 0003 	ldmia.w	r3, {r0, r1}
+ 800d538:	f7f9 fa71 	bl	8006a1e <mg_aton>
+		memcpy(&mgr->ifp->gw, &new_addr.ip, sizeof(mgr->ifp->ip));
+ 800d53c:	683b      	ldr	r3, [r7, #0]
+ 800d53e:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d540:	3310      	adds	r3, #16
+ 800d542:	68ba      	ldr	r2, [r7, #8]
+ 800d544:	601a      	str	r2, [r3, #0]
+
+		mg_aton(mg_str(settings->netmask), &new_addr);
+ 800d546:	687a      	ldr	r2, [r7, #4]
+ 800d548:	f107 032c 	add.w	r3, r7, #44	@ 0x2c
+ 800d54c:	4611      	mov	r1, r2
+ 800d54e:	4618      	mov	r0, r3
+ 800d550:	f7fd fa00 	bl	800a954 <mg_str_s>
+ 800d554:	f107 0308 	add.w	r3, r7, #8
+ 800d558:	461a      	mov	r2, r3
+ 800d55a:	f107 032c 	add.w	r3, r7, #44	@ 0x2c
+ 800d55e:	e893 0003 	ldmia.w	r3, {r0, r1}
+ 800d562:	f7f9 fa5c 	bl	8006a1e <mg_aton>
+		memcpy(&mgr->ifp->mask, &new_addr.ip, sizeof(mgr->ifp->ip));
+ 800d566:	683b      	ldr	r3, [r7, #0]
+ 800d568:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d56a:	330c      	adds	r3, #12
+ 800d56c:	68ba      	ldr	r2, [r7, #8]
+ 800d56e:	601a      	str	r2, [r3, #0]
+	}
+	for (struct mg_connection *c = mgr->conns; c != NULL; c = c->next){
+ 800d570:	683b      	ldr	r3, [r7, #0]
+ 800d572:	681b      	ldr	r3, [r3, #0]
+ 800d574:	637b      	str	r3, [r7, #52]	@ 0x34
+ 800d576:	e011      	b.n	800d59c <change_driver_settings+0x108>
+		if (c->is_listening == 0) c->is_closing = 1;
+ 800d578:	6b7b      	ldr	r3, [r7, #52]	@ 0x34
+ 800d57a:	f893 30ac 	ldrb.w	r3, [r3, #172]	@ 0xac
+ 800d57e:	f003 0301 	and.w	r3, r3, #1
+ 800d582:	b2db      	uxtb	r3, r3
+ 800d584:	2b00      	cmp	r3, #0
+ 800d586:	d106      	bne.n	800d596 <change_driver_settings+0x102>
+ 800d588:	6b7a      	ldr	r2, [r7, #52]	@ 0x34
+ 800d58a:	f892 30ad 	ldrb.w	r3, [r2, #173]	@ 0xad
+ 800d58e:	f043 0320 	orr.w	r3, r3, #32
+ 800d592:	f882 30ad 	strb.w	r3, [r2, #173]	@ 0xad
+	for (struct mg_connection *c = mgr->conns; c != NULL; c = c->next){
+ 800d596:	6b7b      	ldr	r3, [r7, #52]	@ 0x34
+ 800d598:	681b      	ldr	r3, [r3, #0]
+ 800d59a:	637b      	str	r3, [r7, #52]	@ 0x34
+ 800d59c:	6b7b      	ldr	r3, [r7, #52]	@ 0x34
+ 800d59e:	2b00      	cmp	r3, #0
+ 800d5a0:	d1ea      	bne.n	800d578 <change_driver_settings+0xe4>
+	}
+	mgr->ifp->state = MG_TCPIP_STATE_DOWN;
+ 800d5a2:	683b      	ldr	r3, [r7, #0]
+ 800d5a4:	6bdb      	ldr	r3, [r3, #60]	@ 0x3c
+ 800d5a6:	2200      	movs	r2, #0
+ 800d5a8:	f883 2084 	strb.w	r2, [r3, #132]	@ 0x84
+}
+ 800d5ac:	bf00      	nop
+ 800d5ae:	3738      	adds	r7, #56	@ 0x38
+ 800d5b0:	46bd      	mov	sp, r7
+ 800d5b2:	bd80      	pop	{r7, pc}
 
 0800d5b4 <scmp>:
 } packed_files[] = {
@@ -53075,25 +53075,25 @@ uint8_t *puc;
  8017694:	469e      	mov	lr, r3
  8017696:	4770      	bx	lr
 
-08017698 <__is_dualbank_veneer>:
- 8017698:	f85f f000 	ldr.w	pc, [pc]	@ 801769c <__is_dualbank_veneer+0x4>
- 801769c:	24000495 	.word	0x24000495
+08017698 <__single_bank_swap_veneer>:
+ 8017698:	f85f f000 	ldr.w	pc, [pc]	@ 801769c <__single_bank_swap_veneer+0x4>
+ 801769c:	240009b9 	.word	0x240009b9
 
 080176a0 <__Flash_Write_Data_veneer>:
  80176a0:	f85f f000 	ldr.w	pc, [pc]	@ 80176a4 <__Flash_Write_Data_veneer+0x4>
  80176a4:	24000325 	.word	0x24000325
 
-080176a8 <__single_bank_swap_veneer>:
- 80176a8:	f85f f000 	ldr.w	pc, [pc]	@ 80176ac <__single_bank_swap_veneer+0x4>
- 80176ac:	240009b9 	.word	0x240009b9
+080176a8 <__set_ip_configurations_veneer>:
+ 80176a8:	f85f f000 	ldr.w	pc, [pc]	@ 80176ac <__set_ip_configurations_veneer+0x4>
+ 80176ac:	24000a2d 	.word	0x24000a2d
 
-080176b0 <__get_network_settings_veneer>:
- 80176b0:	f85f f000 	ldr.w	pc, [pc]	@ 80176b4 <__get_network_settings_veneer+0x4>
- 80176b4:	24000a09 	.word	0x24000a09
+080176b0 <__is_dualbank_veneer>:
+ 80176b0:	f85f f000 	ldr.w	pc, [pc]	@ 80176b4 <__is_dualbank_veneer+0x4>
+ 80176b4:	24000495 	.word	0x24000495
 
-080176b8 <__set_ip_configurations_veneer>:
- 80176b8:	f85f f000 	ldr.w	pc, [pc]	@ 80176bc <__set_ip_configurations_veneer+0x4>
- 80176bc:	24000a2d 	.word	0x24000a2d
+080176b8 <__get_network_settings_veneer>:
+ 80176b8:	f85f f000 	ldr.w	pc, [pc]	@ 80176bc <__get_network_settings_veneer+0x4>
+ 80176bc:	24000a09 	.word	0x24000a09
 
 Disassembly of section .data:
 
@@ -53216,7 +53216,7 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 	 /* Unlock the Flash to enable the flash control register access *************/
 	  __disable_irq();
 	  HAL_FLASH_Unlock();
-2400033a:	f000 fbad 	bl	24000a98 <__HAL_FLASH_Unlock_veneer>
+2400033a:	f000 fbd1 	bl	24000ae0 <__HAL_FLASH_Unlock_veneer>
 
 	  /* Erase the user Flash area */
 
@@ -53224,7 +53224,7 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 
 	  uint32_t StartSector = GetSector(StartSectorAddress);
 2400033e:	68f8      	ldr	r0, [r7, #12]
-24000340:	f000 fbd6 	bl	24000af0 <__GetSector_veneer>
+24000340:	f000 fbbe 	bl	24000ac0 <__GetSector_veneer>
 24000344:	6238      	str	r0, [r7, #32]
 	  uint32_t EndSectorAddress = StartSectorAddress + numberofwords*4;
 24000346:	88fb      	ldrh	r3, [r7, #6]
@@ -53235,7 +53235,7 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 24000350:	61fb      	str	r3, [r7, #28]
 	  uint32_t EndSector = GetSector(EndSectorAddress);
 24000352:	69f8      	ldr	r0, [r7, #28]
-24000354:	f000 fbcc 	bl	24000af0 <__GetSector_veneer>
+24000354:	f000 fbb4 	bl	24000ac0 <__GetSector_veneer>
 24000358:	61b8      	str	r0, [r7, #24]
 
 	  /* Fill EraseInit structure*/
@@ -53268,13 +53268,13 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 2400037e:	f107 0314 	add.w	r3, r7, #20
 24000382:	4619      	mov	r1, r3
 24000384:	4816      	ldr	r0, [pc, #88]	@ (240003e0 <Flash_Write_Data+0xbc>)
-24000386:	f000 fb9f 	bl	24000ac8 <__HAL_FLASHEx_Erase_veneer>
+24000386:	f000 fb8b 	bl	24000aa0 <__HAL_FLASHEx_Erase_veneer>
 2400038a:	4603      	mov	r3, r0
 2400038c:	2b00      	cmp	r3, #0
 2400038e:	d01a      	beq.n	240003c6 <Flash_Write_Data+0xa2>
 	  {
 		  return HAL_FLASH_GetError ();
-24000390:	f000 fba2 	bl	24000ad8 <__HAL_FLASH_GetError_veneer>
+24000390:	f000 fbb2 	bl	24000af8 <__HAL_FLASH_GetError_veneer>
 24000394:	4603      	mov	r3, r0
 24000396:	e01f      	b.n	240003d8 <Flash_Write_Data+0xb4>
 	  /* Program the user Flash area 8 WORDS at a time
@@ -53290,7 +53290,7 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 240003a0:	461a      	mov	r2, r3
 240003a2:	68f9      	ldr	r1, [r7, #12]
 240003a4:	2001      	movs	r0, #1
-240003a6:	f000 fb93 	bl	24000ad0 <__HAL_FLASH_Program_veneer>
+240003a6:	f000 fb87 	bl	24000ab8 <__HAL_FLASH_Program_veneer>
 240003aa:	4603      	mov	r3, r0
 240003ac:	2b00      	cmp	r3, #0
 240003ae:	d106      	bne.n	240003be <Flash_Write_Data+0x9a>
@@ -53309,7 +53309,7 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 	     {
 	       /* Error occurred while writing data in Flash memory*/
 	    	 return HAL_FLASH_GetError ();
-240003be:	f000 fb8b 	bl	24000ad8 <__HAL_FLASH_GetError_veneer>
+240003be:	f000 fb9b 	bl	24000af8 <__HAL_FLASH_GetError_veneer>
 240003c2:	4603      	mov	r3, r0
 240003c4:	e008      	b.n	240003d8 <Flash_Write_Data+0xb4>
 	   while (sofar < numberofwords)
@@ -53323,7 +53323,7 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 	  /* Lock the Flash to disable the flash control register access (recommended
 	     to protect the FLASH memory against possible unwanted operation) *********/
 	  HAL_FLASH_Lock();
-240003ce:	f000 fb93 	bl	24000af8 <__HAL_FLASH_Lock_veneer>
+240003ce:	f000 fb83 	bl	24000ad8 <__HAL_FLASH_Lock_veneer>
   __ASM volatile ("cpsie i" : : : "memory");
 240003d2:	b662      	cpsie	i
 }
@@ -53413,7 +53413,7 @@ MG_IRAM void Flash_Write_NUM (uint32_t StartSectorAddress, float Num)
 	float2Bytes(bytes_temp, Num);
 2400043e:	ed97 0a00 	vldr	s0, [r7]
 24000442:	4806      	ldr	r0, [pc, #24]	@ (2400045c <Flash_Write_NUM+0x2a>)
-24000444:	f000 fb38 	bl	24000ab8 <__float2Bytes_veneer>
+24000444:	f000 fb50 	bl	24000ae8 <__float2Bytes_veneer>
 	Flash_Write_Data (StartSectorAddress, (uint32_t *)bytes_temp, 1);
 24000448:	2201      	movs	r2, #1
 2400044a:	4904      	ldr	r1, [pc, #16]	@ (2400045c <Flash_Write_NUM+0x2a>)
@@ -53448,7 +53448,7 @@ MG_IRAM float Flash_Read_NUM (uint32_t StartSectorAddress)
 	value = Bytes2float(buffer);
 24000476:	f107 0308 	add.w	r3, r7, #8
 2400047a:	4618      	mov	r0, r3
-2400047c:	f000 fb18 	bl	24000ab0 <__Bytes2float_veneer>
+2400047c:	f000 fb28 	bl	24000ad0 <__Bytes2float_veneer>
 24000480:	ed87 0a03 	vstr	s0, [r7, #12]
 	return value;
 24000484:	68fb      	ldr	r3, [r7, #12]
@@ -53748,10 +53748,10 @@ MG_IRAM static bool mg_stm32h7_erase(void *addr) {
 2400069c:	f641 3238 	movw	r2, #6968	@ 0x1b38
 240006a0:	4942      	ldr	r1, [pc, #264]	@ (240007ac <mg_stm32h7_erase+0x138>)
 240006a2:	2001      	movs	r0, #1
-240006a4:	f000 fa00 	bl	24000aa8 <__mg_log_prefix_veneer>
+240006a4:	f000 fa24 	bl	24000af0 <__mg_log_prefix_veneer>
 240006a8:	6879      	ldr	r1, [r7, #4]
 240006aa:	4841      	ldr	r0, [pc, #260]	@ (240007b0 <mg_stm32h7_erase+0x13c>)
-240006ac:	f000 f9f8 	bl	24000aa0 <__mg_log_veneer>
+240006ac:	f000 f9fc 	bl	24000aa8 <__mg_log_veneer>
 240006b0:	e072      	b.n	24000798 <mg_stm32h7_erase+0x124>
     uintptr_t diff = (char *) addr - (char *) s_mg_flash_stm32h7.start;
 240006b2:	4b40      	ldr	r3, [pc, #256]	@ (240007b4 <mg_stm32h7_erase+0x140>)
@@ -53843,7 +53843,7 @@ MG_IRAM static bool mg_stm32h7_erase(void *addr) {
 2400075a:	f641 3248 	movw	r2, #6984	@ 0x1b48
 2400075e:	4913      	ldr	r1, [pc, #76]	@ (240007ac <mg_stm32h7_erase+0x138>)
 24000760:	2003      	movs	r0, #3
-24000762:	f000 f9a1 	bl	24000aa8 <__mg_log_prefix_veneer>
+24000762:	f000 f9c5 	bl	24000af0 <__mg_log_prefix_veneer>
 24000766:	7ffb      	ldrb	r3, [r7, #31]
 24000768:	2b00      	cmp	r3, #0
 2400076a:	d001      	beq.n	24000770 <mg_stm32h7_erase+0xfc>
@@ -53862,7 +53862,7 @@ MG_IRAM static bool mg_stm32h7_erase(void *addr) {
 24000784:	687a      	ldr	r2, [r7, #4]
 24000786:	69b9      	ldr	r1, [r7, #24]
 24000788:	480d      	ldr	r0, [pc, #52]	@ (240007c0 <mg_stm32h7_erase+0x14c>)
-2400078a:	f000 f989 	bl	24000aa0 <__mg_log_veneer>
+2400078a:	f000 f98d 	bl	24000aa8 <__mg_log_veneer>
     MG_REG(bank + FLASH_CR) = saved_cr;  // Restore CR
 2400078e:	693b      	ldr	r3, [r7, #16]
 24000790:	330c      	adds	r3, #12
@@ -53981,13 +53981,13 @@ MG_IRAM static bool mg_stm32h7_write(void *addr, const void *buf, size_t len) {
 24000872:	f641 3262 	movw	r2, #7010	@ 0x1b62
 24000876:	494a      	ldr	r1, [pc, #296]	@ (240009a0 <mg_stm32h7_write+0x158>)
 24000878:	2001      	movs	r0, #1
-2400087a:	f000 f915 	bl	24000aa8 <__mg_log_prefix_veneer>
+2400087a:	f000 f939 	bl	24000af0 <__mg_log_prefix_veneer>
 2400087e:	4b45      	ldr	r3, [pc, #276]	@ (24000994 <mg_stm32h7_write+0x14c>)
 24000880:	68db      	ldr	r3, [r3, #12]
 24000882:	461a      	mov	r2, r3
 24000884:	6879      	ldr	r1, [r7, #4]
 24000886:	4847      	ldr	r0, [pc, #284]	@ (240009a4 <mg_stm32h7_write+0x15c>)
-24000888:	f000 f90a 	bl	24000aa0 <__mg_log_veneer>
+24000888:	f000 f90e 	bl	24000aa8 <__mg_log_veneer>
     return false;
 2400088c:	2300      	movs	r3, #0
 2400088e:	e07d      	b.n	2400098c <mg_stm32h7_write+0x144>
@@ -54095,7 +54095,7 @@ MG_IRAM static bool mg_stm32h7_write(void *addr, const void *buf, size_t len) {
 24000946:	f641 3279 	movw	r2, #7033	@ 0x1b79
 2400094a:	4915      	ldr	r1, [pc, #84]	@ (240009a0 <mg_stm32h7_write+0x158>)
 2400094c:	2003      	movs	r0, #3
-2400094e:	f000 f8ab 	bl	24000aa8 <__mg_log_prefix_veneer>
+2400094e:	f000 f8cf 	bl	24000af0 <__mg_log_prefix_veneer>
 24000952:	7ffb      	ldrb	r3, [r7, #31]
 24000954:	2b00      	cmp	r3, #0
 24000956:	d001      	beq.n	2400095c <mg_stm32h7_write+0x114>
@@ -54114,7 +54114,7 @@ MG_IRAM static bool mg_stm32h7_write(void *addr, const void *buf, size_t len) {
 24000970:	6a7a      	ldr	r2, [r7, #36]	@ 0x24
 24000972:	6879      	ldr	r1, [r7, #4]
 24000974:	480f      	ldr	r0, [pc, #60]	@ (240009b4 <mg_stm32h7_write+0x16c>)
-24000976:	f000 f893 	bl	24000aa0 <__mg_log_veneer>
+24000976:	f000 f897 	bl	24000aa8 <__mg_log_veneer>
   MG_REG(bank + FLASH_CR) &= ~MG_BIT(1);  // Clear programming flag
 2400097a:	69bb      	ldr	r3, [r7, #24]
 2400097c:	330c      	adds	r3, #12
@@ -54233,26 +54233,26 @@ MG_IRAM void set_ip_configurations(void *arg) {
 24000a52:	461a      	mov	r2, r3
 24000a54:	6c39      	ldr	r1, [r7, #64]	@ 0x40
 24000a56:	480c      	ldr	r0, [pc, #48]	@ (24000a88 <set_ip_configurations+0x5c>)
-24000a58:	f000 f846 	bl	24000ae8 <__printf_veneer>
+24000a58:	f000 f836 	bl	24000ac8 <__printf_veneer>
 	if (raw == 0xDEADBEEF){//(!settings.is_not_initialized){
 24000a5c:	6c3b      	ldr	r3, [r7, #64]	@ 0x40
 24000a5e:	4a0b      	ldr	r2, [pc, #44]	@ (24000a8c <set_ip_configurations+0x60>)
 24000a60:	4293      	cmp	r3, r2
 24000a62:	d106      	bne.n	24000a72 <set_ip_configurations+0x46>
-		apply_network_settings(&settings, mgr);
+		change_driver_settings(&settings, mgr);
 24000a64:	f107 0308 	add.w	r3, r7, #8
 24000a68:	6c79      	ldr	r1, [r7, #68]	@ 0x44
 24000a6a:	4618      	mov	r0, r3
-24000a6c:	f000 f828 	bl	24000ac0 <__apply_network_settings_veneer>
+24000a6c:	f000 f820 	bl	24000ab0 <__change_driver_settings_veneer>
 }
 24000a70:	e006      	b.n	24000a80 <set_ip_configurations+0x54>
 		printf("setting not init, using default settings\r\n\r\n\r\n");
 24000a72:	4807      	ldr	r0, [pc, #28]	@ (24000a90 <set_ip_configurations+0x64>)
-24000a74:	f000 f834 	bl	24000ae0 <__puts_veneer>
-		apply_network_settings(&default_network_settings, mgr);
+24000a74:	f000 f810 	bl	24000a98 <__puts_veneer>
+		change_driver_settings(&default_network_settings, mgr);
 24000a78:	6c79      	ldr	r1, [r7, #68]	@ 0x44
 24000a7a:	4806      	ldr	r0, [pc, #24]	@ (24000a94 <set_ip_configurations+0x68>)
-24000a7c:	f000 f820 	bl	24000ac0 <__apply_network_settings_veneer>
+24000a7c:	f000 f818 	bl	24000ab0 <__change_driver_settings_veneer>
 }
 24000a80:	bf00      	nop
 24000a82:	3748      	adds	r7, #72	@ 0x48
@@ -54263,54 +54263,54 @@ MG_IRAM void set_ip_configurations(void *arg) {
 24000a90:	080197d0 	.word	0x080197d0
 24000a94:	24000284 	.word	0x24000284
 
-24000a98 <__HAL_FLASH_Unlock_veneer>:
-24000a98:	f85f f000 	ldr.w	pc, [pc]	@ 24000a9c <__HAL_FLASH_Unlock_veneer+0x4>
-24000a9c:	0800e315 	.word	0x0800e315
+24000a98 <__puts_veneer>:
+24000a98:	f85f f000 	ldr.w	pc, [pc]	@ 24000a9c <__puts_veneer+0x4>
+24000a9c:	08016341 	.word	0x08016341
 
-24000aa0 <__mg_log_veneer>:
-24000aa0:	f85f f000 	ldr.w	pc, [pc]	@ 24000aa4 <__mg_log_veneer+0x4>
-24000aa4:	0800636d 	.word	0x0800636d
+24000aa0 <__HAL_FLASHEx_Erase_veneer>:
+24000aa0:	f85f f000 	ldr.w	pc, [pc]	@ 24000aa4 <__HAL_FLASHEx_Erase_veneer+0x4>
+24000aa4:	0800e44d 	.word	0x0800e44d
 
-24000aa8 <__mg_log_prefix_veneer>:
-24000aa8:	f85f f000 	ldr.w	pc, [pc]	@ 24000aac <__mg_log_prefix_veneer+0x4>
-24000aac:	080062cd 	.word	0x080062cd
+24000aa8 <__mg_log_veneer>:
+24000aa8:	f85f f000 	ldr.w	pc, [pc]	@ 24000aac <__mg_log_veneer+0x4>
+24000aac:	0800636d 	.word	0x0800636d
 
-24000ab0 <__Bytes2float_veneer>:
-24000ab0:	f85f f000 	ldr.w	pc, [pc]	@ 24000ab4 <__Bytes2float_veneer+0x4>
-24000ab4:	080007f7 	.word	0x080007f7
+24000ab0 <__change_driver_settings_veneer>:
+24000ab0:	f85f f000 	ldr.w	pc, [pc]	@ 24000ab4 <__change_driver_settings_veneer+0x4>
+24000ab4:	0800d495 	.word	0x0800d495
 
-24000ab8 <__float2Bytes_veneer>:
-24000ab8:	f85f f000 	ldr.w	pc, [pc]	@ 24000abc <__float2Bytes_veneer+0x4>
-24000abc:	080007b5 	.word	0x080007b5
+24000ab8 <__HAL_FLASH_Program_veneer>:
+24000ab8:	f85f f000 	ldr.w	pc, [pc]	@ 24000abc <__HAL_FLASH_Program_veneer+0x4>
+24000abc:	0800e235 	.word	0x0800e235
 
-24000ac0 <__apply_network_settings_veneer>:
-24000ac0:	f85f f000 	ldr.w	pc, [pc]	@ 24000ac4 <__apply_network_settings_veneer+0x4>
-24000ac4:	0800d451 	.word	0x0800d451
+24000ac0 <__GetSector_veneer>:
+24000ac0:	f85f f000 	ldr.w	pc, [pc]	@ 24000ac4 <__GetSector_veneer+0x4>
+24000ac4:	080006d1 	.word	0x080006d1
 
-24000ac8 <__HAL_FLASHEx_Erase_veneer>:
-24000ac8:	f85f f000 	ldr.w	pc, [pc]	@ 24000acc <__HAL_FLASHEx_Erase_veneer+0x4>
-24000acc:	0800e44d 	.word	0x0800e44d
+24000ac8 <__printf_veneer>:
+24000ac8:	f85f f000 	ldr.w	pc, [pc]	@ 24000acc <__printf_veneer+0x4>
+24000acc:	08016261 	.word	0x08016261
 
-24000ad0 <__HAL_FLASH_Program_veneer>:
-24000ad0:	f85f f000 	ldr.w	pc, [pc]	@ 24000ad4 <__HAL_FLASH_Program_veneer+0x4>
-24000ad4:	0800e235 	.word	0x0800e235
+24000ad0 <__Bytes2float_veneer>:
+24000ad0:	f85f f000 	ldr.w	pc, [pc]	@ 24000ad4 <__Bytes2float_veneer+0x4>
+24000ad4:	080007f7 	.word	0x080007f7
 
-24000ad8 <__HAL_FLASH_GetError_veneer>:
-24000ad8:	f85f f000 	ldr.w	pc, [pc]	@ 24000adc <__HAL_FLASH_GetError_veneer+0x4>
-24000adc:	0800e389 	.word	0x0800e389
+24000ad8 <__HAL_FLASH_Lock_veneer>:
+24000ad8:	f85f f000 	ldr.w	pc, [pc]	@ 24000adc <__HAL_FLASH_Lock_veneer+0x4>
+24000adc:	0800e359 	.word	0x0800e359
 
-24000ae0 <__puts_veneer>:
-24000ae0:	f85f f000 	ldr.w	pc, [pc]	@ 24000ae4 <__puts_veneer+0x4>
-24000ae4:	08016341 	.word	0x08016341
+24000ae0 <__HAL_FLASH_Unlock_veneer>:
+24000ae0:	f85f f000 	ldr.w	pc, [pc]	@ 24000ae4 <__HAL_FLASH_Unlock_veneer+0x4>
+24000ae4:	0800e315 	.word	0x0800e315
 
-24000ae8 <__printf_veneer>:
-24000ae8:	f85f f000 	ldr.w	pc, [pc]	@ 24000aec <__printf_veneer+0x4>
-24000aec:	08016261 	.word	0x08016261
+24000ae8 <__float2Bytes_veneer>:
+24000ae8:	f85f f000 	ldr.w	pc, [pc]	@ 24000aec <__float2Bytes_veneer+0x4>
+24000aec:	080007b5 	.word	0x080007b5
 
-24000af0 <__GetSector_veneer>:
-24000af0:	f85f f000 	ldr.w	pc, [pc]	@ 24000af4 <__GetSector_veneer+0x4>
-24000af4:	080006d1 	.word	0x080006d1
+24000af0 <__mg_log_prefix_veneer>:
+24000af0:	f85f f000 	ldr.w	pc, [pc]	@ 24000af4 <__mg_log_prefix_veneer+0x4>
+24000af4:	080062cd 	.word	0x080062cd
 
-24000af8 <__HAL_FLASH_Lock_veneer>:
-24000af8:	f85f f000 	ldr.w	pc, [pc]	@ 24000afc <__HAL_FLASH_Lock_veneer+0x4>
-24000afc:	0800e359 	.word	0x0800e359
+24000af8 <__HAL_FLASH_GetError_veneer>:
+24000af8:	f85f f000 	ldr.w	pc, [pc]	@ 24000afc <__HAL_FLASH_GetError_veneer+0x4>
+24000afc:	0800e389 	.word	0x0800e389
