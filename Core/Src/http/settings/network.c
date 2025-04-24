@@ -19,11 +19,23 @@
 
 
 
+
+static network_settings default_network_settings = {
+    .netmask            = "255.255.255.0",
+    .gateway            = "192.168.1.1",
+    .ip                 = "192.168.1.10",
+    .dhcp               = false,
+    .is_initialized 	= 0xDEADBEEF
+};
+
+
+
 MG_IRAM void get_network_settings(network_settings *data) {
     // change to lower case
 	uint16_t numofwords = (sizeof(network_settings) / 4) + ((sizeof(network_settings) % 4) != 0);
 	Flash_Read_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, numofwords);
 }
+
 
 
 
@@ -34,36 +46,49 @@ MG_IRAM void set_ip_configurations(void *arg) {
 
 	network_settings settings;
 	get_network_settings(&settings);
-	if (!settings.settings_initialized){
-
-
-			if (settings.dhcp){
-				mgr->ifp->enable_dhcp_client = true;
-				memset(&mgr->ifp->ip, 0, sizeof(mgr->ifp->ip));        // mgr->ifp->ip = {0,0,0,0} ?
-				memset(&mgr->ifp->mask, 0, sizeof(mgr->ifp->mask));
-				memset(&mgr->ifp->gw, 0, sizeof(mgr->ifp->gw));
-			} else {
-				// Disable DHCP client
-				struct mg_addr new_addr;
-				mgr->ifp->enable_dhcp_client = false;
-
-				mg_aton(mg_str(settings.ip), &new_addr);
-				memcpy(&mgr->ifp->ip, &new_addr.ip, sizeof(mgr->ifp->ip));
-
-				mg_aton(mg_str(settings.gateway), &new_addr);
-				memcpy(&mgr->ifp->gw, &new_addr.ip, sizeof(mgr->ifp->ip));
-
-				mg_aton(mg_str(settings.netmask), &new_addr);
-				memcpy(&mgr->ifp->mask, &new_addr.ip, sizeof(mgr->ifp->ip));
-			}
-			for (struct mg_connection *c = mgr->conns; c != NULL; c = c->next){
-				if (c->is_listening == 0) c->is_closing = 1;
-			}
-			mgr->ifp->state = MG_TCPIP_STATE_DOWN;
+	uint32_t raw = settings.is_initialized;
+	printf("DEBUG: is_initialized = %u, !value = %d\n", raw, !raw);
+	if (raw == 0xDEADBEEF){//(!settings.is_not_initialized){
+		apply_network_settings(&settings, mgr);
 
     // You now have both mgr and settings
 	}
+	else{
+		printf("setting not init, using default settings\r\n\r\n\r\n");
+		apply_network_settings(&default_network_settings, mgr);
+	}
 }
+
+
+void apply_network_settings(network_settings *settings, struct mg_mgr *mgr){
+	if (settings->dhcp){
+		mgr->ifp->enable_dhcp_client = true;
+		memset(&mgr->ifp->ip, 0, sizeof(mgr->ifp->ip));        // mgr->ifp->ip = {0,0,0,0} ?
+		memset(&mgr->ifp->mask, 0, sizeof(mgr->ifp->mask));
+		memset(&mgr->ifp->gw, 0, sizeof(mgr->ifp->gw));
+	} else {
+		// Disable DHCP client
+		struct mg_addr new_addr;
+		mgr->ifp->enable_dhcp_client = false;
+
+		mg_aton(mg_str(settings->ip), &new_addr);
+		memcpy(&mgr->ifp->ip, &new_addr.ip, sizeof(mgr->ifp->ip));
+
+		mg_aton(mg_str(settings->gateway), &new_addr);
+		memcpy(&mgr->ifp->gw, &new_addr.ip, sizeof(mgr->ifp->ip));
+
+		mg_aton(mg_str(settings->netmask), &new_addr);
+		memcpy(&mgr->ifp->mask, &new_addr.ip, sizeof(mgr->ifp->ip));
+	}
+	for (struct mg_connection *c = mgr->conns; c != NULL; c = c->next){
+		if (c->is_listening == 0) c->is_closing = 1;
+	}
+	mgr->ifp->state = MG_TCPIP_STATE_DOWN;
+}
+
+
+
+
 
 
 void set_network_settings(network_settings *data, struct mg_mgr *mgr) {

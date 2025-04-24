@@ -1,3 +1,4 @@
-../Core/Src/http/settings/network.c:22:14:get_network_settings	1
-../Core/Src/http/settings/network.c:30:14:set_ip_configurations	5
-../Core/Src/http/settings/network.c:69:6:set_network_settings	1
+../Core/Src/http/settings/network.c:33:14:get_network_settings	1
+../Core/Src/http/settings/network.c:42:14:set_ip_configurations	2
+../Core/Src/http/settings/network.c:63:6:apply_network_settings	4
+../Core/Src/http/settings/network.c:94:6:set_network_settings	1

@@ -17,7 +17,7 @@ typedef struct {
   char gateway[16];
   char ip[16];
   bool dhcp;
-  bool settings_initialized;  // Indicates whether settings were previously written
+  uint32_t is_initialized;  // Indicates whether settings were previously written ****magic != 0xDEADBEEF
 } network_settings;
 
 

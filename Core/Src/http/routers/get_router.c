@@ -29,7 +29,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		get_network_settings(&settings);  // Read settings from flash and convert to struct
 
 		// change to better name
-		if (settings.settings_initialized) {
+		if (settings.is_initialized != 0xDEADBEEF) {
 				// Settings were never initialized, return 400 Bad Request
 				mg_http_reply(c, 400, "", "error: settings were never initialized\r\n");
 			} else {
