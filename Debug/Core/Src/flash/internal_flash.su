@@ -1,8 +1,0 @@
-../Core/Src/flash/internal_flash.c:31:17:GetSector	24	static
-../Core/Src/flash/internal_flash.c:85:6:float2Bytes	24	static
-../Core/Src/flash/internal_flash.c:100:7:Bytes2float	32	static
-../Core/Src/flash/internal_flash.c:129:18:Flash_Write_Data	48	static,ignoring_inline_asm
-../Core/Src/flash/internal_flash.c:198:14:Flash_Read_Data	32	static,ignoring_inline_asm
-../Core/Src/flash/internal_flash.c:208:6:Convert_To_Str	32	static
-../Core/Src/flash/internal_flash.c:219:14:Flash_Write_NUM	16	static
-../Core/Src/flash/internal_flash.c:227:15:Flash_Read_NUM	24	static

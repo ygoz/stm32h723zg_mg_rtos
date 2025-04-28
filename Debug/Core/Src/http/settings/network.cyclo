@@ -1,5 +1,0 @@
-../Core/Src/http/settings/network.c:27:6:network_settings_init	1
-../Core/Src/http/settings/network.c:33:14:get_network_settings	1
-../Core/Src/http/settings/network.c:40:6:set_network_settings	1
-../Core/Src/http/settings/network.c:55:14:set_ip_configurations	2
-../Core/Src/http/settings/network.c:76:6:change_driver_settings	4
