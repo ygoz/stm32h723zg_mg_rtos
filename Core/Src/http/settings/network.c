@@ -32,8 +32,8 @@ void network_settings_init(network_settings *settings) {
 
 MG_IRAM void get_network_settings(network_settings *data) {
     // change to lower case
-	uint16_t numofwords = (sizeof(network_settings) / 4) + ((sizeof(network_settings) % 4) != 0);
-	Flash_Read_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, numofwords);
+	uint16_t num_words = (sizeof(network_settings) / 4) + ((sizeof(network_settings) % 4) != 0);
+	Flash_Read_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
 }
 
 

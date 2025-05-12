@@ -16,7 +16,7 @@ static const char *s_json_header =
 
 // put documentaion in header, and organize the code 
 void handle_firmware_upload(struct mg_connection *c, struct mg_http_message *hm) {
-  char name[64], offset[20], total[20];
+  char name[64], offset[20], total[20]; // initialize {0}?
   struct mg_str data = hm->body;
   long ofs = -1, tot = -1;
   name[0] = offset[0] = '\0';
