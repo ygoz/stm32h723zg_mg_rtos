@@ -33,7 +33,7 @@ void network_settings_init(network_settings *settings) {
 MG_IRAM void get_network_settings(network_settings *data) {
     // change to lower case
 	uint16_t num_words = (sizeof(network_settings) / 4) + ((sizeof(network_settings) % 4) != 0);
-	Flash_Read_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
+	flash_read_data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
 }
 
 
@@ -44,7 +44,7 @@ void set_network_settings(network_settings *data, struct mg_mgr *mgr) {
     uint16_t num_words = sizeof(network_settings) / 4 + (sizeof(network_settings) % 4 != 0);
 
     // Write the struct directly to flash
-    Flash_Write_Data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
+    flash_write_data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words); // this func returns a status use this for error handling and also return status in this func
     mg_timer_add(mgr, 500, 0, set_ip_configurations,  mgr); // Non-blocking delay to func set_ip_configurations
 }
 

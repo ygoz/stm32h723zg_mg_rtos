@@ -14,14 +14,14 @@ if __name__ == '__main__':
         # response = httpx.get(f"{STM32_HTTP_SERVER}/index.html")
         
         
-        # response = httpx.get(f"{STM32_HTTP_SERVER}/flash/settings/get")
+        response = httpx.get(f"{STM32_HTTP_SERVER}/flash/settings/get")
         
         
-        query_params = {"netmask" : "255.255.255.0", "gateway" : "192.168.1.2", "ip" : "192.168.1.10", "dhcp" : False}
-        response = httpx.post(
-            f"{STM32_HTTP_SERVER}/flash/settings/set",
-            params=query_params
-        )
+        # query_params = {"netmask" : "255.255.255.0", "gateway" : "192.168.1.2", "ip" : "192.168.1.10", "dhcp" : False}
+        # response = httpx.post(
+        #     f"{STM32_HTTP_SERVER}/flash/settings/set",
+        #     params=query_params
+        # )
 
         # Print the response
         # if response.status_code == 200:
