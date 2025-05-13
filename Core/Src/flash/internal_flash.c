@@ -28,47 +28,47 @@
  * @param Adress
 
  */
-static uint32_t GetSector(uint32_t Address)   // get_sector or GetSector in all the project.   variables only lower case
+static uint32_t get_sector(uint32_t flash_addr)   // get_sector or GetSector in all the project.   variables only lower case
 {
   uint32_t sector = 0;
 
   /* BANK 1 */
-  if((Address >= 0x08000000) && (Address < 0x08020000))
+  if((flash_addr >= 0x08000000) && (flash_addr < 0x08020000))
   {
     sector = FLASH_SECTOR_0;
   }
 
-  else if((Address >= 0x08020000) && (Address < 0x08040000))
+  else if((flash_addr >= 0x08020000) && (flash_addr < 0x08040000))
   {
     sector = FLASH_SECTOR_1;
   }
 
-  else if((Address >= 0x08040000) && (Address < 0x08060000))
+  else if((flash_addr >= 0x08040000) && (flash_addr < 0x08060000))
   {
     sector = FLASH_SECTOR_2;
   }
 
-  else if((Address >= 0x08060000) && (Address < 0x08080000))
+  else if((flash_addr >= 0x08060000) && (flash_addr < 0x08080000))
   {
     sector = FLASH_SECTOR_3;
   }
 
-  else if((Address >= 0x08080000) && (Address < 0x080A0000))
+  else if((flash_addr >= 0x08080000) && (flash_addr < 0x080A0000))
   {
     sector = FLASH_SECTOR_4;
   }
 
-  else if((Address >= 0x080A0000) && (Address < 0x080C0000))
+  else if((flash_addr >= 0x080A0000) && (flash_addr < 0x080C0000))
   {
     sector = FLASH_SECTOR_5;
   }
 
-  else if((Address >= 0x080C0000) && (Address < 0x080E0000))
+  else if((flash_addr >= 0x080C0000) && (flash_addr < 0x080E0000))
   {
     sector = FLASH_SECTOR_6;
   }
 
-  else if((Address >= 0x080E0000) && (Address < 0x08100000))
+  else if((flash_addr >= 0x080E0000) && (flash_addr < 0x08100000))
   {
     sector = FLASH_SECTOR_7;
   }
@@ -126,12 +126,12 @@ If you try to write a single 32 bit word, it will automatically write 0's for th
 *
 */
 
-MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords)  //  ==> num_words
+MG_IRAM uint32_t flash_write_data (uint32_t start_sector_addr, uint32_t *data, uint16_t num_of_words)  //  ==> num_words
 {
 
 	static FLASH_EraseInitTypeDef EraseInitStruct;
 	uint32_t SECTORError;
-	int sofar=0;
+	int words_so_far = 0;
 
 	 /* Unlock the Flash to enable the flash control register access *************/
 	  __disable_irq();
@@ -141,16 +141,16 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 
 	  /* Get the number of sector to erase from 1st sector */
 
-	  uint32_t StartSector = GetSector(StartSectorAddress);
-	  uint32_t EndSectorAddress = StartSectorAddress + numberofwords*4;
-	  uint32_t EndSector = GetSector(EndSectorAddress);
+	  uint32_t start_sector = get_sector(start_sector_addr);
+	  uint32_t end_sector_addr = start_sector_addr + num_of_words*4;
+	  uint32_t end_sector = get_sector(end_sector_addr);
 
 	  /* Fill EraseInit structure*/
 	  EraseInitStruct.TypeErase     = FLASH_TYPEERASE_SECTORS;
 	  EraseInitStruct.VoltageRange  = FLASH_VOLTAGE_RANGE_3;
-	  EraseInitStruct.Sector        = StartSector;
+	  EraseInitStruct.Sector        = start_sector;
 	  EraseInitStruct.Banks     	= FLASH_BANK_1;
-	  EraseInitStruct.NbSectors     = (EndSector - StartSector) + 1;
+	  EraseInitStruct.NbSectors     = (end_sector - start_sector) + 1;
 
 
 	  if (HAL_FLASHEx_Erase(&EraseInitStruct, &SECTORError) != HAL_OK)
@@ -158,15 +158,15 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 		  return HAL_FLASH_GetError ();
 	  }
 
-	  /* Program the user Flash area 8 WORDS at a time
+	  /* Program the user Flash area 8 WORDS at a time ----------------pad zeros!!!!!!!!!!!!!!!!!!!!!!! dont write garbage
 	   * (area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) ***********/
 
-	   while (sofar < numberofwords)
+	   while (words_so_far < num_of_words)
 	   {
-	     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_FLASHWORD, StartSectorAddress, (uint32_t ) &data[sofar]) == HAL_OK)
+	     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_FLASHWORD, start_sector_addr, (uint32_t ) &data[words_so_far]) == HAL_OK)
 	     {
-	    	 StartSectorAddress += 4 * FLASHWORD;  //
-	    	 sofar+=FLASHWORD;
+	    	 start_sector_addr += 4 * FLASHWORD;  //
+	    	 words_so_far+=FLASHWORD;
 	     }
 	     else
 	     {
@@ -184,8 +184,8 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 }
 
 
-// ** THIS CAUSES HARDFAULT :( **
-//MG_IRAM void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
+// ** THIS CAUSES HARDFAULT :( stupid controllerstech **
+//MG_IRAM void flash_read_data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
 //	while (1) {
 //		*data = *(__IO uint32_t *)StartSectorAddress;
 //		StartSectorAddress += 4;
@@ -195,14 +195,46 @@ MG_IRAM uint32_t Flash_Write_Data (uint32_t StartSectorAddress, uint32_t *data, 
 //}
 
 
-MG_IRAM void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
-	__disable_irq();
-	for (uint16_t i = 0; i < numberofwords; i++) {
-		data[i] = *(__IO uint32_t *)(StartSectorAddress + i * 4);
-	}
-    __enable_irq();
 
+
+
+ MG_IRAM uint8_t flash_read_data(uint32_t start_sector_addr, uint32_t *data, uint16_t num_of_words) {
+    uint32_t end_addr = start_sector_addr + num_of_words * 4;
+
+
+	// To avoid hardfaults, make sure flash addr exists withing flash 'borders'
+	// also, because you are reading 32-bit values (uint32_t) from Flash, 
+	// the memory address must be aligned to 4 bytes. On most ARM Cortex-M MCUs, 
+	// misaligned 32-bit reads can cause hard faults
+    if (start_sector_addr < INTERNAL_FLASH_BASE_ADDRESS ||
+        end_addr > INTERNAL_FLASH_END_ADDRESS ||
+        start_sector_addr % 4 != 0 ) {
+        return FLASH_READ_INVALID;
+    }
+
+    __disable_irq();
+    for (uint16_t i = 0; i < num_of_words; i++) {
+        data[i] = *(__IO uint32_t *)(start_sector_addr + i * 4);
+    }
+    __enable_irq();
+    return FLASH_READ_OK;
 }
+
+// OLD METHOD!!!!!
+// MG_IRAM void Flash_Read_Data (uint32_t StartSectorAddress, uint32_t *data, uint16_t numberofwords) {
+// 	__disable_irq();
+// 	for (uint16_t i = 0; i < numberofwords; i++) {
+// 		data[i] = *(__IO uint32_t *)(StartSectorAddress + i * 4);
+// 	}
+//     __enable_irq();
+
+// }
+
+
+
+
+
+
 
 
 void Convert_To_Str (uint32_t *Data, char *Buf)
@@ -220,7 +252,7 @@ MG_IRAM void Flash_Write_NUM (uint32_t StartSectorAddress, float Num)
 {
 
 	float2Bytes(bytes_temp, Num);
-	Flash_Write_Data (StartSectorAddress, (uint32_t *)bytes_temp, 1);
+	flash_write_data (StartSectorAddress, (uint32_t *)bytes_temp, 1);
 }
 
 
@@ -229,7 +261,7 @@ MG_IRAM float Flash_Read_NUM (uint32_t StartSectorAddress)
 	uint8_t buffer[4];
 	float value;
 
-	Flash_Read_Data(StartSectorAddress, (uint32_t *)buffer, 1);
+	flash_read_data(StartSectorAddress, (uint32_t *)buffer, 1);
 	value = Bytes2float(buffer);
 	return value;
 }
