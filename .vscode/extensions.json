@@ -16,6 +16,10 @@
         "mcu-debug.peripheral-viewer",          // Dependencies to "marus25.cortex-debug"
         "mcu-debug.rtos-views",
         "cschlosser.doxdocgen",
-        "aaron-bond.better-comments" // Dependencies to "marus25.cortex-debug"
+        "aaron-bond.better-comments",
+        "jeandudey.cortex-debug-dp-stm32h7",
+        "mhutchie.git-graph",
+        "pkief.material-icon-theme",
+        "stmicroelectronics.stm32-vscode-extension" // Dependencies to "marus25.cortex-debug"
     ]
 }
