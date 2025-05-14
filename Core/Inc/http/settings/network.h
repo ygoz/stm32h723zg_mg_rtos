@@ -77,10 +77,13 @@ void network_settings_init(network_settings *settings);
  *
  * @param[out] data Pointer to a `network_settings` structure where the read data will be stored.
  *
+ * @return uint8_t Status code returned by `flash_read_data()`:
+ *          - `0` on success.
+ *          - Non-zero error code on failure (e.g., Flash read error).
  * @note The caller must ensure that `data` points to a valid memory location large enough
  *       to hold a `network_settings` structure.
  */
-void get_network_settings(network_settings *data);
+uint8_t get_network_settings(network_settings *data);
 
 
 

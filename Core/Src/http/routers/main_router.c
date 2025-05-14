@@ -53,7 +53,7 @@ static void handle_http_request(struct mg_connection *c, void *ev_data) {
 
 
 // counts the number of active TCP connection
-uint8_t static inline numconns(struct mg_mgr *mgr) {
+static uint8_t inline numconns(struct mg_mgr *mgr) {
   int n = 0;
   for (struct mg_connection *t = mgr->conns; t != NULL; t = t->next) {
 	  n++;

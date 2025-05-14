@@ -11,12 +11,13 @@
 
 
 void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
+	char response[256] = {0};
 
 	if (mg_match(hm->uri, mg_str("/api/firmware/upload"), NULL)) {
-	  // MAX FIRMWARE SIZE IS 128KB * 3 --> (3 sectors --> 1MB / 2 - 1 sector)
+	  // add non blocking timer and send http reply at mg_ota_end?
 	  handle_firmware_upload(c, hm);
-
 	}
+
 	else if (mg_match(hm->uri, mg_str("/flash/settings/set"), NULL)) {
 
 		network_settings new_settings;  // put in the begining
@@ -38,14 +39,19 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		mg_http_get_var(&hm->query, "dhcp", (char *)&new_settings.dhcp, sizeof(new_settings.dhcp));
 
 
-		set_network_settings(&new_settings, c->mgr);
-		// Prepare response message
-		char response[200] = {0};
-		snprintf(response, sizeof(response), "ok settings updated: Netmask=%s, Gateway=%s, IP=%s, DHCP=%s\r\n",
-				 new_settings.netmask, new_settings.gateway, new_settings.ip, new_settings.dhcp ? "enabled" : "disabled");
+		if (set_network_settings(&new_settings, c->mgr)){
+			mg_http_reply(c, 500, "", "could not set network settings\r\n");
+		}
+		
+		else {
+			// Prepare response message
+			
+			snprintf(response, sizeof(response), "ok settings updated: Netmask=%s, Gateway=%s, IP=%s, DHCP=%s\r\n",
+					new_settings.netmask, new_settings.gateway, new_settings.ip, new_settings.dhcp ? "enabled" : "disabled");
 
-		// Send the HTTP response with the updated settings
-		mg_http_reply(c, 200, "", "%s", response);
+			// Send the HTTP response with the updated settings
+			mg_http_reply(c, 200, "", "%s", response);
+		}
 	}
 
 	else{

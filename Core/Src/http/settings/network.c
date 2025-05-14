@@ -23,10 +23,11 @@ void network_settings_init(network_settings *settings) {
 
 
 
-MG_IRAM void get_network_settings(network_settings *data) {
+uint8_t get_network_settings(network_settings *data) {
     // change to lower case
 	uint16_t num_words = (sizeof(network_settings) / 4) + ((sizeof(network_settings) % 4) != 0);
-	flash_read_data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
+	uint8_t status = flash_read_data(NETWORK_SETTINGS_ADDR, (uint32_t *)data, num_words);
+	return status;
 }
 
 
