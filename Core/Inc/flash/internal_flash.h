@@ -44,6 +44,15 @@
  * @retval uint32_t
  *         - 0 on success
  *         - HAL error code on failure (e.g., from `HAL_FLASHEx_Erase` or `HAL_FLASH_Program`)
+ * 
+ * @warning
+ * 
+ *	The DATA to be written here MUST be according to the List Shown Below
+ *	For EXAMPLE:- For H72x/3x, a single data must be 8 numbers of 32 bits word
+ *	If you try to write a single 32 bit word, it will automatically write 0's for the rest 7
+ *
+ *		- 256 bits for STM32H72x/3X devices (8x 32bits words)
+ * 
  *
  * @example
  * @code
@@ -92,9 +101,9 @@ uint8_t flash_read_data(uint32_t start_sector_addr, uint32_t *data, uint16_t num
 
 
 // currently unused method
-void Convert_To_Str (uint32_t *Data, char *Buf);
-void Flash_Write_NUM (uint32_t StartSectorAddress, float Num);
-float Flash_Read_NUM (uint32_t StartSectorAddress);
+// void Convert_To_Str (uint32_t *Data, char *Buf);
+// void Flash_Write_NUM (uint32_t StartSectorAddress, float Num);
+// float Flash_Read_NUM (uint32_t StartSectorAddress);
 
 
 #endif /* FLASH_INTERNAL_FLASH */

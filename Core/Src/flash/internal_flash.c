@@ -19,16 +19,10 @@
 
 
 
-// There are 2 BANKS available for H745, BANK 1 (0x0800 0000 - 0x080F FFFF) and BANK 2 (0x0810 0000 - 0x080F FFFF)
-// Both of them have Sectors 0 to 7.
-// We will define the sectors in normal way (like Defined below), and later the BANK will be taken care by the HAL
+// There is 1 flash BANK available for H723, BANK 1 (0x0800 0000 - 0x080F FFFF)
+// The Bank contains Sectors 0 to 7, 128KB each.
 
-/**
- * @brief There are 2...    !!! put this in the header
- * @param Adress
-
- */
-static uint32_t get_sector(uint32_t flash_addr)   // get_sector or GetSector in all the project.   variables only lower case
+static uint32_t get_sector(uint32_t flash_addr)
 {
   uint32_t sector = 0;
 
@@ -78,54 +72,6 @@ static uint32_t get_sector(uint32_t flash_addr)   // get_sector or GetSector in 
 
 
 
-
-uint8_t bytes_temp[4];  // put in header in the upper section of the file
-
-// put documentation
-void float2Bytes(uint8_t * ftoa_bytes_temp,float float_variable)
-{
-    union {
-      float a;
-      uint8_t bytes[4];
-    } thing;
-
-    thing.a = float_variable;
-
-    for (uint8_t i = 0; i < 4; i++) {
-      ftoa_bytes_temp[i] = thing.bytes[i];
-    }
-
-}
-
-float Bytes2float(uint8_t * ftoa_bytes_temp)
-{
-    union {
-      float a;
-      uint8_t bytes[4];
-    } thing;
-
-    for (uint8_t i = 0; i < 4; i++) {
-    	thing.bytes[i] = ftoa_bytes_temp[i];
-    }
-
-   float float_variable =  thing.a;
-   return float_variable;
-}
-
-
-
-
-/* The DATA to be written here MUST be according to the List Shown Below
-
-For EXAMPLE:- For H74x/5x, a single data must be 8 numbers of 32 bits word
-If you try to write a single 32 bit word, it will automatically write 0's for the rest 7
-
-*          - 256 bits for STM32H74x/5X devices (8x 32bits words)
-*          - 128 bits for STM32H7Ax/BX devices (4x 32bits words)
-*          - 256 bits for STM32H72x/3X devices (8x 32bits words)
-*
-*/
-
 MG_IRAM uint32_t flash_write_data (uint32_t start_sector_addr, uint32_t *data, uint16_t num_of_words)  //  ==> num_words
 {
 
@@ -158,7 +104,7 @@ MG_IRAM uint32_t flash_write_data (uint32_t start_sector_addr, uint32_t *data, u
 		  return HAL_FLASH_GetError ();
 	  }
 
-	  /* Program the user Flash area 8 WORDS at a time ----------------pad zeros!!!!!!!!!!!!!!!!!!!!!!! dont write garbage
+	  /* Program the user Flash area 8 WORDS at a time ----------------pads zeros!!!!!!!!!!!!!!!!!!!!!!! dont write garbage
 	   * (area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) ***********/
 
 	   while (words_so_far < num_of_words)
@@ -233,35 +179,3 @@ MG_IRAM uint32_t flash_write_data (uint32_t start_sector_addr, uint32_t *data, u
 
 
 
-
-
-
-
-void Convert_To_Str (uint32_t *Data, char *Buf)
-{
-	int numberofbytes = ((strlen((char *)Data)/4) + ((strlen((char *)Data) % 4) != 0)) *4;
-
-	for (int i=0; i<numberofbytes; i++)
-	{
-		Buf[i] = Data[i / 4] >> (8 * (i % 4));
-	}
-}
-
-
-MG_IRAM void Flash_Write_NUM (uint32_t StartSectorAddress, float Num)
-{
-
-	float2Bytes(bytes_temp, Num);
-	flash_write_data (StartSectorAddress, (uint32_t *)bytes_temp, 1);
-}
-
-
-MG_IRAM float Flash_Read_NUM (uint32_t StartSectorAddress)
-{
-	uint8_t buffer[4];
-	float value;
-
-	flash_read_data(StartSectorAddress, (uint32_t *)buffer, 1);
-	value = Bytes2float(buffer);
-	return value;
-}
