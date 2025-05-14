@@ -68,6 +68,7 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 		// handle incoming http request
 		case MG_EV_HTTP_MSG: {
 			handle_http_request(c, ev_data);
+			break;
 		}
 		// handle an incoming connection, accept connection if there is room, else decline
 		case MG_EV_ACCEPT: {
@@ -77,11 +78,13 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 				MG_ERROR(("Too many connections\r\n"));
 				c->is_closing = 1;
 			}
+			break;
 		}
 		// log an error event
 		case MG_EV_ERROR: {
 			char *err_msg = (char *) ev_data;
   			MG_ERROR(("Mongoose error: %s", err_msg));
+			break;
 		}
 		// when initializing the connection set an expiration date in case of a timeout
 		case MG_EV_OPEN: {
@@ -89,7 +92,7 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 			// Connection created. Store connect expiration time in c->data, gp data buffer of size char[32]
 			*(uint64_t *) c->data = timeout_value;
 			MG_INFO(("timestamp in hex: 0x%02X%02X%02X%02X", (char *)c->data[3], (char *)c->data[2], (char *)c->data[1], (char *)c->data[0]));
-
+			break;
 		}
 		// check for timed out connections and close them
 		case MG_EV_POLL: {
@@ -98,6 +101,7 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 				MG_INFO(("TIMEOUT-------------\r\n"));
 				mg_error(c, "Connect timeout");
 			}
+			break;
 		}
 	}
 }

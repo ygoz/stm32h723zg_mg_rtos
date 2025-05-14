@@ -7,6 +7,7 @@
 #include "string.h"
 #include "flash/internal_flash.h"
 #include "http/settings/network.h"
+#include "HaGeneral/HaGeneral_config.h"
 
 
 void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
@@ -23,15 +24,15 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 
 		// Netmask
 		if (mg_http_get_var(&hm->query, "netmask", new_settings.netmask, sizeof(new_settings.netmask)) <= 0) {
-		    strncpy(new_settings.netmask, "255.255.255.0", sizeof(new_settings.netmask));
+		    strncpy(new_settings.netmask, HAGENRAL_DEFAULT_SUBNETMASK, sizeof(new_settings.netmask));
 		}
 		// Gateway
 		if (mg_http_get_var(&hm->query, "gateway", new_settings.gateway, sizeof(new_settings.gateway)) <= 0) {
-		    strncpy(new_settings.gateway, "192.168.1.1", sizeof(new_settings.gateway));
+		    strncpy(new_settings.gateway, HAGENRAL_DEFAULT_GATEWAY, sizeof(new_settings.gateway));
 		}
 		// IP
 		if (mg_http_get_var(&hm->query, "ip", new_settings.ip, sizeof(new_settings.ip)) <= 0) {
-		    strncpy(new_settings.ip, "192.168.1.10", sizeof(new_settings.ip));
+		    strncpy(new_settings.ip, HAGENRAL_DEFAULT_IP, sizeof(new_settings.ip));
 		}
 		// DHCP
 		mg_http_get_var(&hm->query, "dhcp", (char *)&new_settings.dhcp, sizeof(new_settings.dhcp));
