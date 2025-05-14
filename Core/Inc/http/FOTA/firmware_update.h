@@ -13,27 +13,36 @@
 /**
  * @brief Handle firmware upload over HTTP using Mongoose.
  *
- * This handler is responsible for receiving firmware binary data in chunks
- * via HTTP POST requests. It manages the OTA (Over-The-Air) update process,
- * including:
- * 
- * - Parsing the `name`, `offset`, and `total` parameters from the HTTP query.
- * - Initializing the OTA process when `offset == 0`.
- * - Writing firmware chunks to flash at address `0x08080000 + offset`.
- * - Finalizing the OTA process when the last empty chunk is received.
- * - MCU will reboot when the update is done
+ * This handler manages the Over-The-Air (OTA) firmware update process by
+ * receiving and writing firmware binary data in chunks via HTTP POST requests.
  *
- * Expected client-side upload process:
- * 1. Start with offset = 0 and total = full size of the .bin file.
- * 2. Send chunks of data (e.g., 1KB) with correct `offset` values.
- * 3. Finish with an empty chunk to signal OTA completion.
+ * It performs the following steps:
+ * - Parses `name`, `offset`, and `total` from the HTTP query string.
+ * - Calls `mg_ota_begin()` to initialize OTA when `offset == 0`.
+ * - Writes data chunks to flash at address `0x08080000 + offset` using `mg_ota_write()`.
+ * - Calls `mg_ota_end()` after receiving the final empty chunk to finalize the update.
+ *   On success, this rearranges flash sectors and triggers an MCU reboot to load the new firmware.
+ *
+ * Error Handling:
+ * - Errors (e.g., missing parameters, OTA init failure, flash write failure) are
+ *   reported to the client via HTTP 500 responses with explanatory messages.
+ * - A successful write operation responds with HTTP 200 and a `"true\n"` message.
+ *
+ * Expected client-side upload flow:
+ * 1. Start with `offset = 0` and `total =` full size of the `.bin` file.
+ * 2. Send binary data in chunks (e.g., 1KB each) with correct `offset` values.
+ * 3. Send an empty chunk to indicate completion.
+ *
+ * Flash Sector Usage:
+ * - Sectors 0–3: Current firmware
+ * - Sectors 4–6: New firmware (OTA update area)
+ * - Sector 7: Temporary swap area used during finalization
  *
  * Requirements:
- * - The total size must fit within 3 flash sectors (384KB).
- * - The OTA process uses sectors 4–6 (new firmware) and sector 7 (temporary swap).
- * 
+ * - Firmware size must not exceed 384KB (3 sectors of 128KB).
+ *
  * @param[in] c  Mongoose connection handle.
- * @param[in] hm Mongoose HTTP message containing the body and query parameters.
+ * @param[in] hm Mongoose HTTP message containing body and query parameters.
  */
 void handle_firmware_upload(struct mg_connection *c, struct mg_http_message *hm);
 

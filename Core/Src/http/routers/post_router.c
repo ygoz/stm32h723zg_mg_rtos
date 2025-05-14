@@ -19,7 +19,7 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	else if (mg_match(hm->uri, mg_str("/flash/settings/set"), NULL)) {
 
 		network_settings new_settings;  // put in the begining
-		new_settings.is_initialized = 0xDEADBEEF; // false means it has been initialized becaues the flash is high by defualt
+		new_settings.is_initialized = 0xDEADBEEF; // magic word to initialize the settings in the flash
 
 		// Netmask
 		if (mg_http_get_var(&hm->query, "netmask", new_settings.netmask, sizeof(new_settings.netmask)) <= 0) {
@@ -51,5 +51,4 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		mg_http_reply(c, 404, "", "this jjdcjcjdcjnj else post router\r\n");
 	}
 
-//	}
 }
