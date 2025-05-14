@@ -10,81 +10,31 @@
 
 #include "mongoose.h"
 
-
+/**
+ * @brief Handle firmware upload over HTTP using Mongoose.
+ *
+ * This handler is responsible for receiving firmware binary data in chunks
+ * via HTTP POST requests. It manages the OTA (Over-The-Air) update process,
+ * including:
+ * 
+ * - Parsing the `name`, `offset`, and `total` parameters from the HTTP query.
+ * - Initializing the OTA process when `offset == 0`.
+ * - Writing firmware chunks to flash at address `0x08080000 + offset`.
+ * - Finalizing the OTA process when the last empty chunk is received.
+ * - MCU will reboot when the update is done
+ *
+ * Expected client-side upload process:
+ * 1. Start with offset = 0 and total = full size of the .bin file.
+ * 2. Send chunks of data (e.g., 1KB) with correct `offset` values.
+ * 3. Finish with an empty chunk to signal OTA completion.
+ *
+ * Requirements:
+ * - The total size must fit within 3 flash sectors (384KB).
+ * - The OTA process uses sectors 4–6 (new firmware) and sector 7 (temporary swap).
+ * 
+ * @param[in] c  Mongoose connection handle.
+ * @param[in] hm Mongoose HTTP message containing the body and query parameters.
+ */
 void handle_firmware_upload(struct mg_connection *c, struct mg_http_message *hm);
 
 #endif /* INC_HTTP_FOTA_FIRMWARE_UPDATE_H_ */
-
-/* PYTHON CODE TO CALL THIS
- *
- *
- *
-import httpx
-import os
-
-
-
-class ST_Manager():
-    firmware_file = "mongoose_eth_template.bin"  # Replace with the actual firmware file path
-    total_firmware_size = os.path.getsize(firmware_file)
-    STM32_HTTP_SERVER = "http://192.168.1.10"
-    URL = f"{STM32_HTTP_SERVER}/api/firmware/upload"  # Replace with the correct server URL
-    chunk_size = 1024  # Define the chunk size, can be modified based on your needs
-    FIRMWARE_UPLOAD_STATUS = 0
-
-    @classmethod
-    def update_firmware(cls):
-        with open(cls.firmware_file, "rb") as firmware_file:
-            offset = 0
-            with httpx.Client() as client:
-
-                while True:
-
-                    chunk_data = firmware_file.read(cls.chunk_size)
-                    if not chunk_data:
-                        # send one last empty request to let the ST know we are done :)
-                        response = client.post(url=cls.URL, params=params)
-                        print("Firmware upload completed!")
-                        cls.FIRMWARE_UPLOAD_STATUS = 1
-                        return response
-                        break
-
-                    # Set up the query parameters for the request
-                    params = {
-                        "name": f"{firmware_file.name}",
-                        "offset": str(offset),
-                        "total": str(cls.total_firmware_size),
-                    }
-
-                    response = client.post(url=cls.URL, params=params, data=chunk_data)
-                    if response.status_code == 200:
-                        print(f"Chunk uploaded successfully, offset: {offset}")
-                    else:
-                        print(f"\n\nFailed to upload chunk at offset {offset}, status code: {response.status_code}, reason: {response.text}")
-                        break  # Stop the upload if an error occurs
-
-                    offset += len(chunk_data)
-
-    @classmethod
-    def commit_firmware(cls):
-        assert (cls.FIRMWARE_UPLOAD_STATUS == 1), "please make sure you uploaded new firmware before commiting it"
-        response = httpx.post(f"{cls.STM32_HTTP_SERVER}/api/ping")
-        cls.FIRMWARE_UPLOAD_STATUS = 0
-        return response
-
-    @classmethod
-    def ping(cls):
-        response = httpx.post(f"{cls.STM32_HTTP_SERVER}/api/pingp")
-        return response
-
-
-
-if __name__ == '__main__':
-    res = ST_Manager.update_firmware()
-    print(f"\nstatus code = {res.status_code}\ntext = {res.text}")
-    res = ST_Manager.commit_firmware()
-    print(f"\nstatus code = {res.status_code}\ntext = {res.text}")
- *
- *
- *
- */

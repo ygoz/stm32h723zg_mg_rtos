@@ -1,3 +1,20 @@
 build
 tests/*.bin
 venv
+
+# Build output
+*.o
+*.d
+*.su
+*.map
+*.elf
+*.bin
+*.hex
+*.cyclo
+*.lst
+*.log
+*.dep
+
+# Auto-generated
+subdir.mk
+*.pyc
