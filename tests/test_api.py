@@ -1,5 +1,18 @@
 import pytest
-from utils.api_manager import api_test_manager
+from rest_api.api_manager import api_test_manager
+
+
+    
+
+@pytest.mark.asyncio
+async def test_set_fota_update():
+    response = await api_test_manager.fota_update()
+    assert response.status_code == 200
+
+@pytest.mark.asyncio
+async def test_ui():
+    response = await api_test_manager.get_ui()
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio

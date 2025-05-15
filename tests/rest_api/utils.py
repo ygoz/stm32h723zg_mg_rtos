@@ -1,7 +1,7 @@
 import httpx
 from functools import wraps
 from typing import Callable, Dict
-
+import os
 
 def request_handler(method: str, url: str):
     def decorator(func: Callable):
@@ -31,3 +31,15 @@ def request_handler(method: str, url: str):
                 print(f"\nstatus error:\t {e}\n")
         return wrapper
     return decorator
+
+
+
+def find_bin_file_path(filename) -> str:
+    '''
+    Search inside tests directory for bin file and return its path
+    '''
+    search_dir = os.getcwd() 
+    for root, dirs, files in os.walk(search_dir):
+        if filename in files:
+            return os.path.join(root, filename)
+    return None
