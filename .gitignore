@@ -18,3 +18,7 @@ venv
 # Auto-generated
 subdir.mk
 *.pyc
+
+# python modules --> cache
+__pycache__
+.pytest_cache
