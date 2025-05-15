@@ -16,6 +16,27 @@ class ST_FOTA_manager():
     
     @classmethod
     def update_firmware(cls, URL):
+        """
+        Performs a firmware-over-the-air (FOTA) update on the STM32 device to test the update process.
+
+        This function locates the `.bin` firmware file and sends it to the STM32 device in binary chunks
+        over a REST API. The firmware is uploaded in parts to the specified `URL`, and once all chunks 
+        are successfully sent, an empty chunk is transmitted to indicate completion.
+
+        Upon receiving the empty chunk, the STM32 device is expected to:
+        - Confirm full firmware reception
+        - Reboot the system
+        - Boot from the new firmware
+
+        Args:
+            URL (str): The REST API endpoint on the STM32 device that handles firmware uploads (e.g. `/api/firmware/upload`).
+
+        Returns:
+            None or response object: Depending on implementation, may return the final HTTP response or nothing.
+
+        Notes:
+            This function is intended for testing the FOTA functionality on the embedded STM32 device.
+        """
         with open(cls.file_path, "rb") as firmware_file:
             offset = 0  
             with httpx.Client() as client:
