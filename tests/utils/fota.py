@@ -3,12 +3,13 @@ import os
 
 
 
-class ST_Manager():
+class ST_FOTA_manager():
     firmware_file = "rtos_mg.bin"#   # Replace with the actual firmware file path
-    # firmware_file = "mongoose_eth_template.bin"
     total_firmware_size = os.path.getsize(firmware_file)
+    
     STM32_HTTP_SERVER = "http://192.168.1.10" 
     URL = f"{STM32_HTTP_SERVER}/api/firmware/upload"  # Replace with the correct server URL
+    
     chunk_size = 1024  # Define the chunk size, can be modified based on your needs
     FIRMWARE_UPLOAD_STATUS = 0
     
@@ -45,25 +46,23 @@ class ST_Manager():
                     
                     offset += len(chunk_data)
                     
-    @classmethod
-    def commit_firmware(cls):
-        assert (cls.FIRMWARE_UPLOAD_STATUS == 1), "please make sure you uploaded new firmware before commiting it"
-        response = httpx.post(f"{cls.STM32_HTTP_SERVER}/api/firmware/commit")
-        cls.FIRMWARE_UPLOAD_STATUS = 0
-        return response
+    # @classmethod
+    # def commit_firmware(cls):
+    #     assert (cls.FIRMWARE_UPLOAD_STATUS == 1), "please make sure you uploaded new firmware before commiting it"
+    #     response = httpx.post(f"{cls.STM32_HTTP_SERVER}/api/firmware/commit")
+    #     cls.FIRMWARE_UPLOAD_STATUS = 0
+    #     return response
     
-    @classmethod
-    def ping(cls):
-        response = httpx.post(f"{cls.STM32_HTTP_SERVER}/api/pingp")
-        return response
+    # @classmethod
+    # def ping(cls):
+    #     response = httpx.post(f"{cls.STM32_HTTP_SERVER}/api/pingp")
+    #     return response
             
                     
                     
 if __name__ == '__main__':
     try:
-        res = ST_Manager.update_firmware()
-        print(f"\nstatus code = {res.status_code}\ntext = {res.text}")
-        res = ST_Manager.commit_firmware()
+        res = ST_FOTA_manager.update_firmware()
         print(f"\nstatus code = {res.status_code}\ntext = {res.text}")
     except Exception as e:
         print(e)

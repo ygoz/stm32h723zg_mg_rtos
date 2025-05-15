@@ -1,0 +1,36 @@
+import pytest
+from utils.api_manager import api_test_manager
+
+
+@pytest.mark.asyncio
+async def test_set_network_settings():
+    params = {"netmask": "255.255.255.0", "gateway": "192.168.1.8", "ip": "192.168.1.10", "dhcp": False}
+    response = await api_test_manager.set_network_settings(params=params)
+    assert response.status_code == 200
+    assert "ok" in response.text.lower()
+
+@pytest.mark.asyncio
+async def test_get_network_settings():
+    response = await api_test_manager.get_network_settings()
+    assert response.status_code == 200
+    assert "ip" in response.text.lower()
+
+@pytest.mark.asyncio
+async def test_toggle_green_led():
+    response = await api_test_manager.toggle_green_led()
+    assert response.status_code == 200
+    assert "true" in response.text.lower()
+
+@pytest.mark.asyncio
+async def test_get_green_led_status():
+    response = await api_test_manager.get_green_led_status()
+    assert response.status_code == 200
+    assert response.text.strip() in {"0", "1"}
+
+@pytest.mark.asyncio
+async def test_get_ram():
+    response = await api_test_manager.get_ram()
+    assert response.status_code == 200
+    json_data = response.json()
+    assert "free_memory" in json_data and "total_memory" in json_data
+    assert json_data["free_memory"] <= json_data["total_memory"]

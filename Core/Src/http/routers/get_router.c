@@ -20,11 +20,11 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		mg_http_reply(c, 200, "", "GET ping\r\n");
 		}
 
-	else if (mg_match(hm->uri, mg_str("/api/led/get"), NULL)) {
+	else if (mg_match(hm->uri, mg_str("/api/led/green/get"), NULL)) {
 	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(GPIOB, LED_GREEN_Pin));
 	    }
 
-	else if (mg_match(hm->uri, mg_str("/api/led/toggle"), NULL)) {
+	else if (mg_match(hm->uri, mg_str("/api/led/green/toggle"), NULL)) {
 		HAL_GPIO_TogglePin(GPIOB, LED_GREEN_Pin); // Can be different on your board
 	    mg_http_reply(c, 200, "", "true\n");
 	    }
