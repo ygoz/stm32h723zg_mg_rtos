@@ -20,12 +20,13 @@
 #include "main.h"
 #include "string.h"
 #include "cmsis_os.h"
-#include "http/settings/network.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "mongoose.h"
 #include "http/routers/main_router.h"
+#include "http/settings/network.h"
+#include "serial_comm/i2c/hi2c4.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,8 +62,6 @@ ETH_DMADescTypeDef DMARxDscrTab[ETH_RX_DESC_CNT] __attribute__((section(".RxDesc
 ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDescripSection")));   /* Ethernet Tx DMA Descriptors */
 #endif
 
-
-// maybe can put the following structs to main.h
 ETH_TxPacketConfig TxConfig;
 
 ETH_HandleTypeDef heth;
@@ -82,7 +81,6 @@ const osThreadAttr_t Server_attributes = {
 
 /* USER CODE END PV */
 
-// put to main.h check if it compiles then
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -159,6 +157,7 @@ int main(void)
   MX_USART3_UART_Init();
   MX_ETH_Init();
   MX_RNG_Init();
+  MX_I2C4_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -411,6 +410,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();

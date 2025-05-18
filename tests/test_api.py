@@ -26,7 +26,7 @@ async def test_set_network_settings():
 async def test_get_network_settings():
     response = await api_test_manager.get_network_settings()
     assert response.status_code == 200
-    assert "ip" in response.text.lower()
+    assert "ip" in response.text.lower() # check for exact response
 
 @pytest.mark.asyncio
 async def test_toggle_green_led():

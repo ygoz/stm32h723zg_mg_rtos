@@ -53,7 +53,7 @@ static void handle_http_request(struct mg_connection *c, void *ev_data) {
 
 
 // counts the number of active TCP connection
-static uint8_t inline numconns(struct mg_mgr *mgr) {
+inline static uint8_t numconns(struct mg_mgr *mgr) {
   int n = 0;
   for (struct mg_connection *t = mgr->conns; t != NULL; t = t->next) {
 	  n++;
@@ -91,7 +91,7 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 			uint64_t timeout_value = mg_millis() + s_timeout_ms;
 			// Connection created. Store connect expiration time in c->data, gp data buffer of size char[32]
 			*(uint64_t *) c->data = timeout_value;
-			MG_INFO(("timestamp in hex: 0x%02X%02X%02X%02X", (char *)c->data[3], (char *)c->data[2], (char *)c->data[1], (char *)c->data[0]));
+			// MG_INFO(("timestamp in hex: 0x%02X%02X%02X%02X", (char *)c->data[3], (char *)c->data[2], (char *)c->data[1], (char *)c->data[0]));
 			break;
 		}
 		// check for timed out connections and close them

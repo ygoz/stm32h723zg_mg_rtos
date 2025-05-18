@@ -38,13 +38,7 @@ typedef struct {
 
 
 
-static network_settings default_network_settings = {
-  .netmask            = HAGENRAL_DEFAULT_SUBNETMASK,
-  .gateway            = HAGENRAL_DEFAULT_GATEWAY,
-  .ip                 = HAGENRAL_DEFAULT_IP,
-  .dhcp               = HAGENRAL_DEFAULT_DHCP,
-  .is_initialized 	= 0xDEADBEEF
-};
+extern network_settings default_network_settings;
 
 
 

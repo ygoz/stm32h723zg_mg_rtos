@@ -60,7 +60,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	    uint32_t total_memory = configTOTAL_HEAP_SIZE;  // Total heap memory size from FreeRTOS config
 
 	    // Format the response as JSON or plain text
-	    snprintf(response, sizeof(response), "{\"free_memory\": %u, \"total_memory\": %u}\n", free_memory, total_memory);
+	    snprintf(response, sizeof(response), "{\"free_memory\": %lu, \"total_memory\": %lu}\n", free_memory, total_memory);
 	    mg_http_reply(c, 200, "", response);
 	}
 

@@ -60,6 +60,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     
     ${CMAKE_SOURCE_DIR}/Core/Src/http/FOTA/firmware_update.c
     ${CMAKE_SOURCE_DIR}/Core/Src/flash/internal_flash.c
+
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c4.c
 )
 
 # Add include paths
@@ -75,6 +77,10 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Inc/flash
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/HaGeneral
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm/i2c
 )
 
 # Add project symbols (macros)
