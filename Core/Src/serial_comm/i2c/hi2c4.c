@@ -22,7 +22,7 @@
 I2C_HandleTypeDef hi2c4;  // Actual definition (memory allocation)
 
 
-
+// cannot change name for cube mx generated code
 void MX_I2C4_Init(void)
 {
 
