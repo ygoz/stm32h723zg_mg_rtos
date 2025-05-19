@@ -1,11 +1,11 @@
 import httpx
 from httpx import TimeoutException, TransportError
 from time import sleep
-from rest_api.utils import request_handler
-# from utils import request_handler
+# from rest_api.utils import request_handler
+from utils import request_handler
 from typing import Optional
 import asyncio
-from rest_api.fota import ST_FOTA_manager
+# from rest_api.fota import ST_FOTA_manager
 
 
 
@@ -56,6 +56,16 @@ class api_test_manager:
     async def get_ui(response: httpx.Response, *args, **kwargs) -> str:
         return response
     
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/eeprom/read")
+    async def read_eeprom(response: httpx.Response, *args, **kwargs) -> str:
+        return response
+    
+    @classmethod
+    @request_handler("POST", f"{STM32_HTTP_SERVER}/api/eeprom/write")
+    async def write_eeprom(response: httpx.Response, *args, **kwargs) -> str:
+        return response
+    
     
     @classmethod
     async def fota_update(cls) -> str:
@@ -92,8 +102,15 @@ async def main():
     # result = await api_test_manager.get_green_led_status()
     
     # mem
-    result = await api_test_manager.get_ui()
-
+    read_params = {"addr" : 0x0000 , "slave" : 0xa0, "size" : 300}
+    result = await api_test_manager.read_eeprom(params=read_params)
+    
+    addr = 0x0000
+    for i in range(15):
+        addr += i*20
+        write_params = {"addr" : addr , "slave" : 0xa0, "text" : "*" * 100} 
+        result = await api_test_manager.write_eeprom(params=write_params)
+    result = await api_test_manager.read_eeprom(params=read_params)
 
 if __name__ == '__main__':
     asyncio.run(main())

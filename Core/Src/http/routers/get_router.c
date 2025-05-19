@@ -7,6 +7,8 @@
 #include "flash/internal_flash.h"
 #include "http/settings/network.h"
 #include "string.h"
+#include "serial_comm/i2c/hi2c4.h"
+#include "serial_comm/i2c/utils.h"
 
 
 
@@ -28,6 +30,38 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		HAL_GPIO_TogglePin(GPIOB, LED_GREEN_Pin); // Can be different on your board
 	    mg_http_reply(c, 200, "", "true\n");
 	    }
+
+
+	else if (mg_match(hm->uri, mg_str("/api/eeprom/read"), NULL)) {
+		char addr_buf[8], slave_buf[8], size_buf[8];
+
+		// Extract query parameters: addr (memory), slave (device), size (bytes)
+		mg_http_get_var(&hm->query, "addr", addr_buf, sizeof(addr_buf));
+		mg_http_get_var(&hm->query, "slave", slave_buf, sizeof(slave_buf));
+		mg_http_get_var(&hm->query, "size", size_buf, sizeof(size_buf));
+	
+		// Convert to integers
+		uint16_t mem_addr = (uint16_t)strtol(addr_buf, NULL, 0);
+		uint16_t slave_addr = (uint16_t)strtol(slave_buf, NULL, 0);
+		uint16_t size = (uint16_t)strtol(size_buf, NULL, 0);
+	
+		// Read EEPROM
+		static uint8_t buffer[256];  // Max size you expect to read
+		if (size > sizeof(buffer)) size = sizeof(buffer);  // Safety cap
+	  
+		I2C_packet packet = {
+			.data = buffer,
+			.size = size
+		};
+
+		HAL_StatusTypeDef status = I2C4_mem_read(mem_addr, packet, slave_addr);
+		if (status == HAL_OK) {
+			mg_http_reply(c, 200, "Content-Type: text/plain\r\n", "%.*s", packet.size, (char *)packet.data);
+		} else {
+			mg_http_reply(c, 500, "Content-Type: application/json\r\n",
+				"{\"success\":false,\"status\":%d}\n", status);
+		}
+	}
 
 	else if (mg_match(hm->uri, mg_str("/flash/settings/get"), NULL)){
 		network_settings settings;

@@ -8,6 +8,7 @@
 #include "flash/internal_flash.h"
 #include "http/settings/network.h"
 #include "HaGeneral/HaGeneral_config.h"
+#include "serial_comm/i2c/hi2c4.h"
 
 
 void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
@@ -53,6 +54,37 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 			mg_http_reply(c, 200, "", "%s", response);
 		}
 	}
+
+
+	else if (mg_match(hm->uri, mg_str("/api/eeprom/write"), NULL)) {
+		char addr_buf[8], slave_buf[8], text_buf[256];
+	
+		// Extract query parameters: addr (memory), slave (device), text (data)
+		mg_http_get_var(&hm->query, "addr", addr_buf, sizeof(addr_buf));
+		mg_http_get_var(&hm->query, "slave", slave_buf, sizeof(slave_buf));
+		mg_http_get_var(&hm->query, "text", text_buf, sizeof(text_buf));
+	
+		// Convert address parameters
+		uint16_t mem_addr = (uint16_t)strtol(addr_buf, NULL, 0);
+		uint16_t slave_addr = (uint16_t)strtol(slave_buf, NULL, 0);
+	
+		// Prepare data packet
+		I2C_packet packet = {
+			.data = (uint8_t *)text_buf,
+			.size = (uint16_t)strlen(text_buf)
+		};
+	
+		// Write to EEPROM
+		HAL_StatusTypeDef status = I2C4_mem_write(mem_addr, packet, slave_addr);
+	
+		if (status == HAL_OK) {
+			mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{\"success\":true}\n");
+		} else {
+			mg_http_reply(c, 500, "Content-Type: application/json\r\n",
+				"{\"success\":false,\"status\":%d}\n", status);
+		}
+	}
+	
 
 	else{
 		mg_http_reply(c, 404, "", "this jjdcjcjdcjnj else post router\r\n");

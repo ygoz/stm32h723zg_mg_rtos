@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "hi2c4.h": "c"
+        "hi2c4.h": "c",
+        "hageneral_config.h": "c"
     }
 }
