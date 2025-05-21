@@ -44,3 +44,29 @@ uint8_t adc_init_all_handles(void) {
     MG_INFO(("ADC Init Status: 0x%02X\n", adc_status));
     return adc_status;
 }
+
+
+
+// POLLING !! MAKE SURE 
+uint16_t adc_get_value(ADC_HandleTypeDef *hadc) {
+    uint16_t adc3_value = 0;
+
+    // Start the ADC conversion
+    if (HAL_ADC_Start(hadc) != HAL_OK) {
+        MG_INFO(("ADC start failed"));
+        return 0;
+    }
+
+    // Poll for conversion with a timeout
+    if (HAL_ADC_PollForConversion(hadc, 100) == HAL_OK) {
+        adc3_value = HAL_ADC_GetValue(hadc);
+        // if (HAL_ADC_Stop(hadc) != HAL_OK) {
+        //     MG_INFO(("ADC stop failed"));
+        //     return 0;
+        // }
+    } else {
+        MG_INFO(("ADC3 conversion timeout or failed"));
+    }
+
+    return adc3_value;
+}

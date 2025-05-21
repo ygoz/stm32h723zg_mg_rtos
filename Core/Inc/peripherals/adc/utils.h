@@ -32,3 +32,4 @@ typedef enum {
 
 
 uint8_t adc_init_all_handles(void);
+uint16_t adc_get_value(ADC_HandleTypeDef *hadc);

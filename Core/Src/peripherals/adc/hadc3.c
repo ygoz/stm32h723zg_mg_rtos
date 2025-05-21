@@ -84,20 +84,6 @@ void MX_ADC3_Init(void){
 
 // ADC POLL VS ADC DMA ------ @TODO: ADD DEFINES
 uint16_t adc3_get_value(void) {
-    uint16_t adc3_value = 0;
-
-    // Start the ADC conversion
-    if (HAL_ADC_Start(&hadc3) != HAL_OK) {
-        printf("ADC3 start failed\n");
-        return 0;
-    }
-
-    // Poll for conversion with a timeout
-    if (HAL_ADC_PollForConversion(&hadc3, 100) == HAL_OK) {
-        adc3_value = HAL_ADC_GetValue(&hadc3);
-    } else {
-        printf("ADC3 conversion timeout or failed\n");
-    }
-
-    return adc3_value;
+    // this is polling
+    return adc_get_value(&hadc3);
 }
