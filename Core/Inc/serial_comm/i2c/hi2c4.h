@@ -15,7 +15,7 @@
  *
  *   - `I2C_FASTMODE`           to use Fast Mode (400 kHz)
  *
- *   - `I2C4_MODE_FAST_PLUS`    to use Fast Mode Plus (1000 kHz)
+ *   - `I2C_MODE_FAST_PLUS`    to use Fast Mode Plus (1000 kHz)
  * 
  * 
  * 💡 Usage:
@@ -54,9 +54,6 @@
 #include "HaGeneral/HaGeneral_config.h"
 
 
-#define I2C4_MODE_STD 0
-#define I2C4_MODE_FAST 1
-#define I2C4_MODE_FAST_PLUS 2
 
 
 
@@ -64,14 +61,14 @@
 #error "I2C4_MODE is not defined. Please define it in HaGeneral_config.h (e.g., #define I2C4_MODE I2C4_MODE_STD)"
 #endif
 
-#if I2C4_MODE == I2C4_MODE_STD
+#if I2C4_MODE == I2C_MODE_STD
 #define I2C4_GPIO_SPEED GPIO_SPEED_FREQ_LOW
-#elif I2C4_MODE == I2C4_MODE_FAST
+#elif I2C4_MODE == I2C_MODE_FAST
 #define I2C4_GPIO_SPEED GPIO_SPEED_FREQ_MEDIUM
-#elif I2C4_MODE == I2C4_MODE_FAST_PLUS
+#elif I2C4_MODE == I2C_MODE_FAST_PLUS
 #define I2C4_GPIO_SPEED GPIO_SPEED_FREQ_HIGH
 #else
-#error "Unsupported I2C4_MODE value. Use I2C4_MODE_STD, I2C4_MODE_FAST, or I2C4_MODE_FAST_PLUS."
+#error "Unsupported I2C4_MODE value. Use I2C_MODE_STD, I2C_MODE_FAST, or I2C_MODE_FAST_PLUS."
 #endif
 
 

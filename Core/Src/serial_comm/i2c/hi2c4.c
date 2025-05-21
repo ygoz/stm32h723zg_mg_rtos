@@ -32,11 +32,11 @@ void MX_I2C4_Init(void)
 
   /* USER CODE BEGIN I2C4_Init 1 */
     // Select timing based on I2C mode
-    #if I2C4_MODE == I2C4_MODE_STD
+    #if I2C4_MODE == I2C_MODE_STD
         hi2c4.Init.Timing = 0x60404E72;  // 100kHz
-    #elif I2C4_MODE == I2C4_MODE_FAST
+    #elif I2C4_MODE == I2C_MODE_FAST
         hi2c4.Init.Timing = 0x00D049FB;  // 400kHz
-    #elif I2C4_MODE == I2C4_MODE_FAST_PLUS
+    #elif I2C4_MODE == I2C_MODE_FAST_PLUS
         hi2c4.Init.Timing = 0x00601A5C;  // 1MHz
         HAL_I2CEx_EnableFastModePlus(I2C_FASTMODEPLUS_I2C4);
     #else

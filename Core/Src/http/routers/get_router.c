@@ -8,7 +8,7 @@
 #include "http/settings/network.h"
 #include "string.h"
 #include "serial_comm/i2c/hi2c4.h"
-#include "serial_comm/i2c/utils.h"
+#include "peripherals/adc/hadc3.h"
 
 
 
@@ -30,6 +30,16 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		HAL_GPIO_TogglePin(GPIOB, LED_GREEN_Pin); // Can be different on your board
 	    mg_http_reply(c, 200, "", "true\n");
 	    }
+
+
+	else if (mg_match(hm->uri, mg_str("/api/periph/adc3"), NULL)) {
+		uint16_t adc_value = adc3_get_value();
+
+		snprintf(response, sizeof(response), "adc3 value : %u\n", adc_value);
+	
+		// Send the response with the ADC value
+		mg_http_reply(c, 200, "", response);
+		}
 
 
 	else if (mg_match(hm->uri, mg_str("/api/eeprom/read"), NULL)) {

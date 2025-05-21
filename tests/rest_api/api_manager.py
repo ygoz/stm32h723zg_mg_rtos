@@ -2,11 +2,11 @@ import httpx
 from httpx import Response
 from httpx import TimeoutException, TransportError
 from time import sleep
-from rest_api.utils import request_handler
-# from utils import request_handler
+# from rest_api.utils import request_handler
+from utils import request_handler
 from typing import Optional
 import asyncio
-from rest_api.fota import ST_FOTA_manager
+# from rest_api.fota import ST_FOTA_manager
 
 
 
@@ -69,6 +69,13 @@ class api_test_manager:
     
     
     @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/adc3")
+    async def get_adc3(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
+    
+    
+    @classmethod
     async def fota_update(cls) -> Response:
         try:
             # Try firmware update, request should timeout / socket disconnected
@@ -101,14 +108,14 @@ async def main():
     # # led
     # result = await api_test_manager.toggle_green_led()
     # result = await api_test_manager.get_green_led_status()
-    
+    result = await api_test_manager.get_adc3()
     # mem
-    read_params = {"addr" : addr , "slave" : 0xa0, "size" : 300}
-    result = await api_test_manager.read_eeprom(params=read_params)
+    # read_params = {"addr" : addr , "slave" : 0xa0, "size" : 300}
+    # result = await api_test_manager.read_eeprom(params=read_params)
     
-    addr = 0x0000
-    write_params = {"addr" : addr , "slave" : 0xa0, "text" : "*" * 100} 
-    result = await api_test_manager.write_eeprom(params=write_params)
+    # addr = 0x0000
+    # write_params = {"addr" : addr , "slave" : 0xa0, "text" : "*" * 100} 
+    # result = await api_test_manager.write_eeprom(params=write_params)
 
 if __name__ == '__main__':
     asyncio.run(main())

@@ -27,6 +27,8 @@
 #include "http/routers/main_router.h"
 #include "http/settings/network.h"
 #include "serial_comm/i2c/hi2c4.h"
+#include "peripherals/adc/hadc3.h"
+#include "peripherals/adc/utils.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -158,8 +160,12 @@ int main(void)
   MX_ETH_Init();
   MX_RNG_Init();
   MX_I2C4_Init();
+  MX_ADC3_Init();
   /* USER CODE BEGIN 2 */
 
+  //init all adcs here + calibration
+  adc_init_all_handles();
+  
   /* USER CODE END 2 */
 
   /* Init scheduler */

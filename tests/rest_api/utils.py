@@ -3,13 +3,10 @@ from functools import wraps
 from typing import Callable, Dict
 import os
 
-def request_handler(method: str, url: str):
+def request_handler(method: str, url: str) -> httpx.Response:
     def decorator(func: Callable):
         @wraps(func)
         async def wrapper(*args, **kwargs):
-            # Extract headers separately
-            # headers = kwargs.pop('headers', {})
-
             try:
                 async with httpx.AsyncClient() as client:
                     # response = await client.request(method, url, headers=headers, **kwargs)
@@ -28,7 +25,17 @@ def request_handler(method: str, url: str):
                 # Call the original function with the HTTP response
                 return await func(response, *args, **kwargs)
             except httpx.HTTPStatusError as e:
-                print(f"\nstatus error:\t {e}\n")
+                # print(f"\nstatus error:\t {e}\n")
+                response = e.response  # Get the actual response from the exception
+                print("\n" + "=" * 50)
+                print("❗ HTTP Status Error")
+                print("=" * 50)
+                print(f"🔹 Method      : {method}")
+                print(f"🔹 URL         : {url}")
+                print(f"🔹 Status Code : {response.status_code}")
+                print(f"🔹 Response Body:\n{response.text}")
+                print("=" * 50 + "\n")
+                return await func(response, *args, **kwargs)
         return wrapper
     return decorator
 

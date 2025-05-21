@@ -62,6 +62,9 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/flash/internal_flash.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c4.c
+
+    ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc3.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/utils.c
 )
 
 # Add include paths
@@ -81,6 +84,10 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm/i2c
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/adc
 )
 
 # Add project symbols (macros)

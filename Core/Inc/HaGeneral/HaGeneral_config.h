@@ -21,7 +21,6 @@
 
 
 
-
 // SETTINGS ************************************************************************************
 
 /** DEFAULT NETWORK SETTINGS
@@ -60,12 +59,32 @@
  * 
  *          The settings below (timing, addressing mode, filters, etc.) are applied
  *          in @file serial_comm/i2c/hi2c4.c.
+ * @attention
+ * I2C4_MODE        ->      I2C_MODE_STD || I2C_MODE_FAST || I2C_MODE_FAST_PLUS
+ * I2C4_BASE_SLAVE_ADDR  ->      7-BIT ADDR SHIFTED TO THE LEFT
+ * I2C4_OP_DELAY    ->      UNITS == ms
  */
-#define I2C4_MODE I2C4_MODE_FAST
-#define BASE_SLAVE_ADDR (0x50 << 1) // 7-BIT
-#define I2C4_OP_DELAY 50 // in ms
+#define I2C4_MODE I2C_MODE_FAST
+#define I2C4_BASE_SLAVE_ADDR (0x50 << 1) // EEPROM ADDR
+#define I2C4_OP_DELAY 50
 
 // SERIAL COMM *********************************************************************************
+
+
+// PERIPHERALS *********************************************************************************
+
+// ADC
+
+/** ADC3
+ * @brief 
+ * 
+ */
+
+#define ADC3_HANDLE_STATUS              HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
+#define ADC3_SINGLE_OR_DOUBLE_ENDED     ADC_SINGLE_ENDED // ADC_SINGLE_ENDED     OR        ADC_DIFFERENTIAL_ENDED
+
+#define ADC1_HANDLE_STATUS HANDLE_OFF
+#define ADC2_HANDLE_STATUS HANDLE_OFF
 
 
 #endif /* INC_HAGENERAL_CONFIG_H_ */
