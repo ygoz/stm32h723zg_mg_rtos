@@ -24,4 +24,6 @@
 
 extern ADC_HandleTypeDef hadc3;
 
+void MX_ADC3_Init(void);
+
 uint16_t adc3_get_value(void);
