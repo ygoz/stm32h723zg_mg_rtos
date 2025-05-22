@@ -16,8 +16,6 @@
 #define HANDLE_ON  1
 #define HANDLE_OFF 0
 
-// uint8_t init_adc_handles()
-
 
 typedef enum {
     ADC_STATUS_NONE      = 0,  ///< No ADCs initialized successfully
