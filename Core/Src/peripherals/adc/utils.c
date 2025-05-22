@@ -8,8 +8,6 @@
 
 
 uint8_t init_adc(ADC_HandleTypeDef *hadc, uint32_t calibration_mode, uint8_t status_bit, const char *label) {
-    // de-init and re-init
-    if (HAL_ADC_DeInit(hadc) == HAL_OK && HAL_ADC_Init(hadc) == HAL_OK) {
         // calibrate adc
         if (HAL_ADCEx_Calibration_Start(hadc, ADC_CALIB_OFFSET, calibration_mode) == HAL_OK) {
             //start adc
@@ -17,7 +15,6 @@ uint8_t init_adc(ADC_HandleTypeDef *hadc, uint32_t calibration_mode, uint8_t sta
             // add its adc status bit
             return status_bit;
         }
-    }
     MG_INFO(("%s initialization failed.", label));
     return 0;
 }
