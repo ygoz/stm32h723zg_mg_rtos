@@ -11,7 +11,7 @@
 // 12 bit resolution
 //  PC3_C     ------> ADC3_INP1 --> if single ended use this pin
 //  PC2_C     ------> ADC3_INN1 --> used for differential mode
-// voltage?
+// 3.3 voltage?
 
 #pragma once
 
@@ -29,6 +29,9 @@
 #error "ADC3_SINGLE_OR_DOUBLE_ENDED is not defined. Please define it in HaGeneral_config.h (e.g., #define ADC3_SINGLE_OR_DOUBLE_ENDED ADC_DIFFERENTIAL_ENDED)"
 #endif
 
+#ifndef ADC3_POLLING_OR_DMA_MODE
+#error "ADC3_POLLING_OR_DMA_MODE is not defined. Please define it in HaGeneral_config.h (e.g., #define ADC3_POLLING_OR_DMA_MODE ADC_POLLING_MODE)"
+#endif
 
 
 extern ADC_HandleTypeDef hadc3;

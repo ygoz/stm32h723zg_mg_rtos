@@ -1,6 +1,9 @@
 #MicroXplorer Configuration settings - do not modify
 ADC3.Channel-0\#ChannelRegularConversion=ADC_CHANNEL_1
-ADC3.IPParameters=Rank-0\#ChannelRegularConversion,Channel-0\#ChannelRegularConversion,SamplingTime-0\#ChannelRegularConversion,OffsetNumber-0\#ChannelRegularConversion,OffsetSign-0\#ChannelRegularConversion,NbrOfConversionFlag,NbrOfConversion
+ADC3.ContinuousConvMode=ENABLE
+ADC3.ConversionDataManagement=ADC_CONVERSIONDATA_DR
+ADC3.DMAContinuousRequests=DISABLE
+ADC3.IPParameters=Rank-0\#ChannelRegularConversion,Channel-0\#ChannelRegularConversion,SamplingTime-0\#ChannelRegularConversion,OffsetNumber-0\#ChannelRegularConversion,OffsetSign-0\#ChannelRegularConversion,NbrOfConversionFlag,NbrOfConversion,ConversionDataManagement,ContinuousConvMode,DMAContinuousRequests
 ADC3.NbrOfConversion=1
 ADC3.NbrOfConversionFlag=1
 ADC3.OffsetNumber-0\#ChannelRegularConversion=ADC_OFFSET_NONE
@@ -220,7 +223,7 @@ ProjectManager.ToolChainLocation=
 ProjectManager.UAScriptAfterPath=
 ProjectManager.UAScriptBeforePath=
 ProjectManager.UnderRoot=false
-ProjectManager.functionlistsort=1-SystemClock_Config-RCC-false-HAL-false,2-MX_GPIO_Init-GPIO-false-HAL-true,3-MX_USART3_UART_Init-USART3-false-HAL-true,4-MX_ETH_Init-ETH-false-HAL-true,5-MX_RNG_Init-RNG-false-HAL-true,6-MX_I2C4_Init-I2C4-false-HAL-true,7-MX_ADC3_Init-ADC3-false-HAL-true,0-MX_CORTEX_M7_Init-CORTEX_M7-false-HAL-true
+ProjectManager.functionlistsort=1-SystemClock_Config-RCC-false-HAL-false,2-MX_GPIO_Init-GPIO-false-HAL-true,3-MX_USART3_UART_Init-USART3-false-HAL-true,4-MX_ETH_Init-ETH-false-HAL-true,5-MX_RNG_Init-RNG-false-HAL-true,6-MX_ADC3_Init-ADC3-false-HAL-true,7-MX_I2C4_Init-I2C4-false-HAL-true,0-MX_CORTEX_M7_Init-CORTEX_M7-false-HAL-true
 RCC.ADCFreq_Value=4000000
 RCC.AHB12Freq_Value=275000000
 RCC.AHB4Freq_Value=275000000

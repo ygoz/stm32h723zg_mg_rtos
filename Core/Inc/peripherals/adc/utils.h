@@ -13,8 +13,11 @@
 
 #include "peripherals/adc/hadc3.h"
 
-#define HANDLE_ON  1
 #define HANDLE_OFF 0
+#define HANDLE_ON  1
+
+#define ADC_POLLING_MODE 2
+#define ADC_DMA_MODE     3
 
 
 typedef enum {

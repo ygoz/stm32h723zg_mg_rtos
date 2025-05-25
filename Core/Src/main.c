@@ -165,6 +165,18 @@ int main(void)
 
   //init all adcs here + calibration
   adc_init_all_handles();
+// uint16_t adc_dma_values[10] = {0};
+  
+
+  
+//   if (HAL_ADC_Start_DMA(&hadc3, (uint32_t *)adc_dma_values, 10) != HAL_OK) {
+//     // Handle error
+//     printf("errorr");
+//   }
+//   else{
+//       printf("ADC value [%d]: %d\r\n", 0, adc_dma_values[0]);
+//     }
+
   
   /* USER CODE END 2 */
 

@@ -22,7 +22,7 @@ uint8_t init_adc(ADC_HandleTypeDef *hadc, uint32_t calibration_mode, uint8_t sta
 
 
 
-
+// add dma to init + analog wdg
 uint8_t adc_init_all_handles(void) {
     uint8_t adc_status = 0;
 
@@ -42,6 +42,9 @@ uint8_t adc_init_all_handles(void) {
     return adc_status;
 }
 
+
+
+// add dma as well
 
 
 // POLLING !! MAKE SURE 
