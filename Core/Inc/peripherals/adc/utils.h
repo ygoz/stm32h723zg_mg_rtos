@@ -11,13 +11,21 @@
 
 #pragma once
 
-#include "peripherals/adc/hadc3.h"
+
+#include "stm32h7xx_hal.h"
+#include <stdint.h>
+
 
 #define HANDLE_OFF 0
 #define HANDLE_ON  1
 
 #define ADC_POLLING_MODE 2
 #define ADC_DMA_MODE     3
+
+
+#define SRAM4_BDMA __attribute__((section(".sram4")))
+#define ALIGN4 __attribute__((aligned(4)))
+
 
 
 typedef enum {
@@ -33,4 +41,4 @@ typedef enum {
 
 
 uint8_t adc_init_all_handles(void);
-uint16_t adc_get_value(ADC_HandleTypeDef *hadc);
+uint16_t adc_polling_get_value(ADC_HandleTypeDef *hadc);

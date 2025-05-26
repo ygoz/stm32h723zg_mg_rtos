@@ -20,6 +20,7 @@
         "jeandudey.cortex-debug-dp-stm32h7",
         "mhutchie.git-graph",
         "pkief.material-icon-theme",
-        "stmicroelectronics.stm32-vscode-extension" // Dependencies to "marus25.cortex-debug"
+        "stmicroelectronics.stm32-vscode-extension",
+        "ms-vscode.vscode-serial-monitor" // Dependencies to "marus25.cortex-debug"
     ]
 }

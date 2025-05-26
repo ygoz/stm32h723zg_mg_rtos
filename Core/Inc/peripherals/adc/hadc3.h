@@ -17,7 +17,7 @@
 
 #include "stm32h7xx_hal.h"
 #include "main.h"
-#include "serial_comm/i2c/utils.h"
+#include "peripherals/adc/utils.h"
 #include "HaGeneral/HaGeneral_config.h"
 
 
@@ -34,8 +34,40 @@
 #endif
 
 
+#if (ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE)
+
+#ifndef ADC3_DMA_BUFFER_SIZE
+#error "ADC3_DMA_BUFFER_SIZE is not defined. Please define it in HaGeneral_config.h (e.g., #define ADC3_DMA_BUFFER_SIZE 256)"
+#endif
+
+#define UINT16_SIZE_BYTES 2
+#if (ADC3_DMA_BUFFER_SIZE * UINT16_SIZE_BYTES > 16 * 1024)
+#error "ADC3_DMA_BUFFER_SIZE exceeds the maximum buffer size of 16KB (SRAM4 size). To avoid hardfaults please reduce the buffer size."
+#endif
+
+#endif
+
+
+// DMA SETTINGS
+#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
+
+extern uint16_t adc3_dma_buffer[ADC3_DMA_BUFFER_SIZE];
+
+uint16_t * adc3_get_value(void);
+
+#elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
+
+uint16_t adc3_get_value(void);
+
+#endif
+
+
+//dma 
+extern DMA_HandleTypeDef hdma_adc3;
+
+
 extern ADC_HandleTypeDef hadc3;
 
 void MX_ADC3_Init(void);
 
-uint16_t adc3_get_value(void);
+void MX_BDMA_Init(void);

@@ -33,11 +33,20 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 
 
 	else if (mg_match(hm->uri, mg_str("/api/periph/adc3"), NULL)) {
-		uint16_t adc_value = adc3_get_value();
 
-		snprintf(response, sizeof(response), "adc3 value : %u\n", adc_value);
-	
-		// Send the response with the ADC value
+		
+		#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
+
+			uint16_t* my_buffer = adc3_get_value();
+			snprintf(response, sizeof(response), "adc3 value : %u, %u\n", my_buffer[0], my_buffer[1]);
+
+		#elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
+
+			uint16_t adc_value = adc3_get_value();
+			snprintf(response, sizeof(response), "adc3 value : %u\n", adc_value);
+			
+		#endif
+
 		mg_http_reply(c, 200, "", response);
 		}
 

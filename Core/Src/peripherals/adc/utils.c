@@ -10,9 +10,8 @@
 uint8_t init_adc(ADC_HandleTypeDef *hadc, uint32_t calibration_mode, uint8_t status_bit, const char *label) {
         // calibrate adc
         if (HAL_ADCEx_Calibration_Start(hadc, ADC_CALIB_OFFSET, calibration_mode) == HAL_OK) {
-            //start adc
             MG_INFO(("%s initialized.", label));
-            // add its adc status bit
+            // return its adc status bit
             return status_bit;
         }
     MG_INFO(("%s initialization failed.", label));
@@ -36,6 +35,9 @@ uint8_t adc_init_all_handles(void) {
 
     #if ADC3_HANDLE_STATUS == HANDLE_ON
     adc_status |= init_adc(&hadc3, ADC3_SINGLE_OR_DOUBLE_ENDED, ADC_STATUS_ADC3, "ADC3");
+        #if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
+        HAL_ADC_Start_DMA(&hadc3, (uint32_t *)adc3_dma_buffer, ADC3_DMA_BUFFER_SIZE);
+        #endif
     #endif
 
     MG_INFO(("ADC Init Status: 0x%02X\n", adc_status));
@@ -45,11 +47,20 @@ uint8_t adc_init_all_handles(void) {
 
 
 // add dma as well
+// DMA CALL BACK
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+{
+  if (hadc == &hadc3){
+    // Process dma vals here
+    // printf("ADC value [%d]: %d\r\n", 0, adc3_dma_buffer[0]);
+
+  }
+}
 
 
-// POLLING !! MAKE SURE 
-uint16_t adc_get_value(ADC_HandleTypeDef *hadc) {
-    uint16_t adc3_value = 0;
+// POLLING !!!
+uint16_t adc_polling_get_value(ADC_HandleTypeDef *hadc) {
+    uint16_t adc_value = 0;
 
     // Start the ADC conversion
     if (HAL_ADC_Start(hadc) != HAL_OK) {
@@ -59,10 +70,10 @@ uint16_t adc_get_value(ADC_HandleTypeDef *hadc) {
 
     // Poll for conversion with a timeout
     if (HAL_ADC_PollForConversion(hadc, 100) == HAL_OK) {
-        adc3_value = HAL_ADC_GetValue(hadc);
+        adc_value = HAL_ADC_GetValue(hadc);
     } else {
         MG_INFO(("ADC3 conversion timeout or failed"));
     }
 
-    return adc3_value;
+    return adc_value;
 }
