@@ -74,9 +74,9 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value) {
     hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
     hadc3.Init.DMAContinuousRequests = DISABLE;
    #elif ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
-   hadc3.Init.ContinuousConvMode = ENABLE;
-   hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DMA_CIRCULAR;
-   hadc3.Init.DMAContinuousRequests = ENABLE;
+    hadc3.Init.ContinuousConvMode = ENABLE;
+    hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DMA_CIRCULAR;
+    hadc3.Init.DMAContinuousRequests = ENABLE;
    #endif
    hadc3.Init.NbrOfConversion = 1;
    hadc3.Init.DiscontinuousConvMode = DISABLE;

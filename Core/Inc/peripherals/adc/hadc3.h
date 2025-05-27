@@ -1,17 +1,21 @@
 /**
  * @file hadc3.h
- * @author your name (you@domain.com)
- * @brief 
+ * @author Yam Goz (you@domain.com)
+ * @brief Header file for ADC3 handle configuration and pin mapping.
  * @version 0.1
  * @date 2025-05-21
  * 
  * @copyright Copyright (c) 2025
  * 
+ * @details
+ * This file provides the configuration for ADC3, including its resolution and pin assignments.
+ * - 12-bit resolution
+ * - Pin mappings:
+ *     - PC3_C (ADC3_INP1): Used for single-ended input.
+ *     - PC2_C (ADC3_INN1): Used as negative input for differential mode.
+ * - ADC reference voltage: 3.3V
  */
-// 12 bit resolution
-//  PC3_C     ------> ADC3_INP1 --> if single ended use this pin
-//  PC2_C     ------> ADC3_INN1 --> used for differential mode
-// 3.3 voltage?
+
 
 #pragma once
 
@@ -55,12 +59,41 @@
 #if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
 
 
+/**
+ * @brief DMA buffer for ADC3 data.
+ * 
+ * This buffer holds the converted ADC3 data and is used during DMA (Direct Memory Access) operations.
+ * It is specifically placed in SRAM4 because BDMA (Basic DMA) is only capable of accessing SRAM4.
+ * 
+ * @note 
+ * The linker script is configured to place this buffer in SRAM4, which has a size limit of 16KB.
+ */
 extern uint16_t adc3_dma_buffer[ADC3_DMA_BUFFER_SIZE];
 
+
+/**
+ * @brief Gets the address of the ADC3 DMA buffer.
+ * 
+ * This function returns a pointer to the buffer used for storing the converted data from ADC3.
+ * The buffer is used during DMA operations and is placed in SRAM4 to comply with BDMA access limitations.
+ * 
+ * @return uint16_t* Pointer to the start of the ADC3 DMA buffer.
+ */
 uint16_t * adc3_get_value(void);
 
 #elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
 
+
+/**
+ * @brief Reads a single ADC value from ADC3 using polling mode.
+ * 
+ * This function wraps the generic adc_polling_get_value function, 
+ * specifically for ADC3 with a predefined polling timeout.
+ * 
+ * @param[out] adc_value Pointer to a variable where the converted ADC value will be stored.
+ * 
+ * @return HAL_StatusTypeDef HAL status code indicating success or failure of the ADC read operation.
+ */
 HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value);
 
 #endif
@@ -69,8 +102,8 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value);
 //dma 
 extern DMA_HandleTypeDef hdma_adc3;
 
-
 extern ADC_HandleTypeDef hadc3;
+
 
 void MX_ADC3_Init(void);
 
