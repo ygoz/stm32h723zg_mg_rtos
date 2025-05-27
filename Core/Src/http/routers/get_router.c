@@ -17,6 +17,7 @@
 void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 
 	char response[256] = {0};
+	uint16_t http_status_code = 0;
 
 	if (mg_match(hm->uri, mg_str("/api/ping"), NULL)) {
 		mg_http_reply(c, 200, "", "GET ping\r\n");
@@ -32,23 +33,53 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	    }
 
 
-	else if (mg_match(hm->uri, mg_str("/api/periph/adc3"), NULL)) {
+	else if (mg_match(hm->uri, mg_str("/api/periph/adc#"), NULL)) {
 
-		
-		#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
+		if (hm->uri.len != 16) {
+            mg_http_reply(c, 400, "", "Invalid URI length: %d\n", hm->uri.len);
+            return;
+        }
 
-			uint16_t* my_buffer = adc3_get_value();
-			snprintf(response, sizeof(response), "adc3 value : %u, %u\n", my_buffer[0], my_buffer[1]);
+        // Extract and cast ADC number (last character) to int
+        char adc_num_char = hm->uri.buf[hm->uri.len - 1];
+		uint8_t adc_num = adc_num_char - '0';
 
-		#elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
+        switch (adc_num) {
+			case 1:
+				snprintf(response, sizeof(response), "ADC%d not yet supported\n", adc_num);
+				http_status_code = 404;
+				break;
+			case 2:
+				snprintf(response, sizeof(response), "ADC%d not yet supported\n", adc_num);
+				http_status_code = 404;
+				break;
+			case 3:
+				#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
 
-			uint16_t adc_value = adc3_get_value();
-			snprintf(response, sizeof(response), "adc3 value : %u\n", adc_value);
-			
-		#endif
+					uint16_t* my_buffer = adc3_get_value();
+					snprintf(response, sizeof(response), "adc3 value : %u, %u\n", my_buffer[0], my_buffer[1]);
+					http_status_code = 200;
 
-		mg_http_reply(c, 200, "", response);
+				#elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
+
+					uint16_t adc_value = 0;
+					if (adc3_get_value(&adc_value) == HAL_OK) {
+						snprintf(response, sizeof(response), "adc3 value : %u\n", adc_value);
+						http_status_code = 200;
+					} else {
+						snprintf(response, sizeof(response), "adc3 read failed\n");
+						http_status_code = 500;
+					}
+				
+				#endif
+				break;
+			default:
+				snprintf(response, sizeof(response), "ADC%d not supported\n", adc_num);
+				http_status_code = 404;
+				break;
 		}
+		mg_http_reply(c, http_status_code, "", response);
+	}
 
 
 	else if (mg_match(hm->uri, mg_str("/api/eeprom/read"), NULL)) {

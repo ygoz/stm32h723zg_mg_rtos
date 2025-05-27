@@ -23,7 +23,15 @@
 #define ADC_DMA_MODE     3
 
 
+/**
+ * @brief Attribute to place data in SRAM4 (for BDMA access).
+ */
 #define SRAM4_BDMA __attribute__((section(".sram4")))
+
+
+/**
+ * @brief Ensures data is 4-byte aligned (needed for DMA transfers).
+ */
 #define ALIGN4 __attribute__((aligned(4)))
 
 
@@ -41,4 +49,4 @@ typedef enum {
 
 
 uint8_t adc_init_all_handles(void);
-uint16_t adc_polling_get_value(ADC_HandleTypeDef *hadc);
+HAL_StatusTypeDef adc_polling_get_value(ADC_HandleTypeDef *hadc, uint16_t *adc_value, uint16_t polling_timeout);

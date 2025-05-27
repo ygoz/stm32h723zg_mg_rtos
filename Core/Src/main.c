@@ -135,6 +135,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+  SCB_EnableICache();
+  // SCB_EnableDCache();
 
   /* USER CODE END 1 */
 

@@ -10,6 +10,19 @@
 
 // #pragma once
 
+// #define MG_SET_MAC_ADDRESS(mac)      \
+//   do {                               \
+//     mac[0] = 2;                      \
+//     mac[1] = 3;         \
+//     mac[2] = 4; \
+//     mac[3] = 5; \
+//     mac[4] = 6;         \
+//     mac[5] = 7;        \
+//   } while (0)
+
+
+
+
 // OS
 //#define MG_ARCH MG_ARCH_NEWLIB
 #define MG_ARCH MG_ARCH_FREERTOS

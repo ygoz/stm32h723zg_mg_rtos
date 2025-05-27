@@ -21,6 +21,9 @@
 #include "HaGeneral/HaGeneral_config.h"
 
 
+#define ADC3_POLLING_TIMEOUT 100
+
+
 #ifndef ADC3_HANDLE_STATUS
 #error "ADC3_HANDLE_STATUS is not defined. Please define it in HaGeneral_config.h (e.g., #define ADC3_HANDLE_STATUS HANDLE_ON)"
 #endif
@@ -51,13 +54,14 @@
 // DMA SETTINGS
 #if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
 
+
 extern uint16_t adc3_dma_buffer[ADC3_DMA_BUFFER_SIZE];
 
 uint16_t * adc3_get_value(void);
 
 #elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
 
-uint16_t adc3_get_value(void);
+HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value);
 
 #endif
 

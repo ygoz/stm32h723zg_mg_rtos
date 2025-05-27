@@ -59,21 +59,24 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 
 
 // POLLING !!!
-uint16_t adc_polling_get_value(ADC_HandleTypeDef *hadc) {
-    uint16_t adc_value = 0;
+HAL_StatusTypeDef adc_polling_get_value(ADC_HandleTypeDef *hadc, uint16_t *adc_value, uint16_t polling_timeout) {
 
-    // Start the ADC conversion
-    if (HAL_ADC_Start(hadc) != HAL_OK) {
-        MG_INFO(("ADC start failed"));
-        return 0;
+    HAL_StatusTypeDef status = HAL_OK;
+
+    // Start ADC conversion
+    status = HAL_ADC_Start(hadc);
+    if (status != HAL_OK) {
+        MG_INFO(("ADC start failed with status %d", status));
+        return status;
     }
 
-    // Poll for conversion with a timeout
-    if (HAL_ADC_PollForConversion(hadc, 100) == HAL_OK) {
-        adc_value = HAL_ADC_GetValue(hadc);
+    // Poll for conversion with timeout
+    status = HAL_ADC_PollForConversion(hadc, polling_timeout);
+    if (status == HAL_OK) {
+        *adc_value = (uint16_t)HAL_ADC_GetValue(hadc);
     } else {
-        MG_INFO(("ADC3 conversion timeout or failed"));
+        MG_INFO(("ADC conversion timeout or failed with status %d", status));
     }
 
-    return adc_value;
+    return status;
 }

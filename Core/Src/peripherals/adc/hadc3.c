@@ -34,8 +34,8 @@ uint16_t* adc3_get_value(void) {
 
 #elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
 
-uint16_t adc3_get_value(void) {
-  return adc_polling_get_value(&hadc3);
+HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value) {
+  return adc_polling_get_value(&hadc3, adc_value, ADC3_POLLING_TIMEOUT);
 }
 #endif
 
