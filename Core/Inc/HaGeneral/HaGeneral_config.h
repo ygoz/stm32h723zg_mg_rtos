@@ -5,7 +5,8 @@
  * @brief   Global configuration file for HaGeneral firmware.
  *
  * This file contains default settings for various subsystems of the firmware,
- * including network configuration and serial communication (e.g., I2C).
+ * including network configuration, serial communication configuration(e.g., I2C), 
+ * peripherals configuration and more...
  * 
  * The values defined here serve as fallbacks or compile-time constants,
  * and are typically used during the first boot of the MCU after flashing,
@@ -39,6 +40,8 @@
 #define HAGENRAL_DEFAULT_DHCP			false
 
 // SETTINGS ************************************************************************************
+
+
 
 
 // SERIAL COMM *********************************************************************************
