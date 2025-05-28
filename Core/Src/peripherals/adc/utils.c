@@ -1,5 +1,6 @@
 #include "peripherals/adc/utils.h"
 #include "peripherals/adc/hadc3.h"
+#include "peripherals/adc/hadc2.h"
 #include "HaGeneral/HaGeneral_config.h"
 #include "mongoose.h"
 
@@ -31,6 +32,12 @@ uint8_t adc_init_all_handles(void) {
 
     #if ADC2_HANDLE_STATUS == HANDLE_ON
     adc_status |= init_adc(&hadc2, ADC2_SINGLE_OR_DOUBLE_ENDED, ADC_STATUS_ADC2, "ADC2");
+        #if ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE
+        HAL_ADC_Start_DMA(&hadc2, (uint32_t *)adc2_dma_buffer, ADC2_DMA_BUFFER_SIZE);
+        #endif
+        #if ADC2_ANALOG_WATCHDOG == HANDLE_ON
+        HAL_ADC_Start_IT(&hadc2);
+        #endif
     #endif
 
     #if ADC3_HANDLE_STATUS == HANDLE_ON

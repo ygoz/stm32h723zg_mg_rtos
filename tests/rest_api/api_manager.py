@@ -73,7 +73,10 @@ class api_test_manager:
     async def get_adc3(response: httpx.Response, *args, **kwargs) -> Response:
         return response
     
-    
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/adc2")
+    async def get_adc2(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
     
     @classmethod
     async def fota_update(cls) -> Response:
@@ -109,6 +112,7 @@ async def main():
     # result = await api_test_manager.toggle_green_led()
     # result = await api_test_manager.get_green_led_status()
     result = await api_test_manager.get_adc3()
+    result = await api_test_manager.get_adc2()
     # mem
     # read_params = {"addr" : addr , "slave" : 0xa0, "size" : 300}
     # result = await api_test_manager.read_eeprom(params=read_params)
