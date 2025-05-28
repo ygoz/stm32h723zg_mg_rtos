@@ -122,7 +122,7 @@
 #define ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD         3000             // value should be in between 0 - 4095 (2**12 - 1)
 #define ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD          0                // value should be in between 0 - 4095 (2**12 - 1)
 
-#define ADC3_POLLING_OR_DMA_MODE                    ADC_POLLING_MODE     // ADC_POLLING_MODE     OR        ADC_DMA_MODE
+#define ADC3_POLLING_OR_DMA_MODE                    ADC_DMA_MODE     // ADC_POLLING_MODE     OR        ADC_DMA_MODE
 // DMA SETTINGS
 #define ADC3_DMA_BUFFER_SIZE                        256              // value should be in between 0 - 16K (sram4 is size 16KB)
 

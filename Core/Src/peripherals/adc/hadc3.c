@@ -75,6 +75,37 @@ void adc3_wdg_process_anomaly(void){
   MG_INFO(("ADC3 ANOMALLY!!"));
 }
 
+
+uint16_t adc3_get_http_response(uint16_t *adc_value, char response[256]) {
+
+  uint16_t http_status_code = {0};
+
+  #if ADC3_HANDLE_STATUS == HANDLE_OFF
+      snprintf(response, 256, "adc3 handle is off");
+      http_status_code = 400;
+      return http_status_code;
+  
+  #elif ADC3_HANDLE_STATUS == HANDLE_ON
+      #if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
+          uint16_t* my_buffer = adc3_get_value();
+          snprintf(response, 256, "adc3 value : %u, %u\n", my_buffer[0], my_buffer[1]);
+          http_status_code = 200;
+          return http_status_code;
+  
+      #elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
+          if (adc3_get_value(adc_value) == HAL_OK) {
+              snprintf(response, 256, "adc3 value : %u\n", *adc_value);
+              http_status_code = 200;
+              return http_status_code;
+          } else {
+              snprintf(response, 256, "adc3 read failed\n");
+              http_status_code = 500;
+              return http_status_code;
+            }
+      #endif
+  #endif
+  }
+
 /**
   * @brief ADC3 Initialization Function
   * @param None

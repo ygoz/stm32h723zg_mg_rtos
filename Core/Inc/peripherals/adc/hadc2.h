@@ -1,12 +1,19 @@
 /**
- * @file hadc2.h
- * @author your name (you@domain.com)
- * @brief 
+ * @file hadc3.h
+ * @author Yam Goz (you@domain.com)
+ * @brief Header file for ADC2 handle configuration and pin mapping.
  * @version 0.1
- * @date 2025-05-28
+ * @date 2025-05-21
  * 
  * @copyright Copyright (c) 2025
  * 
+ * @details
+ * This file provides the configuration for ADC2, including its resolution and pin assignments.
+ * - 16-bit resolution
+ * - Pin mappings:
+ *     - PF13 (ADC3_INP1): Used for single-ended input.
+ *     - PF14 (ADC3_INN1): Used as negative input for differential mode.
+ * - ADC reference voltage: 3.3V
  */
 
 
@@ -117,6 +124,7 @@ void adc2_wdg_process_anomaly(void);
 
 #endif
 
+uint16_t adc2_get_http_response(uint16_t *adc_value, char response[256]);
 
 extern ADC_HandleTypeDef hadc2;
 

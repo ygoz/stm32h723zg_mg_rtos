@@ -140,6 +140,8 @@ void adc3_wdg_process_anomaly(void);
 
 #endif
 
+uint16_t adc3_get_http_response(uint16_t *adc_value, char response[256]);
+
 //dma 
 extern DMA_HandleTypeDef hdma_adc3;
 

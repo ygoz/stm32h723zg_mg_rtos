@@ -9,6 +9,7 @@
 #include "string.h"
 #include "serial_comm/i2c/hi2c4.h"
 #include "peripherals/adc/hadc3.h"
+#include "peripherals/adc/hadc2.h"
 
 
 
@@ -51,57 +52,10 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 				http_status_code = 404;
 				break;
 			case 2:
-			#if ADC2_HANDLE_STATUS == HANDLE_OFF
-				snprintf(response, sizeof(response), "adc2 handle is off");
-				http_status_code = 400;
-
-			#elif ADC2_HANDLE_STATUS == HANDLE_ON
-				#if ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE
-
-					uint16_t* my_buffer = adc2_get_value();
-					snprintf(response, sizeof(response), "adc2 value : %u, %u\n", my_buffer[0], my_buffer[1]);
-					http_status_code = 200;
-
-				#elif ADC2_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
-
-					
-					if (adc2_get_value(&adc_value) == HAL_OK) {
-						snprintf(response, sizeof(response), "adc2 value : %u\n", adc_value);
-						http_status_code = 200;
-					} else {
-						snprintf(response, sizeof(response), "adc2 read failed\n");
-						http_status_code = 500;
-					}
-		
-				#endif
-			#endif
+				http_status_code = adc2_get_http_response(&adc_value, response);
 				break;
-
 			case 3:
-			#if ADC3_HANDLE_STATUS == HANDLE_OFF
-				snprintf(response, sizeof(response), "adc3 handle is off");
-				http_status_code = 400;
-
-			#elif ADC3_HANDLE_STATUS == HANDLE_ON
-				#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
-
-					uint16_t* my_buffer = adc3_get_value();
-					snprintf(response, sizeof(response), "adc3 value : %u, %u\n", my_buffer[0], my_buffer[1]);
-					http_status_code = 200;
-
-				#elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
-
-					
-					if (adc3_get_value(&adc_value) == HAL_OK) {
-						snprintf(response, sizeof(response), "adc3 value : %u\n", adc_value);
-						http_status_code = 200;
-					} else {
-						snprintf(response, sizeof(response), "adc3 read failed\n");
-						http_status_code = 500;
-					}
-				
-				#endif
-			#endif
+				http_status_code = adc3_get_http_response(&adc_value, response);
 				break;
 			default:
 				snprintf(response, sizeof(response), "adc%d not supported\n", adc_num);
