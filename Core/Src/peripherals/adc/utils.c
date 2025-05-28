@@ -73,6 +73,9 @@ void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef *hadc)
     if (hadc == &hadc3){
         adc3_wdg_process_anomaly();
       }
+    else if (hadc == &hadc2){
+        adc2_wdg_process_anomaly();
+      }
 }
 
 

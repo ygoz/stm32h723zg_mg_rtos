@@ -34,6 +34,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 
 
 	else if (mg_match(hm->uri, mg_str("/api/periph/adc#"), NULL)) {
+		uint16_t adc_value = 0;
 
 		if (hm->uri.len != 16) {
             mg_http_reply(c, 400, "", "Invalid URI length: %d\n", hm->uri.len);
@@ -63,7 +64,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 
 				#elif ADC2_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
 
-					uint16_t adc_value = 0;
+					
 					if (adc2_get_value(&adc_value) == HAL_OK) {
 						snprintf(response, sizeof(response), "adc2 value : %u\n", adc_value);
 						http_status_code = 200;
@@ -90,7 +91,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 
 				#elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
 
-					uint16_t adc_value = 0;
+					
 					if (adc3_get_value(&adc_value) == HAL_OK) {
 						snprintf(response, sizeof(response), "adc3 value : %u\n", adc_value);
 						http_status_code = 200;

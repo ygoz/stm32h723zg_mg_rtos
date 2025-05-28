@@ -28,12 +28,10 @@ return adc_polling_get_value(&hadc2, adc_value, ADC2_POLLING_TIMEOUT);
 #endif
 
 
-#if ADC2_ANALOG_WATCHDOG == HANDLE_ON
 // this function will be called if the watchdog passes a threshold set
 void adc2_wdg_process_anomaly(void){
 MG_INFO(("ADC2 ANOMALLY!!"));
 }
-#endif
 
 /**
  * @brief ADC2 Initialization Function
@@ -60,15 +58,20 @@ void MX_ADC2_Init(void){
  
    /** Common config
    */
-   hadc2.Instance = ADC2;
-   hadc2.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
-   hadc2.Init.Resolution = ADC_RESOLUTION_16B;
-   hadc2.Init.DataAlign = ADC3_DATAALIGN_RIGHT;
-   hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
-   hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-   hadc2.Init.LowPowerAutoWait = DISABLE;
+  hadc2.Instance = ADC2;
+  hadc2.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
+  hadc2.Init.Resolution = ADC_RESOLUTION_16B;
+  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc2.Init.LowPowerAutoWait = DISABLE;
+
+
+  hadc2.Init.ContinuousConvMode = ENABLE;
+  #if ADC2_ANALOG_WATCHDOG == HANDLE_OFF
+  hadc2.Init.ContinuousConvMode = DISABLE;
+  #endif
+
 #if ADC2_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
-    hadc2.Init.ContinuousConvMode = DISABLE;
     hadc2.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
     hadc2.Init.DMAContinuousRequests = DISABLE;
 #elif ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE
@@ -76,15 +79,13 @@ void MX_ADC2_Init(void){
     hadc2.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DMA_CIRCULAR;
     hadc2.Init.DMAContinuousRequests = ENABLE;
 #endif
-   hadc2.Init.NbrOfConversion = 1;
-   hadc2.Init.DiscontinuousConvMode = DISABLE;
-   hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-   hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-   hadc2.Init.SamplingMode = ADC_SAMPLING_MODE_NORMAL;
-   hadc2.Init.Overrun = ADC_OVR_DATA_PRESERVED;
-   hadc2.Init.LeftBitShift = ADC_LEFTBITSHIFT_NONE;
-   hadc2.Init.OversamplingMode = DISABLE;
-   hadc2.Init.Oversampling.Ratio = 2;
+  hadc2.Init.NbrOfConversion = 1;
+  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc2.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  hadc2.Init.LeftBitShift = ADC_LEFTBITSHIFT_NONE;
+  hadc2.Init.OversamplingMode = DISABLE;
+  hadc2.Init.Oversampling.Ratio = 1;
    if (HAL_ADC_Init(&hadc2) != HAL_OK)
    {
      Error_Handler();
@@ -96,14 +97,13 @@ void MX_ADC2_Init(void){
     ADC_AnalogWDGConfTypeDef AnalogWDGConfig = {0};
     AnalogWDGConfig.WatchdogNumber = ADC_ANALOGWATCHDOG_1;
     AnalogWDGConfig.WatchdogMode = ADC_ANALOGWATCHDOG_SINGLE_REG;
-    AnalogWDGConfig.Channel = ADC_CHANNEL_1;
+    AnalogWDGConfig.Channel = ADC_CHANNEL_2;
     AnalogWDGConfig.ITMode = ENABLE;
     AnalogWDGConfig.HighThreshold = ADC2_ANALOG_WATCHDOG_HIGH_THRESHOLD;
     AnalogWDGConfig.LowThreshold = ADC2_ANALOG_WATCHDOG_LOW_THRESHOLD;
-    AnalogWDGConfig.FilteringConfig = ADC2_AWD_FILTERING_4SAMPLES;
     if (HAL_ADC_AnalogWDGConfig(&hadc2, &AnalogWDGConfig) != HAL_OK)
     {
-    Error_Handler();
+      Error_Handler();
     }
 #endif
 
