@@ -74,23 +74,54 @@
 // PERIPHERALS *********************************************************************************
 
 // ADC
-
 /** ADC3
- * @brief 
- * 
+ * Features:
+ * - 12-bit resolution.
+ * - Pin mappings:
+ *   - PC3_C (ADC3_INP1): Used for single-ended input.
+ *   - PC2_C (ADC3_INN1): Used as negative input for differential mode.
+ * - ADC reference voltage: 3.3V.
+ *
+ * Notes:
+ * - The analog watchdog thresholds must be within the valid range of 0 to 2^12-1 (0–4095).
+ * - The DMA buffer is placed in SRAM4 (16KB) for BDMA access.
+ * - Ensure DMA buffer size does not exceed SRAM4 capacity.
+ * - This configuration supports flexible operation modes (DMA or polling).
+ *
+ * Configuration Macros:
+ * - ADC3_HANDLE_STATUS:                                HANDLE_ON or HANDLE_OFF.
+ * - ADC3_SINGLE_OR_DOUBLE_ENDED:                       ADC_SINGLE_ENDED or ADC_DIFFERENTIAL_ENDED.
+ * - ADC3_ANALOG_WATCHDOG:                              HANDLE_ON or HANDLE_OFF.
+ * - ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD:               0 - 4095.
+ * - ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD:                0 - 4095.
+ * - ADC3_POLLING_OR_DMA_MODE:                          ADC_POLLING_MODE or ADC_DMA_MODE.
+ * - ADC3_DMA_BUFFER_SIZE: DMA buffer size for BDMA.    1 - 16 * 1024
+ *
+ * Example:
+ * @code
+ * #define ADC3_HANDLE_STATUS                          HANDLE_ON
+ * #define ADC3_SINGLE_OR_DOUBLE_ENDED                 ADC_SINGLE_ENDED
+ * #define ADC3_ANALOG_WATCHDOG                        HANDLE_ON
+ * #define ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD         3000
+ * #define ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD          0
+ * #define ADC3_POLLING_OR_DMA_MODE                    ADC_DMA_MODE
+ * #define ADC3_DMA_BUFFER_SIZE                        256
+ * @endcode
+ *
+ * @warning Ensure correct settings for analog watchdog thresholds and DMA buffer size.
+ * @warning Use SRAM4 for DMA buffer as BDMA is only connected to this region.
  */
-
 #define ADC3_HANDLE_STATUS                          HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
 #define ADC3_SINGLE_OR_DOUBLE_ENDED                 ADC_SINGLE_ENDED // ADC_SINGLE_ENDED     OR        ADC_DIFFERENTIAL_ENDED
 
 #define ADC3_ANALOG_WATCHDOG                        HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
-    // ANALOG WATCHDOG SETTINGS
-    #define ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD     3000             // value should be in between 0 - 4095 (2**12 - 1)
-    #define ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD      0                // value should be in between 0 - 4095 (2**12 - 1)
+// ANALOG WATCHDOG SETTINGS
+#define ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD         3000             // value should be in between 0 - 4095 (2**12 - 1)
+#define ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD          0                // value should be in between 0 - 4095 (2**12 - 1)
 
 #define ADC3_POLLING_OR_DMA_MODE                    ADC_DMA_MODE     // ADC_POLLING_MODE     OR        ADC_DMA_MODE
-    // DMA SETTINGS
-    #define ADC3_DMA_BUFFER_SIZE                    256
+// DMA SETTINGS
+#define ADC3_DMA_BUFFER_SIZE                        256              // value should be in between 0 - 16K (sram4 is size 16KB)
 
 
 
