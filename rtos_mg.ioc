@@ -1,15 +1,19 @@
 #MicroXplorer Configuration settings - do not modify
+ADC3.AWD1FilteringConfig=ADC3_AWD_FILTERING_4SAMPLES
+ADC3.AWD1HighThreshold=4000
 ADC3.Channel-0\#ChannelRegularConversion=ADC_CHANNEL_1
 ADC3.ContinuousConvMode=ENABLE
 ADC3.ConversionDataManagement=ADC_CONVERSIONDATA_DMA_CIRCULAR
 ADC3.DMAContinuousRequests=ENABLE
-ADC3.IPParameters=Rank-0\#ChannelRegularConversion,Channel-0\#ChannelRegularConversion,SamplingTime-0\#ChannelRegularConversion,OffsetNumber-0\#ChannelRegularConversion,OffsetSign-0\#ChannelRegularConversion,NbrOfConversionFlag,NbrOfConversion,ConversionDataManagement,ContinuousConvMode,DMAContinuousRequests
+ADC3.EnableAnalogWatchDog1=true
+ADC3.IPParameters=Rank-0\#ChannelRegularConversion,Channel-0\#ChannelRegularConversion,SamplingTime-0\#ChannelRegularConversion,OffsetNumber-0\#ChannelRegularConversion,OffsetSign-0\#ChannelRegularConversion,NbrOfConversionFlag,NbrOfConversion,ConversionDataManagement,ContinuousConvMode,DMAContinuousRequests,EnableAnalogWatchDog1,WatchdogChannel,AWD1HighThreshold,AWD1FilteringConfig
 ADC3.NbrOfConversion=1
 ADC3.NbrOfConversionFlag=1
 ADC3.OffsetNumber-0\#ChannelRegularConversion=ADC_OFFSET_NONE
 ADC3.OffsetSign-0\#ChannelRegularConversion=ADC3_OFFSET_SIGN_NEGATIVE
 ADC3.Rank-0\#ChannelRegularConversion=1
 ADC3.SamplingTime-0\#ChannelRegularConversion=ADC3_SAMPLETIME_2CYCLES_5
+ADC3.WatchdogChannel=ADC_CHANNEL_1
 BSP_IP_NAME=NUCLEO-H723ZG
 Bdma.ADC3.0.Direction=DMA_PERIPH_TO_MEMORY
 Bdma.ADC3.0.EventEnable=DISABLE

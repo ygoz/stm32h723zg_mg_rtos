@@ -4,6 +4,7 @@
         "hageneral_config.h": "c",
         "utils.h": "c",
         "hadc3.h": "c",
-        "compare": "c"
+        "compare": "c",
+        "cmsis_os.h": "c"
     }
 }

@@ -38,6 +38,9 @@ uint8_t adc_init_all_handles(void) {
         #if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
         HAL_ADC_Start_DMA(&hadc3, (uint32_t *)adc3_dma_buffer, ADC3_DMA_BUFFER_SIZE);
         #endif
+        #if ADC3_ANALOG_WATCHDOG == HANDLE_ON
+        HAL_ADC_Start_IT(&hadc3);
+        #endif
     #endif
 
     MG_INFO(("ADC Init Status: 0x%02X\n", adc_status));
@@ -46,31 +49,45 @@ uint8_t adc_init_all_handles(void) {
 
 
 
-// add dma as well
-// DMA CALL BACK
+// Process interrupt vals here
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
   if (hadc == &hadc3){
-    // Process dma vals here
+    // Process interrupt vals here
     // printf("ADC value [%d]: %d\r\n", 0, adc3_dma_buffer[0]);
 
   }
 }
 
 
+// Anomally callback
+void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef *hadc)
+{
+    if (hadc == &hadc3){
+        adc3_wdg_process_anomaly();
+      }
+}
+
+
 // POLLING !!!
 HAL_StatusTypeDef adc_polling_get_value(ADC_HandleTypeDef *hadc, uint16_t *adc_value, uint16_t polling_timeout) {
-
     HAL_StatusTypeDef status = HAL_OK;
 
-    // Start ADC conversion
+    // Attempt to start ADC conversion
     status = HAL_ADC_Start(hadc);
-    if (status != HAL_OK) {
+    
+    if (status == HAL_BUSY) {
+        // ADC is likely in continuous mode; read the latest value
+        *adc_value = (uint16_t)HAL_ADC_GetValue(hadc);
+        return HAL_OK;
+    }
+    else if (status != HAL_OK) {
+        // Failed to start ADC conversion (other than busy)
         MG_INFO(("ADC start failed with status %d", status));
         return status;
     }
 
-    // Poll for conversion with timeout
+    // Wait for conversion to complete
     status = HAL_ADC_PollForConversion(hadc, polling_timeout);
     if (status == HAL_OK) {
         *adc_value = (uint16_t)HAL_ADC_GetValue(hadc);

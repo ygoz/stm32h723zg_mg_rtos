@@ -26,6 +26,7 @@
 
 
 #define ADC3_POLLING_TIMEOUT 100
+#define ADC3_RESOLUTION      12
 
 
 #ifndef ADC3_HANDLE_STATUS
@@ -38,6 +39,27 @@
 
 #ifndef ADC3_POLLING_OR_DMA_MODE
 #error "ADC3_POLLING_OR_DMA_MODE is not defined. Please define it in HaGeneral_config.h (e.g., #define ADC3_POLLING_OR_DMA_MODE ADC_POLLING_MODE)"
+#endif
+
+#ifndef ADC3_ANALOG_WATCHDOG
+#error "ADC3_ANALOG_WATCHDOG is not defined. Please define it in HaGeneral_config.h (e.g., #define ADC3_ANALOG_WATCHDOG HANDLE_ON)"
+#endif
+
+
+#if (ADC3_ANALOG_WATCHDOG == HANDLE_ON)
+
+#define ADC3_MAX_VALUE  ((1 << ADC3_RESOLUTION) - 1) // 2^12 -1
+#define ADC3_MIN_VALUE  0
+
+// validate high threshold
+#if (ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD < ADC3_MIN_VALUE) || (ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD > ADC3_MAX_VALUE)
+#error "ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD must be in the range 0 - 4095"
+#endif
+// Validate low threshold
+#if (ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD < ADC3_MIN_VALUE) || (ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD > ADC3_MAX_VALUE)
+#error "ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD must be in the range 0 - 4095"
+#endif
+
 #endif
 
 
@@ -98,6 +120,25 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value);
 
 #endif
 
+#if ADC3_ANALOG_WATCHDOG == HANDLE_ON
+
+/**
+ * @brief Handles an anomaly detected by the ADC3 analog watchdog.
+ * 
+ * This function is called when the analog watchdog of ADC3 detects an anomaly,
+ * such as the conversion value exceeding the configured high threshold or falling
+ * below the low threshold. The implementation should include handling actions
+ * like logging, signaling, or taking corrective measures depending on the 
+ * application requirements.
+ * 
+ * @note Ensure that the analog watchdog has been properly configured and enabled 
+ * before relying on this function. Also, consider using this in conjunction 
+ * with ADC3 interrupt handling for real-time response to watchdog events.
+ * 
+ */
+void adc3_wdg_process_anomaly(void);
+
+#endif
 
 //dma 
 extern DMA_HandleTypeDef hdma_adc3;

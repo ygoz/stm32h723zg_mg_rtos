@@ -80,12 +80,17 @@
  * 
  */
 
-#define ADC3_HANDLE_STATUS              HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
-#define ADC3_SINGLE_OR_DOUBLE_ENDED     ADC_SINGLE_ENDED // ADC_SINGLE_ENDED     OR        ADC_DIFFERENTIAL_ENDED
-#define ADC3_POLLING_OR_DMA_MODE        ADC_DMA_MODE     // ADC_POLLING_MODE     OR        ADC_DMA_MODE
+#define ADC3_HANDLE_STATUS                          HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
+#define ADC3_SINGLE_OR_DOUBLE_ENDED                 ADC_SINGLE_ENDED // ADC_SINGLE_ENDED     OR        ADC_DIFFERENTIAL_ENDED
 
-// DMA SETTINGS
-#define ADC3_DMA_BUFFER_SIZE            256
+#define ADC3_ANALOG_WATCHDOG                        HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
+    // ANALOG WATCHDOG SETTINGS
+    #define ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD     3000             // value should be in between 0 - 4095 (2**12 - 1)
+    #define ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD      0                // value should be in between 0 - 4095 (2**12 - 1)
+
+#define ADC3_POLLING_OR_DMA_MODE                    ADC_DMA_MODE     // ADC_POLLING_MODE     OR        ADC_DMA_MODE
+    // DMA SETTINGS
+    #define ADC3_DMA_BUFFER_SIZE                    256
 
 
 

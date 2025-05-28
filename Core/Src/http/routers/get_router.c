@@ -54,6 +54,11 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 				http_status_code = 404;
 				break;
 			case 3:
+			#if ADC3_HANDLE_STATUS == HANDLE_OFF
+				snprintf(response, sizeof(response), "adc3 handle is off");
+				http_status_code = 400;
+
+			#elif ADC3_HANDLE_STATUS == HANDLE_ON
 				#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
 
 					uint16_t* my_buffer = adc3_get_value();
@@ -72,9 +77,10 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 					}
 				
 				#endif
+				#endif
 				break;
 			default:
-				snprintf(response, sizeof(response), "ADC%d not supported\n", adc_num);
+				snprintf(response, sizeof(response), "adc%d not supported\n", adc_num);
 				http_status_code = 404;
 				break;
 		}

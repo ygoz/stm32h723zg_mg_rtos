@@ -1,17 +1,46 @@
 /**
  * @file hadc3.c
- * @author your name (you@domain.com)
- * @brief 
+ * @author Yam Goz
+ * @brief STM32H723ZGT6 ADC3 Peripheral Configuration and Handling
  * @version 0.1
- * @date 2025-05-21
+ * @date 2025-05-28
  * 
- * @copyright Copyright (c) 2025
+ * @details
+ * This file provides the configuration and handling for ADC3 on the STM32H723ZGT6.
+ * It supports both polling and DMA modes of operation, as well as the analog watchdog feature.
+ * The DMA buffer is placed in SRAM4 to enable BDMA (Basic DMA) access, which is limited to SRAM4.
+ * The analog watchdog functionality allows detection of threshold anomalies, with customizable
+ * filtering and thresholds defined in preprocessor macros.
  * 
+ * Key Features:
+ * - Initialization of ADC3 peripheral for polling or DMA mode.
+ * - DMA buffer configured in SRAM4 (16KB) for BDMA usage.
+ * - Analog watchdog configuration for anomaly detection, with interrupt support.
+ * - Modular functions to fetch ADC3 data in both DMA and polling modes.
+ * - Configurable ADC3 sampling time, resolution, oversampling, and data alignment.
+ * - Custom callback (adc3_wdg_process_anomaly) for handling analog watchdog anomalies.
+ * - DMA interrupt initialization for BDMA Channel 0.
+ * 
+ * @note
+ * Ensure that the linker script places the DMA buffer (adc3_dma_buffer) in SRAM4,
+ * as BDMA is only connected to this region.
+ * 
+ * @warning
+ * - Ensure preprocessor macros (like ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD) are defined within valid ranges.
+ * - DMA configuration assumes BDMA is used and that its clock is enabled.
+ * - This file is specifically for ADC3. For ADC1/ADC2, refer to their respective files.
+ * 
+ * @see MX_ADC3_Init() for peripheral initialization.
+ * @see adc3_get_value() for DMA mode data retrieval.
+ * @see adc3_get_value() for polling mode data retrieval.
+ * @see adc3_wdg_process_anomaly() for handling analog watchdog events.
+ * @see MX_BDMA_Init() for BDMA controller initialization.
  */
 
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/utils.h"
 #include "cmsis_os.h"  // for osDelay()
+#include "mongoose.h"
 
 
 
@@ -27,21 +56,26 @@ DMA_HandleTypeDef hdma_adc3;
 // define buffer for adc dma data
 SRAM4_BDMA uint16_t adc3_dma_buffer[ADC3_DMA_BUFFER_SIZE] ALIGN4;
 
-// retrieve back adc values
+// return the dma buffer pointer
 uint16_t* adc3_get_value(void) {
  return adc3_dma_buffer;  // Returns a pointer to the first element
 }
 
 #elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
 
+// set adc value and return HAL Status
 HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value) {
   return adc_polling_get_value(&hadc3, adc_value, ADC3_POLLING_TIMEOUT);
 }
 #endif
 
 
-
-
+#if ADC3_ANALOG_WATCHDOG == HANDLE_ON
+// this function will be called if the watchdog passes a threshold set
+void adc3_wdg_process_anomaly(void){
+  MG_INFO(("ADC3 ANOMALLY!!"));
+}
+#endif
 
 /**
   * @brief ADC3 Initialization Function
@@ -70,7 +104,7 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value) {
    hadc3.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
    hadc3.Init.LowPowerAutoWait = DISABLE;
    #if ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
-    hadc3.Init.ContinuousConvMode = DISABLE;
+    hadc3.Init.ContinuousConvMode = ENABLE;
     hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
     hadc3.Init.DMAContinuousRequests = DISABLE;
    #elif ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
@@ -91,6 +125,23 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value) {
    {
      Error_Handler();
    }
+
+   #if ADC3_ANALOG_WATCHDOG == HANDLE_ON
+    /** Configure Analog WatchDog 1
+     */
+    ADC_AnalogWDGConfTypeDef AnalogWDGConfig = {0};
+    AnalogWDGConfig.WatchdogNumber = ADC_ANALOGWATCHDOG_1;
+    AnalogWDGConfig.WatchdogMode = ADC_ANALOGWATCHDOG_SINGLE_REG;
+    AnalogWDGConfig.Channel = ADC_CHANNEL_1;
+    AnalogWDGConfig.ITMode = ENABLE;
+    AnalogWDGConfig.HighThreshold = ADC3_ANALOG_WATCHDOG_HIGH_THRESHOLD;
+    AnalogWDGConfig.LowThreshold = ADC3_ANALOG_WATCHDOG_LOW_THRESHOLD;
+    AnalogWDGConfig.FilteringConfig = ADC3_AWD_FILTERING_4SAMPLES;
+    if (HAL_ADC_AnalogWDGConfig(&hadc3, &AnalogWDGConfig) != HAL_OK)
+    {
+      Error_Handler();
+    }
+   #endif
  
    /** Configure Regular Channel
    */
@@ -111,10 +162,9 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value) {
  
  }
 
-// ADC BDMA
 
 /**
-  * Enable DMA controller clock
+  * Enable BDMA controller clock
   */
 void MX_BDMA_Init(void){
  
