@@ -2,11 +2,11 @@ import httpx
 from httpx import Response
 from httpx import TimeoutException, TransportError
 from time import sleep
-# from rest_api.utils import request_handler
-from utils import request_handler
+from rest_api.utils import request_handler
+# from utils import request_handler
 from typing import Optional
 import asyncio
-# from rest_api.fota import ST_FOTA_manager
+from rest_api.fota import ST_FOTA_manager
 
 
 

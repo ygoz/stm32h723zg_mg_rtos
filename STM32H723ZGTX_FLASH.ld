@@ -167,7 +167,7 @@ SECTIONS
   } >RAM_D1
 
 
-  .sram4 :
+.sram4 (NOLOAD) :
 {
   . = ALIGN(4);
   *(.sram4)

@@ -7,6 +7,7 @@ from httpx import Response
 @pytest.mark.asyncio
 async def test_set_fota_update():
     response = await api_test_manager.fota_update()
+    print(response)
     assert response.status_code == 200
 
 @pytest.mark.asyncio
