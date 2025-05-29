@@ -10,6 +10,7 @@
  * @details
  * This file provides the configuration for ADC3, including its resolution and pin assignments.
  * - 12-bit resolution
+ * - Working modes: ADC_POLLING_MODE, ADC_DMA_MODE
  * - Pin mappings:
  *     - PC3_C (ADC3_INP1): Used for single-ended input.
  *     - PC2_C (ADC3_INN1): Used as negative input for differential mode.

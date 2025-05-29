@@ -10,6 +10,7 @@
  * @details
  * This file provides the configuration for ADC2, including its resolution and pin assignments.
  * - 16-bit resolution
+ * - Working modes: ADC_POLLING_MODE
  * - Pin mappings:
  *     - PF13 (ADC3_INP1): Used for single-ended input.
  *     - PF14 (ADC3_INN1): Used as negative input for differential mode.
@@ -24,9 +25,9 @@
 #include "peripherals/adc/utils.h"
 #include "HaGeneral/HaGeneral_config.h"
 
-
-#define ADC2_POLLING_TIMEOUT 100
-#define ADC2_RESOLUTION      16
+#define ADC2_POLLING_OR_DMA_MODE  ADC_POLLING_MODE
+#define ADC2_POLLING_TIMEOUT      100
+#define ADC2_RESOLUTION           16
 
 
 #ifndef ADC2_HANDLE_STATUS
@@ -39,6 +40,10 @@
 
 #ifndef ADC2_POLLING_OR_DMA_MODE
 #error "ADC2_POLLING_OR_DMA_MODE is not defined. Please define it in HaGeneral_config.h (e.g., #define ADC2_POLLING_OR_DMA_MODE ADC_POLLING_MODE)"
+#endif
+
+#if ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE
+#error "ADC2_POLLING_OR_DMA_MODE only works in polling mode. Please define it in HaGeneral_config.h (e.g., #define ADC2_POLLING_OR_DMA_MODE ADC_POLLING_MODE)"
 #endif
 
 #ifndef ADC2_ANALOG_WATCHDOG
@@ -63,33 +68,6 @@
 #endif
 
 
-#if (ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE)
-
-#ifndef ADC2_DMA_BUFFER_SIZE
-#error "ADC2_DMA_BUFFER_SIZE is not defined. Please define it in HaGeneral_config.h (e.g., #define ADC2_DMA_BUFFER_SIZE 256)"
-#endif
-
-#define UINT16_SIZE_BYTES 2
-
-#if (ADC2_DMA_BUFFER_SIZE * UINT16_SIZE_BYTES > 16 * 1024) //TODO: CHANGE TO SRAM OF NEW DMA
-#error "ADC2_DMA_BUFFER_SIZE exceeds the maximum buffer size of 16KB (SRAM4 size). To avoid hardfaults please reduce the buffer size."
-#endif
-
-#endif
-
-
-
-// extern uint16_t adc2_dma_buffer[ADC2_DMA_BUFFER_SIZE];
-
-
-// DMA SETTINGS
-#if ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE
-
-uint16_t * adc2_get_value(void);
-
-#elif ADC2_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
-
-
 /**
  * @brief Reads a single ADC value from ADC2 using polling mode.
  * 
@@ -102,7 +80,6 @@ uint16_t * adc2_get_value(void);
  */
 HAL_StatusTypeDef adc2_get_value(uint16_t *adc_value);
 
-#endif
 
 #if ADC2_ANALOG_WATCHDOG == HANDLE_ON
 

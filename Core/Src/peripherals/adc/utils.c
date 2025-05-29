@@ -32,9 +32,6 @@ uint8_t adc_init_all_handles(void) {
 
     #if ADC2_HANDLE_STATUS == HANDLE_ON
     adc_status |= init_adc(&hadc2, ADC2_SINGLE_OR_DOUBLE_ENDED, ADC_STATUS_ADC2, "ADC2");
-        #if ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE
-        HAL_ADC_Start_DMA(&hadc2, (uint32_t *)adc2_dma_buffer, ADC2_DMA_BUFFER_SIZE);
-        #endif
         #if ADC2_ANALOG_WATCHDOG == HANDLE_ON
         HAL_ADC_Start_IT(&hadc2);
         #endif
@@ -84,10 +81,12 @@ uint16_t * adc_get_dma_buffer(ADC_HandleTypeDef *hadc){
         return adc3_dma_buffer;
       }
     else if (hadc == &hadc2){
-        MG_INFO(("no dma yet !!"));
+        MG_INFO(("no dma available for adc2 !!"));
+        return 0;
       }
     else{
         MG_INFO(("only ADCs 1, 2, and 3 are available!!"));
+        return 0;
     }
 }
 
