@@ -78,12 +78,12 @@
 #endif
 
 
+
+// extern uint16_t adc2_dma_buffer[ADC2_DMA_BUFFER_SIZE];
+
+
 // DMA SETTINGS
 #if ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE
-
-
-extern uint16_t adc2_dma_buffer[ADC2_DMA_BUFFER_SIZE];
-
 
 uint16_t * adc2_get_value(void);
 
