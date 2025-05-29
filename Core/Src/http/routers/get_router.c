@@ -52,10 +52,14 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 				http_status_code = 404;
 				break;
 			case 2:
-				http_status_code = adc2_get_http_response(&adc_value, response);
+				http_status_code = adc_get_http_response(
+					&adc_value, response, sizeof(response), &hadc2, ADC2_POLLING_OR_DMA_MODE, ADC2_HANDLE_STATUS
+				);
 				break;
 			case 3:
-				http_status_code = adc3_get_http_response(&adc_value, response);
+				http_status_code = adc_get_http_response(
+					&adc_value, response, sizeof(response), &hadc3, ADC3_POLLING_OR_DMA_MODE, ADC3_HANDLE_STATUS
+				);
 				break;
 			default:
 				snprintf(response, sizeof(response), "adc%d not supported\n", adc_num);

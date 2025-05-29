@@ -77,8 +77,6 @@
 #endif
 
 
-// DMA SETTINGS
-#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
 
 
 /**
@@ -91,6 +89,10 @@
  * The linker script is configured to place this buffer in SRAM4, which has a size limit of 16KB.
  */
 extern uint16_t adc3_dma_buffer[ADC3_DMA_BUFFER_SIZE];
+
+
+// DMA SETTINGS
+#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
 
 
 /**
@@ -140,7 +142,6 @@ void adc3_wdg_process_anomaly(void);
 
 #endif
 
-uint16_t adc3_get_http_response(uint16_t *adc_value, char response[256]);
 
 //dma 
 extern DMA_HandleTypeDef hdma_adc3;

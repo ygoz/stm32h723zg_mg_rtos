@@ -8,9 +8,9 @@
 
 
 
-uint8_t init_adc(ADC_HandleTypeDef *hadc, uint32_t calibration_mode, uint8_t status_bit, const char *label) {
+uint8_t init_adc(ADC_HandleTypeDef *hadc, uint32_t ADC_SINGLE_OR_DOUBLE_ENDED, uint8_t status_bit, const char *label) {
         // calibrate adc
-        if (HAL_ADCEx_Calibration_Start(hadc, ADC_CALIB_OFFSET, calibration_mode) == HAL_OK) {
+        if (HAL_ADCEx_Calibration_Start(hadc, ADC_CALIB_OFFSET, ADC_SINGLE_OR_DOUBLE_ENDED) == HAL_OK) {
             MG_INFO(("%s initialized.", label));
             // return its adc status bit
             return status_bit;
@@ -77,6 +77,74 @@ void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef *hadc)
         adc2_wdg_process_anomaly();
       }
 }
+
+
+uint16_t * adc_get_dma_buffer(ADC_HandleTypeDef *hadc){
+    if (hadc == &hadc3){
+        return adc3_dma_buffer;
+      }
+    else if (hadc == &hadc2){
+        MG_INFO(("no dma yet !!"));
+      }
+    else{
+        MG_INFO(("only ADCs 1, 2, and 3 are available!!"));
+    }
+}
+
+
+uint16_t adc_get_http_response(
+    uint16_t *adc_value,
+    char *response,
+    size_t response_size,
+    ADC_HandleTypeDef *hadc,
+    uint8_t ADC_POLLING_OR_DMA_MODE,
+    uint8_t ADC_HANDLE_STATUS
+) {
+
+    uint16_t http_status_code = 0;
+  
+    if (ADC_HANDLE_STATUS == HANDLE_OFF){
+        snprintf(response, response_size, "adc handle is off");
+        http_status_code = 400;
+        return http_status_code;
+    }
+    
+    else if (ADC_HANDLE_STATUS == HANDLE_ON){
+
+        if (ADC_POLLING_OR_DMA_MODE == ADC_DMA_MODE){
+
+            uint16_t *dma_buffer = adc_get_dma_buffer(hadc);
+            
+            if (dma_buffer) {
+                snprintf(response, response_size, "adc value : %u, %u\n", dma_buffer[0], dma_buffer[1]);
+                http_status_code = 200;
+            } else {
+                snprintf(response, response_size, "adc dma buffer error");
+                http_status_code = 500;
+            }
+            return http_status_code;
+        }
+    
+        else if (ADC_POLLING_OR_DMA_MODE == ADC_POLLING_MODE){
+            if (adc_polling_get_value(hadc, adc_value, 100) == HAL_OK) {
+                snprintf(response, response_size, "adc value : %u\n", *adc_value);
+                http_status_code = 200;
+                return http_status_code;
+            } else {
+                snprintf(response, response_size, "adc read failed\n");
+                http_status_code = 500;
+                return http_status_code;
+              }
+        }
+    }
+    else{
+        snprintf(response, response_size, "adc read failed\n");
+        http_status_code = 500;
+        return http_status_code;
+    }
+}
+
+
 
 
 // POLLING !!!

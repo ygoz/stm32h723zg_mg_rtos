@@ -124,7 +124,6 @@ void adc2_wdg_process_anomaly(void);
 
 #endif
 
-uint16_t adc2_get_http_response(uint16_t *adc_value, char response[256]);
 
 extern ADC_HandleTypeDef hadc2;
 
