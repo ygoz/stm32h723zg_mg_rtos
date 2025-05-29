@@ -17,7 +17,7 @@ async def main():
     # result = await api_test_manager.toggle_green_led()
     # result = await api_test_manager.get_green_led_status()
     result = await api_test_manager.get_adc3()
-    result = await api_test_manager.get_adc2()
+    result = await api_test_manager.get_adc1()
 
 
 if __name__ == '__main__':

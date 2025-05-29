@@ -1,6 +1,7 @@
 #include "peripherals/adc/utils.h"
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
+#include "peripherals/adc/hadc1.h"
 #include "HaGeneral/HaGeneral_config.h"
 #include "mongoose.h"
 
@@ -28,6 +29,9 @@ uint8_t adc_init_all_handles(void) {
 
     #if ADC1_HANDLE_STATUS == HANDLE_ON
     adc_status |= init_adc(&hadc1, ADC1_SINGLE_OR_DOUBLE_ENDED, ADC_STATUS_ADC1, "ADC1");
+        #if ADC1_ANALOG_WATCHDOG == HANDLE_ON
+        HAL_ADC_Start_IT(&hadc1);
+        #endif
     #endif
 
     #if ADC2_HANDLE_STATUS == HANDLE_ON
@@ -73,16 +77,15 @@ void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef *hadc)
     else if (hadc == &hadc2){
         adc2_wdg_process_anomaly();
       }
+    else if (hadc == &hadc1){
+        adc1_wdg_process_anomaly();
+      }
 }
 
 
 uint16_t * adc_get_dma_buffer(ADC_HandleTypeDef *hadc){
     if (hadc == &hadc3){
         return adc3_dma_buffer;
-      }
-    else if (hadc == &hadc2){
-        MG_INFO(("no dma available for adc2 !!"));
-        return 0;
       }
     else{
         MG_INFO(("only ADCs 1, 2, and 3 are available!!"));

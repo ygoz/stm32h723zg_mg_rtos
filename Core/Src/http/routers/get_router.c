@@ -10,7 +10,7 @@
 #include "serial_comm/i2c/hi2c4.h"
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
-
+#include "peripherals/adc/hadc1.h"
 
 
 
@@ -48,8 +48,9 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 
         switch (adc_num) {
 			case 1:
-				snprintf(response, sizeof(response), "ADC%d not yet supported\n", adc_num);
-				http_status_code = 404;
+				http_status_code = adc_get_http_response(
+					&adc_value, response, sizeof(response), &hadc1, ADC1_POLLING_OR_DMA_MODE, ADC1_HANDLE_STATUS
+				);
 				break;
 			case 2:
 				http_status_code = adc_get_http_response(

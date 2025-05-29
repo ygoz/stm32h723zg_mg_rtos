@@ -163,7 +163,7 @@
 #define ADC2_HANDLE_STATUS                          HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
 #define ADC2_SINGLE_OR_DOUBLE_ENDED                 ADC_SINGLE_ENDED // ADC_SINGLE_ENDED     OR        ADC_DIFFERENTIAL_ENDED
 
-#define ADC2_ANALOG_WATCHDOG                        HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
+#define ADC2_ANALOG_WATCHDOG                        HANDLE_OFF        // HANDLE_ON            OR        HANDLE_OFF
 // ANALOG WATCHDOG SETTINGS
 #define ADC2_ANALOG_WATCHDOG_HIGH_THRESHOLD         50000             // value should be in between 0 - 64 * 1024 - 1 (2**16 - 1)
 #define ADC2_ANALOG_WATCHDOG_LOW_THRESHOLD          0                // value should be in between 0 - 64 * 1024 - 1 (2**16 - 1)
@@ -171,7 +171,13 @@
 
 
 
-#define ADC1_HANDLE_STATUS              HANDLE_OFF
+#define ADC1_HANDLE_STATUS                          HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
+#define ADC1_SINGLE_OR_DOUBLE_ENDED                 ADC_SINGLE_ENDED // ADC_SINGLE_ENDED     OR        ADC_DIFFERENTIAL_ENDED
+
+#define ADC1_ANALOG_WATCHDOG                        HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
+// ANALOG WATCHDOG SETTINGS
+#define ADC1_ANALOG_WATCHDOG_HIGH_THRESHOLD         50000             // value should be in between 0 - 64 * 1024 - 1 (2**16 - 1)
+#define ADC1_ANALOG_WATCHDOG_LOW_THRESHOLD          0                // value should be in between 0 - 64 * 1024 - 1 (2**16 - 1)
 
 
 #endif /* INC_HAGENERAL_CONFIG_H_ */
