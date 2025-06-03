@@ -71,6 +71,89 @@
 #define I2C4_BASE_SLAVE_ADDR (0x50 << 1) // EEPROM ADDR
 #define I2C4_OP_DELAY 50
 
+/** I2C1
+ * @brief   Configuration for I2C1 peripheral using blocking I2C HAL calls.
+ * 
+ * This configuration is used for initializing and handling I2C1 transactions
+ * in blocking mode, which is suitable for simple peripheral communication such as EEPROM.
+ * 
+ * @note    I2C1 is mapped to the following GPIO pins:
+ *          - SCL: PB6
+ *          - SDA: PB7
+ * 
+ *          Ensure appropriate pull-up resistors are present on both lines,
+ *          and GPIO alternate functions are correctly configured for I2C operation.
+ * 
+ *          The settings below (timing, addressing mode, filters, etc.) are applied
+ *          in @file serial_comm/i2c/hi2c1.c.
+ * @attention
+ * I2C1_MODE             ->      I2C_MODE_STD || I2C_MODE_FAST || I2C_MODE_FAST_PLUS
+ * I2C1_BASE_SLAVE_ADDR  ->      7-BIT ADDR SHIFTED TO THE LEFT
+ * I2C1_OP_DELAY         ->      UNITS == ms
+ */
+#define I2C1_MODE I2C_MODE_FAST
+#define I2C1_BASE_SLAVE_ADDR (0x50 << 1) // EEPROM ADDR
+#define I2C1_OP_DELAY 50
+
+// UART
+/** UART10
+ * @brief   Configuration for UART10 peripheral using interrupt-driven mode.
+ * 
+ * This configuration enables asynchronous serial communication via UART10
+ * with **interrupts** for both RX and TX operations.
+ * UART10 is suitable for communicating with serial peripherals or logging data.
+ * 
+ * @note    UART10 is mapped to the following GPIO pins:
+ *          - TX: PE3
+ *          - RX: PE2
+ * 
+ *          RX operates in **byte-by-byte interrupt mode**: an interrupt is triggered for each byte received.
+ *          Reception continues until either `\r` or `\n` is received, at which point the received string
+ *          is null-terminated.
+ * 
+ *          TX uses interrupt-based transmission for non-blocking communication.
+ *          Both TX and RX rely on HAL drivers using `HAL_UART_Transmit_IT` and `HAL_UART_Receive_IT`.
+ * 
+ * @attention
+ * UART10_HANDLE_STATUS   ->   UART_HANDLE_ON || UART_HANDLE_OFF  
+ * UART10_RX_BUFFER_SIZE  ->   Must be > 0 and <= 1024  
+ * UART10_BAUD_RATE       ->   Typically 9600, 115200, etc. — ensure both ends of the communication match.
+ */
+#define UART10_HANDLE_STATUS        UART_HANDLE_OFF
+#define UART10_RX_BUFFER_SIZE       128
+#define UART10_BAUD_RATE            9600
+
+/** UART8
+ * @brief   Configuration for UART8 peripheral using interrupt-driven mode with optional RTS/CTS.
+ * 
+ * This configuration enables asynchronous serial communication via UART8
+ * using **interrupts** for both RX and TX operations. UART8 is well-suited for
+ * communication with peripherals requiring hardware flow control.
+ * 
+ * @note    UART8 is mapped to the following GPIO pins:
+ *          - TX: PE1
+ *          - RX: PE0
+ *          - RTS/CTS: Optional hardware flow control if enabled
+ *          - CTS: PD14
+ *          - RTS: PD15
+ * 
+ *          RX operates in **byte-by-byte interrupt mode**: an interrupt is triggered for each byte received.
+ *          Reception continues until either `\r` or `\n` is received, at which point the received string
+ *          is null-terminated.
+ * 
+ *          TX uses interrupt-based transmission for non-blocking communication.
+ *          Both TX and RX rely on HAL drivers using `HAL_UART_Transmit_IT` and `HAL_UART_Receive_IT`.
+ * 
+ * @attention
+ * UART8_HANDLE_STATUS      ->   UART_HANDLE_ON || UART_HANDLE_OFF  
+ * UART8_RX_BUFFER_SIZE     ->   Must be > 0 and <= 1024  
+ * UART8_BAUD_RATE          ->   Typically 9600, 115200, etc. — ensure both ends of the communication match  
+ * UART8_CTS_RTS_MODE       ->   UART_CTS_RTS_ENABLED || UART_CTS_RTS_DISABLED
+ */
+#define UART8_HANDLE_STATUS        UART_HANDLE_OFF
+#define UART8_RX_BUFFER_SIZE       128
+#define UART8_BAUD_RATE            9600
+#define UART8_CTS_RTS_MODE         UART_CTS_RTS_DISABLED
 // SERIAL COMM *********************************************************************************
 
 
@@ -170,7 +253,7 @@
 
 
 
-/** ADC2
+/** ADC1
  * Features:
  * - 16-bit resolution.
  * - Pin mappings:
@@ -201,5 +284,37 @@
 #define ADC1_ANALOG_WATCHDOG_HIGH_THRESHOLD         50000             // value should be in between 0 - 64 * 1024 - 1 (2**16 - 1)
 #define ADC1_ANALOG_WATCHDOG_LOW_THRESHOLD          0                // value should be in between 0 - 64 * 1024 - 1 (2**16 - 1)
 
+// COMP
+/**
+ * COMP1
+ * 
+ * Features:
+ * - Comparator peripheral with selectable operating modes:
+ *     - COMP1_MODE_OFF: Comparator disabled, no power consumption.
+ *     - COMP1_MODE_POLLING: Comparator output read by polling.
+ *     - COMP1_MODE_IT: Comparator triggers interrupt on output edge.
+ * - Hysteresis levels to reduce noise sensitivity:
+ *     - COMP1_HYSTERESIS_NONE: No hysteresis.
+ *     - COMP1_HYSTERESIS_LOW: Low hysteresis.
+ *     - COMP1_HYSTERESIS_MEDIUM: Medium hysteresis.
+ *     - COMP1_HYSTERESIS_HIGH: High hysteresis.
+ * - Interrupt trigger modes:
+ *     - COMP1_TRIGGER_MODE_RISING: Interrupt on rising output edge.
+ *     - COMP1_TRIGGER_MODE_FALLING: Interrupt on falling output edge.
+ *     - COMP1_TRIGGER_MODE_RISING_FALLING: Interrupt on both edges.
+ * - Pin mappings:
+ *     - PB0: Positive input (INP).
+ *     - PB1: Negative input (INM).
+ * 
+ * Configuration macros (define these in HaGeneral_config.h):
+ * - COMP1_MODE: Select the operating mode (default: COMP1_MODE_POLLING).
+ * - COMP1_HYSTERESIS_MODE: Select hysteresis level (default: COMP1_HYSTERESIS_NONE).
+ * - COMP1_TRIGGER_MODE: Select interrupt trigger mode (default: COMP1_TRIGGER_MODE_RISING_FALLING).
+ * 
+ * @warning Make sure only one COMP1_MODE is selected.
+ */
+#define COMP1_MODE                                  COMP1_MODE_OFF
+#define COMP1_HYSTERESIS_MODE                       COMP1_HYSTERESIS_NONE
+#define COMP1_TRIGGER_MODE                          COMP1_TRIGGER_MODE_RISING_FALLING
 
 #endif /* INC_HAGENERAL_CONFIG_H_ */

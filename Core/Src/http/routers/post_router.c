@@ -9,6 +9,8 @@
 #include "http/settings/network.h"
 #include "HaGeneral/HaGeneral_config.h"
 #include "serial_comm/i2c/hi2c4.h"
+#include "serial_comm/i2c/hi2c1.h"
+#include "peripherals/dac/hdac1.h"
 
 
 void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
@@ -75,7 +77,36 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		};
 	
 		// Write to EEPROM
-		HAL_StatusTypeDef status = I2C4_mem_write(mem_addr, packet, slave_addr);
+		// HAL_StatusTypeDef status = I2C4_mem_write(mem_addr, packet, slave_addr);
+		HAL_StatusTypeDef status = I2C1_mem_write(mem_addr, packet, slave_addr);
+	
+		if (status == HAL_OK) {
+			mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{\"success\":true}\n");
+		} else {
+			mg_http_reply(c, 500, "Content-Type: application/json\r\n",
+				"{\"success\":false,\"status\":%d}\n", status);
+		}
+	}
+
+	else if (mg_match(hm->uri, mg_str("/api/periph/dac1"), NULL)) {
+	
+		double dac_channel, dac_value;
+
+		bool ok1 = mg_json_get_num(hm->body, "$.channel", &dac_channel);
+		bool ok2 = mg_json_get_num(hm->body, "$.value", &dac_value);
+
+
+		if (!ok1 || !ok2) {
+			mg_http_reply(c, 422, "Content-Type: application/json\r\n",
+				"{\"success\":false,\"error\":\"Missing or invalid parameter%s: %s%s\"}\n",
+				(!ok1 && !ok2) ? "s" : "",
+				!ok1 ? "channel" : "",
+				(!ok1 && !ok2) ? " and value" : (!ok2 ? "value" : "")
+			);
+			return;
+		}
+
+		HAL_StatusTypeDef status = dac1_set_value((uint32_t)dac_value, (uint32_t)dac_channel);
 	
 		if (status == HAL_OK) {
 			mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{\"success\":true}\n");

@@ -88,6 +88,21 @@ class api_test_manager:
     async def get_adc1(response: httpx.Response, *args, **kwargs) -> Response:
         return response
     
+    @classmethod
+    @request_handler("POST", f"{STM32_HTTP_SERVER}/api/periph/dac1")
+    async def set_dac1(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/dts")
+    async def get_dts(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/comp1")
+    async def get_comp1(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
     
     @classmethod
     async def fota_update(cls) -> Response:

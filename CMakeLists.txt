@@ -62,11 +62,24 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/flash/internal_flash.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c4.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c1.c
+
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/utils.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/huart10.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/huart8.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc3.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc2.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc1.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/utils.c
+    
+    ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/dac/hdac1.c
+
+    ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/dts/hdts.c
+
+    ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/comp/hcomp1.c
+
+    ${CMAKE_SOURCE_DIR}/Core/Src/http/auth/users.c
 )
 
 # Add include paths
@@ -87,9 +100,19 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm/i2c
 
+    ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm/uart
+
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/adc
+    
+    ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/dac
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/dts
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/comp
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/http/auth
 )
 
 # Add project symbols (macros)
