@@ -67,6 +67,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc2.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc1.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/utils.c
+
+    ${CMAKE_SOURCE_DIR}/Core/Src/http/auth/users.c
 )
 
 # Add include paths
@@ -90,6 +92,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/adc
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/http/auth
 )
 
 # Add project symbols (macros)

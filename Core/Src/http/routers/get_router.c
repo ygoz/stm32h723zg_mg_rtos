@@ -11,6 +11,7 @@
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
 #include "peripherals/adc/hadc1.h"
+#include "http/auth/users.h"
 
 
 
@@ -27,6 +28,18 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	else if (mg_match(hm->uri, mg_str("/api/led/green/get"), NULL)) {
 	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(GPIOB, LED_GREEN_Pin));
 	    }
+	else if (mg_match(hm->uri, mg_str("/api/login"), NULL)) {
+		struct user *current_user = authenticate(hm);
+		if (current_user == NULL){
+			mg_http_reply(c, 404, "", "user not found\n");
+		}
+		else{
+			handle_login(c, current_user);
+		}
+	}
+	else if (mg_match(hm->uri, mg_str("/api/logout"), NULL)) {
+		handle_logout(c);
+	}
 
 	else if (mg_match(hm->uri, mg_str("/api/led/green/toggle"), NULL)) {
 		HAL_GPIO_TogglePin(GPIOB, LED_GREEN_Pin); // Can be different on your board
