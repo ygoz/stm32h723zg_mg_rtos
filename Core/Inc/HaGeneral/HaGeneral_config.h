@@ -170,7 +170,29 @@
 
 
 
-
+/** ADC2
+ * Features:
+ * - 16-bit resolution.
+ * - Pin mappings:
+ *     - PF11 (ADC3_INP1): Used for single-ended input.
+ *     - PF12 (ADC3_INN1): Used as negative input for differential mode.
+ * - ADC reference voltage: 3.3V.
+ *
+ * Notes:
+ * - The analog watchdog thresholds must be within the valid range of 0 to 2^16-1 (0–65535).
+ * - DMA mode is not supported; polling mode only.
+ * - The ADC2 input mode (single-ended or differential) can be configured via macros.
+ *
+ * Configuration Macros:
+ * - ADC1_HANDLE_STATUS:                                HANDLE_ON or HANDLE_OFF.
+ * - ADC1_SINGLE_OR_DOUBLE_ENDED:                       ADC_SINGLE_ENDED or ADC_DIFFERENTIAL_ENDED.
+ * - ADC1_ANALOG_WATCHDOG:                              HANDLE_ON or HANDLE_OFF.
+ * - ADC1_ANALOG_WATCHDOG_HIGH_THRESHOLD:               0 - 65535.
+ * - ADC1_ANALOG_WATCHDOG_LOW_THRESHOLD:                0 - 65535.
+ * 
+ * @warning DMA mode is not supported for ADC2. Use polling mode only.
+ * @warning Ensure correct settings for analog watchdog thresholds.
+ */
 #define ADC1_HANDLE_STATUS                          HANDLE_ON        // HANDLE_ON            OR        HANDLE_OFF
 #define ADC1_SINGLE_OR_DOUBLE_ENDED                 ADC_SINGLE_ENDED // ADC_SINGLE_ENDED     OR        ADC_DIFFERENTIAL_ENDED
 

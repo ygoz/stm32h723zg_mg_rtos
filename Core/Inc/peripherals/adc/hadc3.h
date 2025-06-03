@@ -123,7 +123,6 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value);
 
 #endif
 
-#if ADC3_ANALOG_WATCHDOG == HANDLE_ON
 
 /**
  * @brief Handles an anomaly detected by the ADC3 analog watchdog.
@@ -141,7 +140,6 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value);
  */
 void adc3_wdg_process_anomaly(void);
 
-#endif
 
 
 //dma 

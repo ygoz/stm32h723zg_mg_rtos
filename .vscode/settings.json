@@ -5,6 +5,7 @@
         "utils.h": "c",
         "hadc3.h": "c",
         "compare": "c",
-        "cmsis_os.h": "c"
+        "cmsis_os.h": "c",
+        "hadc1.h": "c"
     }
 }

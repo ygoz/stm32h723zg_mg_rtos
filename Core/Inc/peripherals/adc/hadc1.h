@@ -80,8 +80,7 @@
   */
  HAL_StatusTypeDef adc1_get_value(uint16_t *adc_value);
  
- 
- #if ADC1_ANALOG_WATCHDOG == HANDLE_ON
+
  
  /**
   * @brief Handles an anomaly detected by the ADC1 analog watchdog.
@@ -98,8 +97,6 @@
   * 
   */
  void adc1_wdg_process_anomaly(void);
- 
- #endif
  
  
  extern ADC_HandleTypeDef hadc1;
