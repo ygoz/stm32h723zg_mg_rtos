@@ -30,6 +30,7 @@
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
 #include "peripherals/adc/utils.h"
+#include "peripherals/dac/hdac1.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,7 +68,6 @@ ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDesc
 
 ETH_TxPacketConfig TxConfig;
 
-// ADC_HandleTypeDef hadc1;
 
 ETH_HandleTypeDef heth;
 
@@ -93,7 +93,6 @@ static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_ETH_Init(void);
 static void MX_RNG_Init(void);
-// static void MX_ADC1_Init(void);
 void server(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -174,6 +173,7 @@ int main(void)
   MX_ADC3_Init();
   MX_ADC2_Init();
   MX_ADC1_Init();
+  MX_DAC1_Init();
   /* USER CODE BEGIN 2 */
 
   //init all adcs here + calibration

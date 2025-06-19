@@ -88,6 +88,11 @@ class api_test_manager:
     async def get_adc1(response: httpx.Response, *args, **kwargs) -> Response:
         return response
     
+    @classmethod
+    @request_handler("POST", f"{STM32_HTTP_SERVER}/api/periph/dac1")
+    async def set_dac1(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
     
     @classmethod
     async def fota_update(cls) -> Response:
