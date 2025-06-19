@@ -170,7 +170,7 @@
 
 
 
-/** ADC2
+/** ADC1
  * Features:
  * - 16-bit resolution.
  * - Pin mappings:
