@@ -62,6 +62,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/flash/internal_flash.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c4.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c1.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc3.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc2.c

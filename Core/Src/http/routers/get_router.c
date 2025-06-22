@@ -8,6 +8,7 @@
 #include "http/settings/network.h"
 #include "string.h"
 #include "serial_comm/i2c/hi2c4.h"
+#include "serial_comm/i2c/hi2c1.h"
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
 #include "peripherals/adc/hadc1.h"
@@ -127,7 +128,10 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 			.size = size
 		};
 
-		HAL_StatusTypeDef status = I2C4_mem_read(mem_addr, packet, slave_addr);
+		// HAL_StatusTypeDef status = I2C4_mem_read(mem_addr, packet, slave_addr);
+		HAL_StatusTypeDef status = I2C1_mem_read(mem_addr, packet, slave_addr);
+
+
 		if (status == HAL_OK) {
 			mg_http_reply(c, 200, "Content-Type: text/plain\r\n", "%.*s", packet.size, (char *)packet.data);
 		} else {

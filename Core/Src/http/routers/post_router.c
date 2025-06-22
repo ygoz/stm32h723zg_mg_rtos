@@ -9,6 +9,7 @@
 #include "http/settings/network.h"
 #include "HaGeneral/HaGeneral_config.h"
 #include "serial_comm/i2c/hi2c4.h"
+#include "serial_comm/i2c/hi2c1.h"
 #include "peripherals/dac/hdac1.h"
 
 
@@ -76,7 +77,8 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		};
 	
 		// Write to EEPROM
-		HAL_StatusTypeDef status = I2C4_mem_write(mem_addr, packet, slave_addr);
+		// HAL_StatusTypeDef status = I2C4_mem_write(mem_addr, packet, slave_addr);
+		HAL_StatusTypeDef status = I2C1_mem_write(mem_addr, packet, slave_addr);
 	
 		if (status == HAL_OK) {
 			mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{\"success\":true}\n");

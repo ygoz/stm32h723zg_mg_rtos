@@ -175,6 +175,7 @@ int main(void)
   MX_ADC1_Init();
   MX_DAC1_Init();
   MX_DTS_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
   //init all adcs here + calibration

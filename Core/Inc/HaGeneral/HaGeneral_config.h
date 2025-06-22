@@ -71,6 +71,30 @@
 #define I2C4_BASE_SLAVE_ADDR (0x50 << 1) // EEPROM ADDR
 #define I2C4_OP_DELAY 50
 
+/** I2C1
+ * @brief   Configuration for I2C1 peripheral using blocking I2C HAL calls.
+ * 
+ * This configuration is used for initializing and handling I2C1 transactions
+ * in blocking mode, which is suitable for simple peripheral communication such as EEPROM.
+ * 
+ * @note    I2C1 is mapped to the following GPIO pins:
+ *          - SCL: PB6
+ *          - SDA: PB7
+ * 
+ *          Ensure appropriate pull-up resistors are present on both lines,
+ *          and GPIO alternate functions are correctly configured for I2C operation.
+ * 
+ *          The settings below (timing, addressing mode, filters, etc.) are applied
+ *          in @file serial_comm/i2c/hi2c1.c.
+ * @attention
+ * I2C1_MODE             ->      I2C_MODE_STD || I2C_MODE_FAST || I2C_MODE_FAST_PLUS
+ * I2C1_BASE_SLAVE_ADDR  ->      7-BIT ADDR SHIFTED TO THE LEFT
+ * I2C1_OP_DELAY         ->      UNITS == ms
+ */
+#define I2C1_MODE I2C_MODE_FAST
+#define I2C1_BASE_SLAVE_ADDR (0x50 << 1) // EEPROM ADDR
+#define I2C1_OP_DELAY 50
+
 // SERIAL COMM *********************************************************************************
 
 
