@@ -11,6 +11,7 @@
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
 #include "peripherals/adc/hadc1.h"
+#include "peripherals/dts/hdts.h"
 #include "http/auth/users.h"
 
 
@@ -45,6 +46,26 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		HAL_GPIO_TogglePin(GPIOB, LED_GREEN_Pin); // Can be different on your board
 	    mg_http_reply(c, 200, "", "true\n");
 	    }
+
+
+
+
+
+	else if (mg_match(hm->uri, mg_str("/api/periph/dts"), NULL)) {
+		int32_t temperature = 0;
+		HAL_StatusTypeDef status = dts_get_temperature(&temperature);
+
+		if (status == HAL_OK) {
+			mg_http_reply(c, 200, "Content-Type: text/plain\r\n", "%d", temperature);
+		} else {
+			mg_http_reply(c, 500, "Content-Type: application/json\r\n",
+				"{\"success\":false,\"status\":%d}\n", status);
+		}
+
+		mg_http_reply(c, http_status_code, "", response);
+	}
+
+
 
 
 	else if (mg_match(hm->uri, mg_str("/api/periph/adc#"), NULL)) {

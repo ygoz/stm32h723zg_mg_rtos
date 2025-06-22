@@ -16,9 +16,10 @@ async def main():
     # # led
     # result = await api_test_manager.toggle_green_led()
     # result = await api_test_manager.get_green_led_status()
-    params = {"channel" : 16, "value" : 4095}
+    # for i in range(5):
+    params = {"channel" : 0, "value" : -3800}
     result = await api_test_manager.set_dac1(json=params)
-    # result = await api_test_manager.get_adc1()
+    # result = await api_test_manager.get_dts()
 
 
 if __name__ == '__main__':

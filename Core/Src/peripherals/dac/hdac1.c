@@ -55,7 +55,6 @@ void MX_DAC1_Init(void){
 HAL_StatusTypeDef dac1_set_value(uint32_t dac_value, uint32_t channel)
 {
     if (
-        dac_value == NULL ||
         (channel != DAC_CHANNEL_1 && channel != DAC_CHANNEL_2) ||
         (dac_value > 4095)
     ) {

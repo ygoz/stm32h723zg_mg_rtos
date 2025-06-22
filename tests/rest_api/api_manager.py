@@ -93,6 +93,11 @@ class api_test_manager:
     async def set_dac1(response: httpx.Response, *args, **kwargs) -> Response:
         return response
     
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/dts")
+    async def get_dts(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
     
     @classmethod
     async def fota_update(cls) -> Response:

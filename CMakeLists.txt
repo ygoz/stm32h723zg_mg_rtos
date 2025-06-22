@@ -70,6 +70,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/dac/hdac1.c
 
+    ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/dts/hdts.c
+
     ${CMAKE_SOURCE_DIR}/Core/Src/http/auth/users.c
 )
 
@@ -96,6 +98,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/adc
     
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/dac
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/dts
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/http/auth
 )
