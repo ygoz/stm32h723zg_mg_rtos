@@ -28,7 +28,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		}
 
 	else if (mg_match(hm->uri, mg_str("/api/led/green/get"), NULL)) {
-	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(GPIOB, LED_GREEN_Pin));
+	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(GPIOB, LED_RED_Pin));
 	    }
 	else if (mg_match(hm->uri, mg_str("/api/login"), NULL)) {
 		struct user *current_user = authenticate(hm);
@@ -44,7 +44,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	}
 
 	else if (mg_match(hm->uri, mg_str("/api/led/green/toggle"), NULL)) {
-		HAL_GPIO_TogglePin(GPIOB, LED_GREEN_Pin); // Can be different on your board
+		HAL_GPIO_TogglePin(GPIOB, LED_RED_Pin); // Can be different on your board
 	    mg_http_reply(c, 200, "", "true\n");
 	    }
 
@@ -66,7 +66,20 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		mg_http_reply(c, http_status_code, "", response);
 	}
 
+	else if (mg_match(hm->uri, mg_str("/api/periph/comp1"), NULL)) {
+		uint32_t comp_val = 0;
+		HAL_StatusTypeDef status = comp1_get_value(&comp_val);
+  
 
+		if (status == HAL_OK) {
+			mg_http_reply(c, 200, "Content-Type: text/plain\r\n", "%d", comp_val);
+		} else {
+			mg_http_reply(c, 500, "Content-Type: application/json\r\n",
+				"{\"success\":false,\"status\":%d}\n", status);
+		}
+
+		mg_http_reply(c, http_status_code, "", response);
+	}
 
 
 	else if (mg_match(hm->uri, mg_str("/api/periph/adc#"), NULL)) {

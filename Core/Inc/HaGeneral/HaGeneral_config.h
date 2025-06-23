@@ -225,5 +225,37 @@
 #define ADC1_ANALOG_WATCHDOG_HIGH_THRESHOLD         50000             // value should be in between 0 - 64 * 1024 - 1 (2**16 - 1)
 #define ADC1_ANALOG_WATCHDOG_LOW_THRESHOLD          0                // value should be in between 0 - 64 * 1024 - 1 (2**16 - 1)
 
+// COMP
+/**
+ * COMP1
+ * 
+ * Features:
+ * - Comparator peripheral with selectable operating modes:
+ *     - COMP1_MODE_OFF: Comparator disabled, no power consumption.
+ *     - COMP1_MODE_POLLING: Comparator output read by polling.
+ *     - COMP1_MODE_IT: Comparator triggers interrupt on output edge.
+ * - Hysteresis levels to reduce noise sensitivity:
+ *     - COMP1_HYSTERESIS_NONE: No hysteresis.
+ *     - COMP1_HYSTERESIS_LOW: Low hysteresis.
+ *     - COMP1_HYSTERESIS_MEDIUM: Medium hysteresis.
+ *     - COMP1_HYSTERESIS_HIGH: High hysteresis.
+ * - Interrupt trigger modes:
+ *     - COMP1_TRIGGER_MODE_RISING: Interrupt on rising output edge.
+ *     - COMP1_TRIGGER_MODE_FALLING: Interrupt on falling output edge.
+ *     - COMP1_TRIGGER_MODE_RISING_FALLING: Interrupt on both edges.
+ * - Pin mappings:
+ *     - PB0: Positive input (INP).
+ *     - PB1: Negative input (INM).
+ * 
+ * Configuration macros (define these in HaGeneral_config.h):
+ * - COMP1_MODE: Select the operating mode (default: COMP1_MODE_POLLING).
+ * - COMP1_HYSTERESIS_MODE: Select hysteresis level (default: COMP1_HYSTERESIS_NONE).
+ * - COMP1_TRIGGER_MODE: Select interrupt trigger mode (default: COMP1_TRIGGER_MODE_RISING_FALLING).
+ * 
+ * @warning Make sure only one COMP1_MODE is selected.
+ */
+#define COMP1_MODE                                  COMP1_MODE_IT
+#define COMP1_HYSTERESIS_MODE                       COMP1_HYSTERESIS_NONE
+#define COMP1_TRIGGER_MODE                          COMP1_TRIGGER_MODE_RISING_FALLING
 
 #endif /* INC_HAGENERAL_CONFIG_H_ */
