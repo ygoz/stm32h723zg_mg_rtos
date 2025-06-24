@@ -66,6 +66,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/utils.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/huart10.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/huart8.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc3.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc2.c

@@ -123,6 +123,37 @@
 #define UART10_RX_BUFFER_SIZE       128
 #define UART10_BAUD_RATE            9600
 
+/** UART8
+ * @brief   Configuration for UART8 peripheral using interrupt-driven mode with optional RTS/CTS.
+ * 
+ * This configuration enables asynchronous serial communication via UART8
+ * using **interrupts** for both RX and TX operations. UART8 is well-suited for
+ * communication with peripherals requiring hardware flow control.
+ * 
+ * @note    UART8 is mapped to the following GPIO pins:
+ *          - TX: PE1
+ *          - RX: PE0
+ *          - RTS/CTS: Optional hardware flow control if enabled
+ *          - CTS: PD14
+ *          - RTS: PD15
+ * 
+ *          RX operates in **byte-by-byte interrupt mode**: an interrupt is triggered for each byte received.
+ *          Reception continues until either `\r` or `\n` is received, at which point the received string
+ *          is null-terminated.
+ * 
+ *          TX uses interrupt-based transmission for non-blocking communication.
+ *          Both TX and RX rely on HAL drivers using `HAL_UART_Transmit_IT` and `HAL_UART_Receive_IT`.
+ * 
+ * @attention
+ * UART8_HANDLE_STATUS      ->   UART_HANDLE_ON || UART_HANDLE_OFF  
+ * UART8_RX_BUFFER_SIZE     ->   Must be > 0 and <= 1024  
+ * UART8_BAUD_RATE          ->   Typically 9600, 115200, etc. — ensure both ends of the communication match  
+ * UART8_CTS_RTS_MODE       ->   UART_CTS_RTS_ENABLED || UART_CTS_RTS_DISABLED
+ */
+#define UART8_HANDLE_STATUS        UART_HANDLE_OFF
+#define UART8_RX_BUFFER_SIZE       128
+#define UART8_BAUD_RATE            9600
+#define UART8_CTS_RTS_MODE         UART_CTS_RTS_DISABLED
 // SERIAL COMM *********************************************************************************
 
 

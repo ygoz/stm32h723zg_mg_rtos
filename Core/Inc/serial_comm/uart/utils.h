@@ -39,6 +39,9 @@
 #define UART_HANDLE_OFF 0
 #define UART_HANDLE_ON  1
 
+#define UART_CTS_RTS_ENABLED  2
+#define UART_CTS_RTS_DISABLED  3
+
 
 /**
  * @brief Initializes UART reception using interrupt mode.

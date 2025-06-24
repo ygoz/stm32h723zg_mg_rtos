@@ -34,6 +34,7 @@
 #include "peripherals/dts/hdts.h"
 #include "peripherals/comp/hcomp1.h"
 #include "serial_comm/uart/huart10.h"
+#include "serial_comm/uart/huart8.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -182,6 +183,7 @@ int main(void)
   MX_I2C1_Init();
   MX_COMP1_Init();
   MX_USART10_UART_Init();
+  MX_UART8_Init();
   /* USER CODE BEGIN 2 */
 
   //init all adcs here + calibration
@@ -193,6 +195,7 @@ int main(void)
 
   //init uart
   uart10_init();
+  uart8_init();
 
   
   /* USER CODE END 2 */
@@ -477,10 +480,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : LED_YELLOW_Pin */
+  GPIO_InitStruct.Pin = LED_YELLOW_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LED_YELLOW_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -494,13 +504,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_RED_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : LED_YELLOW_Pin */
-  GPIO_InitStruct.Pin = LED_YELLOW_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_YELLOW_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

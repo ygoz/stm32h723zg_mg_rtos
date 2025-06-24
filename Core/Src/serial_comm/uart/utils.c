@@ -61,6 +61,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     if (huart->Instance == USART10) {
         // MG_INFO(("USART10 RX INTERRUPT"));
         uart10_rx_interrupt_callback();
+    } 
+    else if (huart->Instance == UART8) {
+        uart8_rx_interrupt_callback();
     }
 }
 

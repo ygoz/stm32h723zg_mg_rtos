@@ -62,6 +62,7 @@ extern ADC_HandleTypeDef hadc3;
 extern COMP_HandleTypeDef hcomp1;
 extern DAC_HandleTypeDef hdac1;
 extern ETH_HandleTypeDef heth;
+extern UART_HandleTypeDef huart8;
 extern UART_HandleTypeDef huart10;
 extern TIM_HandleTypeDef htim6;
 
@@ -212,6 +213,20 @@ __weak void ETH_IRQHandler(void)
   /* USER CODE BEGIN ETH_IRQn 1 */
 
   /* USER CODE END ETH_IRQn 1 */
+}
+
+/**
+  * @brief This function handles UART8 global interrupt.
+  */
+void UART8_IRQHandler(void)
+{
+  /* USER CODE BEGIN UART8_IRQn 0 */
+
+  /* USER CODE END UART8_IRQn 0 */
+  HAL_UART_IRQHandler(&huart8);
+  /* USER CODE BEGIN UART8_IRQn 1 */
+
+  /* USER CODE END UART8_IRQn 1 */
 }
 
 /**
