@@ -58,6 +58,7 @@ void ETH_IRQHandler(void);
 void ADC3_IRQHandler(void);
 void BDMA_Channel0_IRQHandler(void);
 void COMP_IRQHandler(void);
+void USART10_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

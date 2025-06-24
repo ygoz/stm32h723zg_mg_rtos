@@ -33,6 +33,7 @@
 #include "peripherals/dac/hdac1.h"
 #include "peripherals/dts/hdts.h"
 #include "peripherals/comp/hcomp1.h"
+#include "serial_comm/uart/huart10.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -180,6 +181,7 @@ int main(void)
   MX_DTS_Init();
   MX_I2C1_Init();
   MX_COMP1_Init();
+  MX_USART10_UART_Init();
   /* USER CODE BEGIN 2 */
 
   //init all adcs here + calibration
@@ -188,6 +190,9 @@ int main(void)
   //init comp
   uint32_t comp_output;
   comp1_get_value(&comp_output);
+
+  //init uart
+  uart10_init();
 
   
   /* USER CODE END 2 */

@@ -95,6 +95,34 @@
 #define I2C1_BASE_SLAVE_ADDR (0x50 << 1) // EEPROM ADDR
 #define I2C1_OP_DELAY 50
 
+// UART
+/** UART10
+ * @brief   Configuration for UART10 peripheral using interrupt-driven mode.
+ * 
+ * This configuration enables asynchronous serial communication via UART10
+ * with **interrupts** for both RX and TX operations.
+ * UART10 is suitable for communicating with serial peripherals or logging data.
+ * 
+ * @note    UART10 is mapped to the following GPIO pins:
+ *          - TX: PE3
+ *          - RX: PE2
+ * 
+ *          RX operates in **byte-by-byte interrupt mode**: an interrupt is triggered for each byte received.
+ *          Reception continues until either `\r` or `\n` is received, at which point the received string
+ *          is null-terminated.
+ * 
+ *          TX uses interrupt-based transmission for non-blocking communication.
+ *          Both TX and RX rely on HAL drivers using `HAL_UART_Transmit_IT` and `HAL_UART_Receive_IT`.
+ * 
+ * @attention
+ * UART10_HANDLE_STATUS   ->   UART_HANDLE_ON || UART_HANDLE_OFF  
+ * UART10_RX_BUFFER_SIZE  ->   Must be > 0 and <= 1024  
+ * UART10_BAUD_RATE       ->   Typically 9600, 115200, etc. — ensure both ends of the communication match.
+ */
+#define UART10_HANDLE_STATUS        UART_HANDLE_OFF
+#define UART10_RX_BUFFER_SIZE       128
+#define UART10_BAUD_RATE            9600
+
 // SERIAL COMM *********************************************************************************
 
 
@@ -254,7 +282,7 @@
  * 
  * @warning Make sure only one COMP1_MODE is selected.
  */
-#define COMP1_MODE                                  COMP1_MODE_IT
+#define COMP1_MODE                                  COMP1_MODE_OFF
 #define COMP1_HYSTERESIS_MODE                       COMP1_HYSTERESIS_NONE
 #define COMP1_TRIGGER_MODE                          COMP1_TRIGGER_MODE_RISING_FALLING
 

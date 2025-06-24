@@ -75,7 +75,7 @@ HAL_StatusTypeDef comp1_get_value(uint32_t *comp1_output)
         MG_INFO(("COMP1 output level: %s", *comp1_output == COMP_OUTPUT_LEVEL_HIGH ? "HIGH" : "LOW"));
     #elif COMP1_MODE == COMP1_MODE_OFF
         MG_INFO(("COMP1 is on COMP1_MODE_OFF"));
-        return HAL_ERROR
+        return HAL_ERROR;
     #endif
 
     if (status != HAL_OK) {
