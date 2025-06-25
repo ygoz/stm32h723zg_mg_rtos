@@ -119,7 +119,7 @@
  * UART10_RX_BUFFER_SIZE  ->   Must be > 0 and <= 1024  
  * UART10_BAUD_RATE       ->   Typically 9600, 115200, etc. — ensure both ends of the communication match.
  */
-#define UART10_HANDLE_STATUS        UART_HANDLE_OFF
+#define UART10_HANDLE_STATUS        UART_HANDLE_ON
 #define UART10_RX_BUFFER_SIZE       128
 #define UART10_BAUD_RATE            9600
 

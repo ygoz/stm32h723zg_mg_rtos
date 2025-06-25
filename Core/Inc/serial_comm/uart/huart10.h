@@ -1,33 +1,30 @@
 /**
  * @file huart10.h
  * @author Yam Goz
- * @brief STM32H723 UART10 interface — initialization, TX and RX using interrupts
- * @version 0.1
+ * @brief Struct-based UART10 interface with interrupt-driven RX/TX for STM32H723
+ * @version 0.2
  * @date 2025-06-24
  * 
  * @details
- * This module provides initialization and interrupt-based communication functions
- * for the UART10 peripheral on STM32H7 microcontrollers.
+ * This module provides a modular, struct-based interface for UART10 communication,
+ * using interrupts for both RX and TX. It wraps all UART state and operations in a `Uart` struct.
  * 
- * UART10 is configured to work in **interrupt mode**, where:
- * - RX (receive) interrupt is triggered **per byte received**
- * - TX (transmit) is also handled using interrupts for non-blocking transmission
+ * RX behavior:
+ * - Byte-by-byte reception via interrupt
+ * - Buffer is null-terminated on `\r` or `\n`
+
+ * Configuration macros (in `HaGeneral_config.h`):
+ * - `UART10_HANDLE_STATUS`
+ * - `UART10_BAUD_RATE`
+ * - `UART10_RX_BUFFER_SIZE`
+
+ * Pins:
+ * - RX: PE2
+ * - TX: PE3
  * 
- * Pin mapping:
- * - **RX**: PE2
- * - **TX**: PE3
- * 
- * Configuration macros (defined in `HaGeneral_config.h`):
- * - `UART10_HANDLE_STATUS`: Set to `UART_HANDLE_ON` to enable UART10
- * - `UART10_BAUD_RATE`: Baud rate for communication (e.g., `115200`)
- * - `UART10_RX_BUFFER_SIZE`: Size of RX buffer (e.g., `128`, up to `1024`)
- * 
- * Main functions:
- * - `uart10_init()`: Initializes UART10 and begins interrupt-based RX
- * - `uart10_tx()`: Sends a string over UART10 using TX interrupt
- * - `uart10_rx_interrupt_callback()`: Called automatically for each received byte
- * 
- * @note Reception continues until `\r` or `\n` is received, then the buffer is null-terminated.
+ * Main elements:
+ * - `extern Uart uart10;`
+ * - `HAL_StatusTypeDef uart10_init(Uart *uart);`
  */
 
 #pragma once
@@ -73,6 +70,7 @@
 
 extern UART_HandleTypeDef huart10;
 extern char UART10_RX_BUFFER[UART10_RX_BUFFER_SIZE];
+extern Uart uart10;
 
 void MX_USART10_UART_Init(void);
 
@@ -81,20 +79,4 @@ void MX_USART10_UART_Init(void);
  * @brief Initialize UART10 for interrupt-based reception.
  * @retval HAL_OK on success, HAL_ERROR if UART10 is disabled.
  */
-HAL_StatusTypeDef uart10_init(void);
-
-
-/**
- * @brief Transmit a null-terminated string via UART10 using interrupts.
- * @param data Pointer to the string to transmit.
- * @retval HAL_OK on success, HAL_ERROR if input is invalid.
- */
-HAL_StatusTypeDef uart10_tx(const char *data);
-
-
-/**
- * @brief UART10 RX interrupt handler callback.
- * Accumulates data into UART10_RX_BUFFER until newline is received.
- * @retval HAL_OK on successful reception or restart, HAL_ERROR otherwise.
- */
-HAL_StatusTypeDef uart10_rx_interrupt_callback(void);
+HAL_StatusTypeDef uart10_init(Uart *uart);

@@ -1,36 +1,33 @@
 /**
  * @file huart8.h
  * @author Yam Goz
- * @brief STM32H723 UART8 interface — initialization, TX and RX using interrupts
- * @version 0.1
+ * @brief Struct-based UART8 interface with interrupt-driven RX/TX for STM32H723
+ * @version 0.2
  * @date 2025-06-24
  *
  * @details
- * This module provides initialization and interrupt-based communication functions
- * for the UART8 peripheral on STM32H7 microcontrollers.
+ * Provides a modular, struct-based UART8 interface with interrupt-based RX and TX.
+ * UART state and behavior are encapsulated in a `Uart` struct.
  *
- * UART8 is configured to work in **interrupt mode**, where:
- * - RX (receive) interrupt is triggered **per byte received**
- * - TX (transmit) is also handled using interrupts for non-blocking transmission
+ * RX behavior:
+ * - Receives data byte-by-byte via interrupt
+ * - Terminates buffer on `\r` or `\n` and sets status to `HAL_OK`
  *
+ * Configuration (from `HaGeneral_config.h`):
+ * - `UART8_HANDLE_STATUS`
+ * - `UART8_BAUD_RATE`
+ * - `UART8_RX_BUFFER_SIZE` 
+ * - `UART8_CTS_RTS_MODE` (flow control mode)
+ * 
  * Pin mapping:
- * - **RX**: PE0
- * - **TX**: PE1
- * - **RTS/CTS**: Optional hardware flow control if enabled in `MX_UART8_Init()`
- * - **CTS**: PD14
- * - **RTS**: PD15
+ * - TX: PE1
+ * - RX: PE0
+ * - RTS: PD15 *(if flow control is enabled)*
+ * - CTS: PD14 *(if flow control is enabled)*
  *
- * Configuration macros (defined in `HaGeneral_config.h`):
- * - `UART8_HANDLE_STATUS`: Set to `UART_HANDLE_ON` to enable UART8
- * - `UART8_BAUD_RATE`: Baud rate for communication (e.g., `115200`)
- * - `UART8_RX_BUFFER_SIZE`: Size of RX buffer (e.g., `128`, up to `1024`)
- *
- * Main functions:
- * - `uart8_init()`: Initializes UART8 and begins interrupt-based RX
- * - `uart8_tx()`: Sends a string over UART8 using TX interrupt
- * - `uart8_rx_interrupt_callback()`: Called automatically for each received byte
- *
- * @note Reception continues until `\r` or `\n` is received, then the buffer is null-terminated.
+ * Main elements:
+ * - `extern Uart uart8;`
+ * - `HAL_StatusTypeDef uart8_init(Uart *uart);`
  */
 
 #pragma once
@@ -82,6 +79,7 @@
 // UART8 Handle and RX Buffer
 extern UART_HandleTypeDef huart8;
 extern char UART8_RX_BUFFER[UART8_RX_BUFFER_SIZE];
+extern Uart uart8;
 
 void MX_UART8_Init(void);
 
@@ -89,18 +87,4 @@ void MX_UART8_Init(void);
  * @brief Initialize UART8 for interrupt-based reception.
  * @retval HAL_OK on success, HAL_ERROR if UART8 is disabled.
  */
-HAL_StatusTypeDef uart8_init(void);
-
-/**
- * @brief Transmit a null-terminated string via UART8 using interrupts.
- * @param data Pointer to the string to transmit.
- * @retval HAL_OK on success, HAL_ERROR if input is invalid.
- */
-HAL_StatusTypeDef uart8_tx(const char *data);
-
-/**
- * @brief UART8 RX interrupt handler callback.
- * Accumulates data into UART8_RX_BUFFER until newline is received.
- * @retval HAL_OK on successful reception or restart, HAL_ERROR otherwise.
- */
-HAL_StatusTypeDef uart8_rx_interrupt_callback(void);
+HAL_StatusTypeDef uart8_init(Uart *uart);

@@ -1,50 +1,38 @@
 #include "serial_comm/uart/huart8.h"
 #include "mongoose.h"
 
+
 UART_HandleTypeDef huart8;
 static uint8_t uart8_rx_byte;
-static uint16_t uart8_rx_index = 0;
-static volatile HAL_StatusTypeDef uart8_rx_status = HAL_OK;
-char UART8_RX_BUFFER[UART8_RX_BUFFER_SIZE];
+static uint16_t uart8_rx_index;
+static HAL_StatusTypeDef uart8_rx_status;
+static char uart8_rx_buffer[UART8_RX_BUFFER_SIZE];
 
-static HAL_StatusTypeDef uart8_restart_rx(void) {
-    return HAL_UART_Receive_IT(&huart8, &uart8_rx_byte, 1);
-}
+Uart uart8 = {
+    .handle = &huart8,
+    .rx_buffer = uart8_rx_buffer,
+    .rx_buffer_size = UART8_RX_BUFFER_SIZE,
+    .rx_byte = &uart8_rx_byte,
+    .rx_index = &uart8_rx_index,
+    .rx_status = &uart8_rx_status,
+    .init = uart8_init,
+    .tx = uart_tx,
+    .rx_callback = uart_rx_interrupt_callback,
+};
 
-HAL_StatusTypeDef uart8_init(void) {
-    #if UART8_HANDLE_STATUS == UART_HANDLE_ON
-    return uart_init(
-        UART8_RX_BUFFER,
-        UART8_RX_BUFFER_SIZE,
-        &huart8,
-        &uart8_rx_byte
-    );
-    #else
-    MG_INFO(("uart8 handle is defined as OFF!"));
+
+
+
+HAL_StatusTypeDef uart8_init(Uart *uart) {
+#if UART8_HANDLE_STATUS == UART_HANDLE_ON
+    return uart_generic_init(uart);
+#else
+    MG_INFO(("UART8 handle is defined as OFF!"));
     return HAL_ERROR;
-    #endif
+#endif
 }
 
-HAL_StatusTypeDef uart8_rx_interrupt_callback(void) {
-    return uart_rx_interrupt_callback(
-        UART8_RX_BUFFER,
-        &uart8_rx_byte,
-        &uart8_rx_index,
-        UART8_RX_BUFFER_SIZE,
-        uart8_restart_rx,
-        &uart8_rx_status
-    );
-}
 
-HAL_StatusTypeDef uart8_tx(const char *data) {
-    return uart_tx(&huart8, data);
-}
-
-/**
-  * @brief UART8 Initialization Function
-  * @param None
-  * @retval None
-  */
 void MX_UART8_Init(void){
 
   /* USER CODE BEGIN UART8_Init 0 */

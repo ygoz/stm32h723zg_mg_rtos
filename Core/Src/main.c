@@ -194,8 +194,10 @@ int main(void)
   comp1_get_value(&comp_output);
 
   //init uart
-  uart10_init();
-  uart8_init();
+  uart10.init(&uart10);
+  uart8.init(&uart8);
+
+  uart10.tx(&uart10, "shimison");
 
   
   /* USER CODE END 2 */

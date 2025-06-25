@@ -1,56 +1,57 @@
 #include "serial_comm/uart/utils.h"
 #include "mongoose.h"
+#include "serial_comm/uart/huart10.h"
+#include "serial_comm/uart/huart8.h"
 
 
-
-
-
-HAL_StatusTypeDef uart_init(char * uart_rx_buffer, uint16_t uart_rx_buffer_len, UART_HandleTypeDef *huart, uint8_t *uart_rx_byte) {
-    HAL_StatusTypeDef status = HAL_OK;
-    memset(uart_rx_buffer, 0, uart_rx_buffer_len);
-
-    status = HAL_UART_Receive_IT(huart, uart_rx_byte, 1);
-    return status;
+static HAL_StatusTypeDef restart_rx(Uart *uart) {
+    return HAL_UART_Receive_IT(uart->handle, uart->rx_byte, 1);
 }
 
 
-HAL_StatusTypeDef uart_tx(UART_HandleTypeDef *huart, const char *data) {
-    if (huart == NULL || data == NULL) return HAL_ERROR;
+HAL_StatusTypeDef uart_generic_init(Uart *uart) {
+    if (!uart) return HAL_ERROR;
 
-    uint16_t len = (uint16_t)strlen(data);
+    memset(uart->rx_buffer, 0, uart->rx_buffer_size);
+    *uart->rx_index = 0;
+    *uart->rx_status = HAL_OK;
+
+    return restart_rx(uart);
+}
+
+
+HAL_StatusTypeDef uart_tx(Uart *uart, const char *data) {
+    if (!uart || !data) return HAL_ERROR;
+
+    size_t len = strlen(data);
     if (len == 0) return HAL_ERROR;
 
-    return HAL_UART_Transmit_IT(huart, (uint8_t *)data, len);
+    return HAL_UART_Transmit_IT(uart->handle, (uint8_t *)data, len);
 }
 
 
 
-HAL_StatusTypeDef uart_rx_interrupt_callback(
-    char *rx_buffer,
-    uint8_t *rx_byte,
-    size_t *rx_index,
-    size_t buffer_size,
-    HAL_StatusTypeDef (*restart_rx_fn)(void),
-    HAL_StatusTypeDef *rx_status
-) {
-    if (*rx_index < (buffer_size - 1)) {
-        rx_buffer[(*rx_index)++] = (char)(*rx_byte);
+HAL_StatusTypeDef uart_rx_interrupt_callback(Uart *uart) {
+    if (!uart) return HAL_ERROR;
 
-        if (*rx_byte == '\r' || *rx_byte == '\n') {
-            rx_buffer[*rx_index] = '\0';  // Null-terminate
-            *rx_status = HAL_OK;
-            return HAL_OK;
+    if (*(uart->rx_index) < uart->rx_buffer_size - 1) {
+        uart->rx_buffer[(*(uart->rx_index))++] = *(uart->rx_byte);
+
+        if (*(uart->rx_byte) == '\r' || *(uart->rx_byte) == '\n') {
+            uart->rx_buffer[*(uart->rx_index)] = '\0';
+            *(uart->rx_status) = HAL_OK;
         } else {
-            *rx_status = restart_rx_fn();
-            return *rx_status;
+            // MG_INFO(("UART buff: %s", uart->rx_buffer));
+            *(uart->rx_status) = restart_rx(uart);
         }
     } else {
         // Buffer overflow
-        *rx_index = 0;
-        memset(rx_buffer, 0, buffer_size);
-        *rx_status = restart_rx_fn();
-        return *rx_status;
+        *(uart->rx_index) = 0;
+        memset(uart->rx_buffer, 0, uart->rx_buffer_size);
+        *(uart->rx_status) = restart_rx(uart);
     }
+
+    return *(uart->rx_status);
 }
 
 
@@ -58,12 +59,10 @@ HAL_StatusTypeDef uart_rx_interrupt_callback(
 
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-    if (huart->Instance == USART10) {
-        // MG_INFO(("USART10 RX INTERRUPT"));
-        uart10_rx_interrupt_callback();
-    } 
-    else if (huart->Instance == UART8) {
-        uart8_rx_interrupt_callback();
+    if (huart->Instance == UART8) {
+        uart8.rx_callback(&uart8);
+    } else if (huart->Instance == USART10) {
+        uart10.rx_callback(&uart10);
     }
 }
 

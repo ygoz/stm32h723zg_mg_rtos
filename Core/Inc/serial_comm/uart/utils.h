@@ -14,15 +14,12 @@
  * - Interrupt-based receive and transmit functions
  * - Common receive buffer handling logic (per-byte interrupt reception)
  * 
- * These utilities allow for flexible integration of multiple UART instances
+ * These utilities allow for integration of multiple UART instances
  * (e.g., UART8, UART10) by decoupling the buffer, byte, and handler context.
  * 
  * 
  * @note All functions rely on non-blocking interrupt-based HAL API.
  * 
- * @attention
- * Ensure that your buffers and byte placeholders are defined statically or persistently
- * in scope and that `restart_rx_fn()` is correctly implemented per UART instance.
  */
 
 
@@ -43,81 +40,108 @@
 #define UART_CTS_RTS_DISABLED  3
 
 
+
+typedef struct Uart Uart;
+
+
 /**
- * @brief Initializes UART reception using interrupt mode.
+ * @brief UART interface struct for interrupt-based communication.
  *
- * This function prepares the UART to receive data one byte at a time using interrupts.
- * It clears the provided receive buffer and starts listening for the first byte.
+ * @details
+ * Encapsulates all necessary state and function pointers for managing
+ * interrupt-driven UART transmission and reception. This struct enables
+ * modular, reusable UART interfaces across multiple peripherals (e.g., UART8, UART10).
  *
- * @param[in,out] uart_rx_buffer      Pointer to the buffer used for storing received UART data.
- * @param[in]     uart_rx_buffer_len  Length of the receive buffer in bytes.
- * @param[in]     huart               Pointer to the UART handle 
- * @param[out]    uart_rx_byte        Pointer to a single-byte storage for interrupt reception.
+ * Fields:
+ * - UART_HandleTypeDef *handle: HAL UART handle for hardware control.
+ * - char *rx_buffer: Pointer to the circular buffer for storing received data.
+ * - uint16_t rx_buffer_size: Size of the RX buffer.
+ * - uint8_t *rx_byte: Temporary single-byte storage for receiving one byte via interrupt.
+ * - uint16_t *rx_index: Pointer to current write index in the RX buffer.
+ * - HAL_StatusTypeDef *rx_status: Pointer to receive status flag (set when line terminator is received).
+ *
+ * Function Pointers:
+ * - init: Initializes the UART (typically sets up RX interrupts).
+ * - tx: Transmits a null-terminated string using interrupt mode.
+ * - rx_callback: Handles RX complete interrupts, appending data and restarting RX.
+ */
+struct Uart {
+    // uart handle
+    UART_HandleTypeDef *handle;
+
+    // rx buffer
+    char *rx_buffer;
+    uint16_t rx_buffer_size;
+    uint8_t *rx_byte;
+    uint16_t *rx_index;
+    HAL_StatusTypeDef *rx_status;
+
+    // helper methods
+    HAL_StatusTypeDef (*init)(Uart *self);
+    HAL_StatusTypeDef (*tx)(Uart *self, const char *data);
+    HAL_StatusTypeDef (*rx_callback)(Uart *self);
+};
+
+
+
+/**
+ * @brief Initializes UART reception using interrupt mode (struct-based).
+ *
+ * @details
+ * Prepares the specified UART instance to receive data one byte at a time using interrupts.
+ * It clears the RX buffer, resets the index and status, and starts listening for the first byte.
+ *
+ * @param[in,out] uart Pointer to a valid Uart struct containing the RX buffer, index, status, and UART handle.
  *
  * @return HAL_StatusTypeDef
- *         - HAL_OK: Initialization and first byte reception started successfully.
- *         - HAL_ERROR or other: If the UART failed to start in interrupt mode.
+ *         - HAL_OK: Initialization and first-byte reception started successfully.
+ *         - HAL_ERROR or other: UART handle is NULL or interrupt setup failed.
  *
- * @note This function must be followed by a custom RX complete interrupt callback handler
- *       that continues reception or processes received data.
- *
- * @warning Ensure that uart_rx_byte and uart_rx_buffer are valid and non-NULL before calling.
+ * @warning All Uart struct fields must be properly initialized before calling.
  */
-HAL_StatusTypeDef uart_init(char * uart_rx_buffer, uint16_t uart_rx_buffer_len, UART_HandleTypeDef *huart, uint8_t *uart_rx_byte);
-
+HAL_StatusTypeDef uart_generic_init(Uart *uart);
 
 
 /**
- * @brief Transmits a string over UART using interrupt mode.
+ * @brief Transmits a string over UART using interrupt mode (struct-based).
  *
- * This function sends a null-terminated string over the specified UART peripheral
- * using non-blocking interrupt-based transmission (`HAL_UART_Transmit_IT`).
+ * Sends a null-terminated string over the specified UART using non-blocking
+ * interrupt-driven transmission via `HAL_UART_Transmit_IT`.
  *
- * @param[in] huart Pointer to the UART handle (e.g., &huart10).
- * @param[in] data  Pointer to the null-terminated string to transmit.
+ * @param[in] uart Pointer to a valid Uart struct containing the UART handle.
+ * @param[in] data Pointer to the null-terminated string to transmit.
  *
  * @return HAL_StatusTypeDef
- *         - HAL_OK on successful transmission start.
- *         - HAL_ERROR if the input parameters are invalid or the string is empty.
+ *         - HAL_OK: Transmission started successfully.
+ *         - HAL_ERROR: Invalid input or empty string.
  *
- * @note The UART must be initialized before calling this function.
- *       An appropriate TX complete callback (e.g., `HAL_UART_TxCpltCallback`) should be implemented
- *       to handle post-transmission logic.
+ * @note 
+ * - The UART must be initialized before calling this function.
+ * - Implement `HAL_UART_TxCpltCallback()` to handle post-transmission events if needed.
  *
- * @warning The input string must remain valid until the transmission completes.
+ * @warning The input string must remain valid in memory until transmission completes.
  */
-HAL_StatusTypeDef uart_tx(UART_HandleTypeDef *huart, const char *data);
+HAL_StatusTypeDef uart_tx(Uart *uart, const char *data);
 
 
 /**
- * @brief Generic UART RX interrupt callback handler.
+ * @brief Generic UART RX interrupt callback handler (struct-based).
  *
- * This function is designed to be called within the UART receive complete interrupt context.
- * It accumulates received characters into a buffer until a line-ending character (`\r` or `\n`)
- * is encountered or the buffer is full. If a line-ending is received, the buffer is null-terminated
- * and the receive status is set to `HAL_OK`.
+ * @details
+ * Handles per-byte UART reception using interrupts. Appends each received byte
+ * to the RX buffer in the given `Uart` struct. If a line-ending character (`\r` or `\n`)
+ * is received, the buffer is null-terminated and the RX status is set to `HAL_OK`.
+ * If the buffer overflows before a newline, it is cleared and RX is restarted.
  *
- * @param[in,out] rx_buffer     Pointer to the character buffer used for accumulating received data.
- * @param[in]     rx_byte       Pointer to the received byte (1-byte buffer).
- * @param[in,out] rx_index      Pointer to the current write index in the rx_buffer.
- * @param[in]     buffer_size   Total size of the rx_buffer.
- * @param[in]     restart_rx_fn Function pointer to restart the UART receive interrupt (should receive 1 byte).
- * @param[out]    rx_status     Pointer to status variable to reflect the RX process result.
+ * @param[in,out] uart Pointer to a valid Uart struct containing RX state and buffer info.
  *
- * @retval HAL_OK      Successfully received a full line (terminated with `\r` or `\n`).
- * @retval HAL_ERROR   Restart RX failed, or parameters invalid (as set by restart function).
+ * @retval HAL_OK: Reception succeeded or restarted.
+ * @retval HAL_ERROR: RX restart failed or invalid input.
  *
- * @note If buffer overflows before a newline, the buffer is cleared and reception restarts.
- * @note This function is protocol-agnostic and can be reused for multiple UART instances.
+ * @note Designed for use inside `HAL_UART_RxCpltCallback()`.
+ *       Works with any UART instance using a properly initialized `Uart` struct.
  *
- * @warning Ensure the rx_buffer has enough space (at least buffer_size) and all pointers are valid.
- * @warning The `restart_rx_fn` must correctly re-arm the UART for the next byte (e.g., via `HAL_UART_Receive_IT`).
+ * @warning The `Uart` struct fields must be valid and initialized before calling.
+ *          Particularly: `.handle`, `.rx_buffer`, `.rx_byte`, `.rx_index`, `.rx_status`.
  */
-HAL_StatusTypeDef uart_rx_interrupt_callback(
-    char *rx_buffer,
-    uint8_t *rx_byte,
-    size_t *rx_index,
-    size_t buffer_size,
-    HAL_StatusTypeDef (*restart_rx_fn)(void),
-    HAL_StatusTypeDef *rx_status
-);
+HAL_StatusTypeDef uart_rx_interrupt_callback(Uart *uart);

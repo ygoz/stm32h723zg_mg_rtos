@@ -5,65 +5,34 @@
 
 UART_HandleTypeDef huart10;
 static uint8_t uart10_rx_byte;
-static uint16_t uart10_rx_index = 0;
-static volatile HAL_StatusTypeDef uart10_rx_status = HAL_OK;
-char UART10_RX_BUFFER[UART10_RX_BUFFER_SIZE];
+static uint16_t uart10_rx_index;
+static HAL_StatusTypeDef uart10_rx_status;
+static char uart10_rx_buffer[UART10_RX_BUFFER_SIZE];
+
+Uart uart10 = {
+    .handle = &huart10,
+    .rx_buffer = uart10_rx_buffer,
+    .rx_buffer_size = UART10_RX_BUFFER_SIZE,
+    .rx_byte = &uart10_rx_byte,
+    .rx_index = &uart10_rx_index,
+    .rx_status = &uart10_rx_status,
+    .init = uart10_init,
+    .tx = uart_tx,
+    .rx_callback = uart_rx_interrupt_callback,
+};
 
 
-static HAL_StatusTypeDef uart10_restart_rx(void) {
-    return HAL_UART_Receive_IT(&huart10, &uart10_rx_byte, 1);
-}
 
-
-HAL_StatusTypeDef uart10_init(void) {
-
-    #if UART10_HANDLE_STATUS == UART_HANDLE_ON
-
-    return uart_init(
-    UART10_RX_BUFFER,
-    UART10_RX_BUFFER_SIZE,
-    &huart10,
-    &uart10_rx_byte
-    );
-
-    #else
-    MG_INFO(("uart10 handle is defined as OFF!"));
+HAL_StatusTypeDef uart10_init(Uart *uart) {
+#if UART10_HANDLE_STATUS == UART_HANDLE_ON
+    return uart_generic_init(uart);
+#else
+    MG_INFO(("UART10 handle is defined as OFF!"));
     return HAL_ERROR;
-    #endif
+#endif
 }
 
 
-
-
-HAL_StatusTypeDef uart10_rx_interrupt_callback(void) {
-    // 
-    return uart_rx_interrupt_callback(
-    UART10_RX_BUFFER,
-    &uart10_rx_byte,
-    &uart10_rx_index,
-    UART10_RX_BUFFER_SIZE,
-    uart10_restart_rx,
-    &uart10_rx_status
-    );
-    
-}
-
-
-
-
-HAL_StatusTypeDef uart10_tx(const char *data) {
-    uart_tx(&huart10, data);
-}
-
-
-
-
-
-/**
-  * @brief USART10 Initialization Function
-  * @param None
-  * @retval None
-  */
 void MX_USART10_UART_Init(void){
 
   /* USER CODE BEGIN USART10_Init 0 */
