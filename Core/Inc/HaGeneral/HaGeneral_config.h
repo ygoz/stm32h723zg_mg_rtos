@@ -317,4 +317,45 @@
 #define COMP1_HYSTERESIS_MODE                       COMP1_HYSTERESIS_NONE
 #define COMP1_TRIGGER_MODE                          COMP1_TRIGGER_MODE_RISING_FALLING
 
+
+//TIMERS
+/** TIM8
+ * @brief   Configuration for TIM8 peripheral in PWM output mode.
+ * 
+ * This configuration enables PWM generation on TIM8, specifically on **Channel 4**,
+ * to produce a periodic square waveform with configurable frequency and duty cycle.
+ * 
+ * @note    TIM8_CH4 is mapped to the following GPIO pin:
+ *          - TIM8_CH4: PC9 (Alternate Function: AF3_TIM8_CH4)
+ * 
+ *          The timer runs in **PWM mode 1**:
+ *          - When the counter < pulse value → output is high.
+ *          - When the counter >= pulse value → output is low.
+ * @details
+ * The PWM frequency (f_pwm) is calculated with:
+ * 
+ *      f_pwm = TIM_CLK / [(Prescaler + 1) * (Period + 1)]
+ * 
+ * Where:
+ *   - TIM_CLK: input clock frequency to the timer (e.g., 275 MHz for TIM8 on STM32H7).
+ *   - Prescaler: divides TIM_CLK to generate the timer's counter clock.
+ *   - Period: sets the auto-reload register (ARR), which defines the PWM cycle length.
+ * 
+ * The duty cycle (%) is calculated with:
+ * 
+ *      DutyCycle = (Pulse / (Period + 1)) * 100
+ * 
+ * @attention
+ * TIM8_PRESCALER           ->   Prescaler value: divides APB2 clock to set timer clock speed  
+ * TIM8_PERIOD              ->   Period value: sets the auto-reload register for PWM frequency  
+ * TIM8_CH4_PULSE           ->   Pulse width: sets the duty cycle relative to period  
+ * TIM8_MODE                ->   TIM_MODE_PWM || TIM_MODE_DISABLED
+ */
+#define TIM8_MODE                TIM_MODE_PWM
+#define TIM8_PRESCALER           0  // Example: 275 MHz / (13 + 1) kHz timer clock
+#define TIM8_PERIOD              1374  // 97 ticks → 100 Hz PWM frequency
+#define TIM8_CH4_PULSE           687  // 50% duty cycle (pulse = half of period + 1)
+
+
+
 #endif /* INC_HAGENERAL_CONFIG_H_ */

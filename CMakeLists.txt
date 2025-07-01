@@ -82,6 +82,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/exti/exti.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/exti/user_button.c
 
+    ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/timer/htim8.c
+
     ${CMAKE_SOURCE_DIR}/Core/Src/http/auth/users.c
 )
 
@@ -114,8 +116,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/dts
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/comp
-    
-    ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/exti
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals/timer
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/http/auth
 )

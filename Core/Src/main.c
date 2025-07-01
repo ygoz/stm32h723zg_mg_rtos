@@ -35,6 +35,7 @@
 #include "peripherals/comp/hcomp1.h"
 #include "serial_comm/uart/huart10.h"
 #include "serial_comm/uart/huart8.h"
+#include "peripherals/timer/htim8.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -184,6 +185,7 @@ int main(void)
   MX_COMP1_Init();
   MX_USART10_UART_Init();
   MX_UART8_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
 
   //init all adcs here + calibration
