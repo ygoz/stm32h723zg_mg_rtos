@@ -68,6 +68,10 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/huart10.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/huart8.c
 
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/hspi4.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/hspi5.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/utils.c
+
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc3.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc2.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc1.c
@@ -106,6 +110,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm/i2c
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm/uart
+
+    ${CMAKE_SOURCE_DIR}/Core/Inc/serial_comm/spi
 
     ${CMAKE_SOURCE_DIR}/Core/Inc/peripherals
 

@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "mongoose.h"
+#include "stm32h7xx_hal.h"
 #include "http/routers/main_router.h"
 #include "http/settings/network.h"
 #include "serial_comm/i2c/hi2c4.h"
@@ -36,6 +37,8 @@
 #include "serial_comm/uart/huart10.h"
 #include "serial_comm/uart/huart8.h"
 #include "peripherals/timer/htim8.h"
+#include "serial_comm/spi/hspi4.h"
+#include "serial_comm/spi/hspi5.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -186,6 +189,7 @@ int main(void)
   MX_USART10_UART_Init();
   MX_UART8_Init();
   MX_TIM8_Init();
+  MX_SPI4_Init();
   /* USER CODE BEGIN 2 */
 
   //init all adcs here + calibration
@@ -199,9 +203,9 @@ int main(void)
   uart10.init(&uart10);
   uart8.init(&uart8);
 
-  uart10.tx(&uart10, "shimison");
-
-  
+  // uint8_t spi_rx_data[30] = {0};  // +1 for null terminator
+  // my_flash.read(&my_flash, 0, spi_rx_data, sizeof(spi_rx_data));
+  // MG_INFO(("Read data (addr 0x000000): %s\r\n", spi_rx_data));
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -485,20 +489,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin : LED_YELLOW_Pin */
-  GPIO_InitStruct.Pin = LED_YELLOW_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_YELLOW_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;

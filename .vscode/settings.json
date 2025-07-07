@@ -6,6 +6,9 @@
         "hadc3.h": "c",
         "compare": "c",
         "cmsis_os.h": "c",
-        "hadc1.h": "c"
+        "hadc1.h": "c",
+        "huart8.h": "c",
+        "stm32h7xx_hal.h": "c",
+        "hspi4.h": "c"
     }
 }

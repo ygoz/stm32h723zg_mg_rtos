@@ -154,6 +154,47 @@
 #define UART8_RX_BUFFER_SIZE       128
 #define UART8_BAUD_RATE            9600
 #define UART8_CTS_RTS_MODE         UART_CTS_RTS_DISABLED
+
+
+
+// SPI
+/** SPI4
+ * @brief   Configuration for SPI4 peripheral for full-duplex master mode with hardware NSS.
+ *
+ * This configuration sets up SPI4 to communicate with SPI peripherals (e.g., flash memory)
+ * using **hardware-controlled NSS** (chip select) for automatic slave selection.
+ * 
+ * SPI4 operates in SPI mode 0 by default:
+ * - Clock polarity (CPOL): Low when idle
+ * - Clock phase (CPHA): Data sampled on the first clock edge
+ *
+ * Data frames are 8 bits, with MSB transmitted first.
+ * The SPI clock speed is controlled by the baud rate prescaler.
+ * 
+ * @note    SPI4 is mapped to the following GPIO pins:
+ *          - SCK:  PE12
+ *          - MISO: PE5
+ *          - MOSI: PE14
+ *          - NSS:  PE4 *(hardware-controlled chip select)*
+ *
+ *          Hardware NSS mode automatically drives the NSS pin low during communication
+ *          and releases it after, simplifying chip select management for single slave setups.
+ * 
+ * @attention
+ * - SPI4_CLK_POLARITY must match the connected device’s SPI mode (0-3):
+ *      - Mode 0: SPI_POLARITY_LOW, SPI_PHASE_1EDGE
+ *      - Mode 3: SPI_POLARITY_HIGH, SPI_PHASE_2EDGE
+ * - SPI4_BAUDRATE_PRESCALER sets the SPI clock speed relative to the peripheral clock;
+ *   choose a prescaler that does not exceed your device’s maximum SPI clock.
+ * - SPI4_NSS_MODE controls chip select management:
+ *      - SPI_NSS_HARD_OUTPUT for hardware NSS (recommended for single slaves)
+ *      - SPI_NSS_SOFT for software-controlled NSS (needed when multiple slaves share the bus)
+ */
+#define SPI4_CLK_POLARITY           SPI_POLARITY_LOW
+#define SPI4_CLK_PHASE              SPI_PHASE_1EDGE
+#define SPI4_BAUDRATE_PRESCALER     SPI_BAUDRATEPRESCALER_32
+#define SPI4_NSS_MODE               SPI_NSS_HARD_OUTPUT
+
 // SERIAL COMM *********************************************************************************
 
 
