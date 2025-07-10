@@ -39,6 +39,8 @@
 #include "peripherals/timer/htim8.h"
 #include "serial_comm/spi/hspi4.h"
 #include "serial_comm/spi/hspi5.h"
+#include "serial_comm/spi/octospi.h"
+#include "flash/w25q128jvsq.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -191,6 +193,7 @@ int main(void)
   MX_TIM8_Init();
   MX_SPI4_Init();
   MX_SPI5_Init();
+  MX_OCTOSPI2_Init();
   /* USER CODE BEGIN 2 */
 
   //init all adcs here + calibration
@@ -203,6 +206,46 @@ int main(void)
   //init uart
   uart10.init(&uart10);
   uart8.init(&uart8);
+
+uint8_t write_data[] = "Hello World this is big shmilo";
+    uint8_t read_data[sizeof(write_data)] = {0};
+    uint32_t address = 0x000000;
+
+    // Init + Reset + Config
+    W25Q128_OCTO_SPI_Init(&hospi2);
+
+    // Erase sector
+    if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
+
+    // Write
+    if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
+
+    // Read
+    if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
+
+    // Output
+    printf("Read: %s\r\n", read_data);
+// Read data
+
+// Find first non-0xFF
+uint8_t *actual = read_data;
+
+// Find the first null terminator
+while (*actual != '\0' && (actual - read_data) < sizeof(read_data)) {
+    actual++;
+}
+
+// If found a null inside the buffer, move one past it to start printing from next byte
+if ((actual - read_data) < sizeof(read_data)) {
+    actual++;  // skip the null byte itself
+}
+actual++;
+
+// Now print from there
+printf("Data after null: %s\r\n", actual);
+
+
+  // qspi_w25q_main_example();
 
   // uint8_t spi_rx_data[30] = {0};  // +1 for null terminator
   // my_flash.read(&my_flash, 0, spi_rx_data, sizeof(spi_rx_data));

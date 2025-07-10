@@ -60,6 +60,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     
     ${CMAKE_SOURCE_DIR}/Core/Src/http/FOTA/firmware_update.c
     ${CMAKE_SOURCE_DIR}/Core/Src/flash/internal_flash.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/flash/w25q128jvsq.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c4.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c1.c
@@ -71,6 +72,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/hspi4.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/hspi5.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/utils.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/octospi.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc3.c
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/adc/hadc2.c
