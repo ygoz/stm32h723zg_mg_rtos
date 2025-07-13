@@ -140,6 +140,39 @@ static void run_mongoose(void) {
     mg_mgr_poll(&mgr, 10);   // Process network events
   }
 }
+
+
+#include "stm32h7xx_hal.h"  // or your MCU-specific HAL
+
+extern OSPI_HandleTypeDef hospi2;  // Your OCTOSPI/QSPI handle
+
+uint8_t W25Q_ReadStatusRegister1(void)
+{
+    OSPI_RegularCmdTypeDef sCommand = {0};
+    uint8_t reg = 0;
+
+    // 0x05 = Read Status Register-1
+    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
+    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
+    sCommand.Instruction        = 0x05; // input the reg definition
+    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
+    sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE;
+    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
+    sCommand.DummyCycles        = 0;
+    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
+    sCommand.NbData             = 1;
+
+    // Send the command
+    if (HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+        return 0xFF;
+
+    // Receive the data
+    if (HAL_OSPI_Receive(&hospi2, &reg, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+        return 0xFF;
+
+    return reg;
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -207,49 +240,85 @@ int main(void)
   uart10.init(&uart10);
   uart8.init(&uart8);
 
-uint8_t write_data[] = "Hello World this is big shmilo";
-    uint8_t read_data[sizeof(write_data)] = {0};
-    uint32_t address = 0x000000;
+  // **************************SPI***************************************
+  // uint8_t *spi_rx;
+  // uint8_t spi_tx[10] = "shalom aa";
 
-    // Init + Reset + Config
-    W25Q128_OCTO_SPI_Init(&hospi2);
+  // const uint32_t test_addr = 0x000000;  // Must be sector-aligned (multiple of 4096)
+  //   const char *test_data = "Hello from shalom Flash!";
+  //   uint8_t read_buf[64] = {0};
 
-    // Erase sector
-    if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
+  //   // 1. Erase sector
+  //   if (my_flash.erase_sector(&my_flash, test_addr) != HAL_OK) {
+  //       printf("Flash erase failed!\r\n");
+  //       return;
+  //   }
 
-    // Write
-    if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
+  //   // 2. Write string to flash
+  //   if (my_flash.write_page(&my_flash, test_addr, (uint8_t *)test_data, strlen(test_data)) != HAL_OK) {
+  //       printf("Flash write failed!\r\n");
+  //       return;
+  //   }
 
-    // Read
-    if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
+  //   // 3. Read back the string
+  //   if (my_flash.read(&my_flash, test_addr, read_buf, strlen(test_data)) != HAL_OK) {
+  //       printf("Flash read failed!\r\n");
+  //       return;
+  //   }
 
-    // Output
-    printf("Read: %s\r\n", read_data);
-// Read data
+  //   // 4. Print result
+  //   printf("Flash read: %s\r\n", read_buf);
 
-// Find first non-0xFF
-uint8_t *actual = read_data;
+// **************************************************QSPI*********************************************
+// uint8_t write_data[] = "Hello";
+// uint8_t *actual_write = write_data;
+//     uint8_t read_data[sizeof(write_data)] = {0};
+//     uint32_t address = 0x000000;
 
-// Find the first null terminator
-while (*actual != '\0' && (actual - read_data) < sizeof(read_data)) {
-    actual++;
-}
+//     // Init + Reset + Config
+//     W25Q128_OCTO_SPI_Init(&hospi2);
 
-// If found a null inside the buffer, move one past it to start printing from next byte
-if ((actual - read_data) < sizeof(read_data)) {
-    actual++;  // skip the null byte itself
-}
-actual++;
+//     // Erase sector
+//     W25Q128_OSPI_Erase_Chip(&hospi2);
+//     if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
 
-// Now print from there
-printf("Data after null: %s\r\n", actual);
+//   // W25Q128_OSPI_WriteEnable(&hospi2);
+
+// //     uint8_t status_reg = W25Q_ReadStatusRegister1();
+// // printf("status_reg: 0x%02X\n", status_reg);
+
+// // Check WEL (bit 1) and BUSY (bit 0)
+// // if (status_reg & 0x01) printf("BUSY: Write/Erase in progress\n");
+// // if (status_reg & 0x02) printf("WEL: Write Enable Latch is set\n");
+
+//     // Write
+//     if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
 
 
-  // qspi_w25q_main_example();
+// // status_reg = W25Q_ReadStatusRegister1();
+// // printf("status_reg: 0x%02X\n", status_reg);
 
-  // uint8_t spi_rx_data[30] = {0};  // +1 for null terminator
-  // my_flash.read(&my_flash, 0, spi_rx_data, sizeof(spi_rx_data));
-  // MG_INFO(("Read data (addr 0x000000): %s\r\n", spi_rx_data));
+// // Check WEL (bit 1) and BUSY (bit 0)
+// // if (status_reg & 0x01) printf("BUSY: Write/Erase in progress\n");
+// // if (status_reg & 0x02) printf("WEL: Write Enable Latch is set\n");
+
+
+//     // Read
+//     if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
+
+//     // Output
+//     printf("Read: %s\r\n", read_data);
+// // Read data
+//     if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
+
+//     volatile uint8_t *ptr = (uint8_t *)0x70000000;
+//     printf("First 100 bytes at 0x70000000 (hex):\r\n");
+//     for (int i = 0; i < 100; i++) {
+  //         printf("%02X ", ptr[i]);
+  //         if ((i + 1) % 16 == 0) printf("\r\n");
+  //     }
+// **************************************************QSPI*********************************************
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
