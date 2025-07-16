@@ -98,9 +98,7 @@ const osThreadAttr_t Server_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void PeriphCommonClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_USART3_UART_Init(void);
 static void MX_ETH_Init(void);
 static void MX_RNG_Init(void);
 void server(void *argument);
@@ -113,12 +111,12 @@ void server(void *argument);
 /* USER CODE BEGIN 0 */
 
 //  try to move to syscalls.c 
-int _write(int fd, unsigned char *buf, int len) {
-  if (fd == 1 || fd == 2) {                     // stdout or stderr ?
-    HAL_UART_Transmit(&huart3, buf, len, 999);  // Print to the UART
-  }
-  return len;
-}
+// int _write(int fd, unsigned char *buf, int len) {
+//   if (fd == 1 || fd == 2) {                     // stdout or stderr ?
+//     HAL_UART_Transmit(&huart3, buf, len, 999);  // Print to the UART
+//   }
+//   return len;
+// }
 
 
 // In RTOS environment, run this function in a separate task. Give it 8k stack
@@ -143,35 +141,36 @@ static void run_mongoose(void) {
 
 
 #include "stm32h7xx_hal.h"  // or your MCU-specific HAL
+#include <stm32h7xx_hal_ospi.h>
 
-extern OSPI_HandleTypeDef hospi2;  // Your OCTOSPI/QSPI handle
+// extern OSPI_HandleTypeDef hospi2;  // Your OCTOSPI/QSPI handle
 
-uint8_t W25Q_ReadStatusRegister1(void)
-{
-    OSPI_RegularCmdTypeDef sCommand = {0};
-    uint8_t reg = 0;
+// uint8_t W25Q_ReadStatusRegister1(void)
+// {
+//     OSPI_RegularCmdTypeDef sCommand = {0};
+//     uint8_t reg = 0;
 
-    // 0x05 = Read Status Register-1
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = 0x05; // input the reg definition
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
-    sCommand.DummyCycles        = 0;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.NbData             = 1;
+//     // 0x05 = Read Status Register-1
+//     sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
+//     sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
+//     sCommand.Instruction        = 0x05; // input the reg definition
+//     sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
+//     sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE;
+//     sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
+//     sCommand.DummyCycles        = 0;
+//     sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
+//     sCommand.NbData             = 1;
 
-    // Send the command
-    if (HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
-        return 0xFF;
+//     // Send the command
+//     if (HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+//         return 0xFF;
 
-    // Receive the data
-    if (HAL_OSPI_Receive(&hospi2, &reg, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
-        return 0xFF;
+//     // Receive the data
+//     if (HAL_OSPI_Receive(&hospi2, &reg, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+//         return 0xFF;
 
-    return reg;
-}
+//     return reg;
+// }
 
 /* USER CODE END 0 */
 
@@ -200,34 +199,16 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-  /* Configure the peripherals common clocks */
-  PeriphCommonClock_Config();
-
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_BDMA_Init();
-  MX_USART3_UART_Init();
   MX_ETH_Init();
   MX_RNG_Init();
-  MX_I2C4_Init();
-  MX_ADC3_Init();
-  MX_ADC2_Init();
-  MX_ADC1_Init();
-  MX_DAC1_Init();
-  MX_DTS_Init();
-  MX_I2C1_Init();
-  MX_COMP1_Init();
-  MX_USART10_UART_Init();
-  MX_UART8_Init();
-  MX_TIM8_Init();
-  MX_SPI4_Init();
-  MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
-  MX_OCTOSPI2_Init();
+  // MX_OCTOSPI2_Init();
 
   //init all adcs here + calibration
   adc_init_all_handles();
@@ -431,32 +412,6 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief Peripherals Common Clock Configuration
-  * @retval None
-  */
-void PeriphCommonClock_Config(void)
-{
-  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
-
-  /** Initializes the peripherals clock
-  */
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInitStruct.PLL2.PLL2M = 8;
-  PeriphClkInitStruct.PLL2.PLL2N = 32;
-  PeriphClkInitStruct.PLL2.PLL2P = 64;
-  PeriphClkInitStruct.PLL2.PLL2Q = 2;
-  PeriphClkInitStruct.PLL2.PLL2R = 2;
-  PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
-  PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOWIDE;
-  PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
-  PeriphClkInitStruct.AdcClockSelection = RCC_ADCCLKSOURCE_PLL2;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-/**
   * @brief ETH Initialization Function
   * @param None
   * @retval None
@@ -532,55 +487,6 @@ static void MX_RNG_Init(void)
 
 }
 
-
-/**
-  * @brief USART3 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART3_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART3_Init 0 */
-
-  /* USER CODE END USART3_Init 0 */
-
-  /* USER CODE BEGIN USART3_Init 1 */
-
-  /* USER CODE END USART3_Init 1 */
-  huart3.Instance = USART3;
-  huart3.Init.BaudRate = 115200;
-  huart3.Init.WordLength = UART_WORDLENGTH_8B;
-  huart3.Init.StopBits = UART_STOPBITS_1;
-  huart3.Init.Parity = UART_PARITY_NONE;
-  huart3.Init.Mode = UART_MODE_TX_RX;
-  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart3.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart3.Init.ClockPrescaler = UART_PRESCALER_DIV1;
-  huart3.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_UARTEx_SetTxFifoThreshold(&huart3, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_UARTEx_SetRxFifoThreshold(&huart3, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_UARTEx_DisableFifoMode(&huart3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART3_Init 2 */
-
-  /* USER CODE END USART3_Init 2 */
-
-}
-
 /**
   * @brief GPIO Initialization Function
   * @param None
@@ -608,14 +514,36 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pins : PE2 PE3 PE4 PE5
+                           PE6 PE7 PE8 PE9
+                           PE10 PE11 PE12 PE13
+                           PE14 PE15 PE0 PE1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9
+                          |GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13
+                          |GPIO_PIN_14|GPIO_PIN_15|GPIO_PIN_0|GPIO_PIN_1;
+GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
+GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
+HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+// Set output level to LOW
+HAL_GPIO_WritePin(GPIOE, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PF5 PF10 */
-  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_10;
+  /*Configure GPIO pins : PF0 PF1 PF2 PF3
+                           PF4 PF5 PF6 PF7
+                           PF8 PF9 PF10 PF11
+                           PF12 PF13 PF14 PF15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
+                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
+                          |GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
 GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
 GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
@@ -634,10 +562,12 @@ HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 // Set output level to LOW
 HAL_GPIO_WritePin(GPIOH, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PC0 PC2 PC6 PC7
-                           PC10 PC11 PC12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_2|GPIO_PIN_6|GPIO_PIN_7
-                          |GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  /*Configure GPIO pins : PC0 PC2 PC3 PC6
+                           PC7 PC9 PC10 PC11
+                           PC12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_6
+                          |GPIO_PIN_7|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
+                          |GPIO_PIN_12;
 GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
 GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
@@ -646,12 +576,12 @@ HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 // Set output level to LOW
 HAL_GPIO_WritePin(GPIOC, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PA0 PA3 PA6 PA8
-                           PA9 PA10 PA11 PA12
-                           PA15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_3|GPIO_PIN_6|GPIO_PIN_8
-                          |GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12
-                          |GPIO_PIN_15;
+  /*Configure GPIO pins : PA0 PA3 PA4 PA5
+                           PA6 PA8 PA9 PA10
+                           PA11 PA12 PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |GPIO_PIN_6|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10
+                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15;
 GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
 GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
@@ -660,11 +590,13 @@ HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 // Set output level to LOW
 HAL_GPIO_WritePin(GPIOA, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PB2 PB10 PB11 PB12
-                           PB15 PB3 PB4 PB5
+  /*Configure GPIO pins : PB0 PB1 PB2 PB10
+                           PB11 PB12 PB15 PB3
+                           PB4 PB5 PB6 PB7
                            PB8 PB9 */
-  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12
-                          |GPIO_PIN_15|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_10
+                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15|GPIO_PIN_3
+                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
                           |GPIO_PIN_8|GPIO_PIN_9;
 GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
 GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
@@ -676,10 +608,12 @@ HAL_GPIO_WritePin(GPIOB, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PG0 PG1 PG2 PG3
                            PG4 PG5 PG6 PG8
-                           PG9 PG10 PG14 PG15 */
+                           PG9 PG10 PG12 PG14
+                           PG15 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
                           |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8
-                          |GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_14|GPIO_PIN_15;
+                          |GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_12|GPIO_PIN_14
+                          |GPIO_PIN_15;
 GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
 GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
@@ -688,18 +622,6 @@ HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 // Set output level to LOW
 HAL_GPIO_WritePin(GPIOG, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PE7 PE8 PE9 PE10
-                           PE11 PE13 PE15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10
-                          |GPIO_PIN_11|GPIO_PIN_13|GPIO_PIN_15;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
-GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
-HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-
-// Set output level to LOW
-HAL_GPIO_WritePin(GPIOE, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
-
   /*Configure GPIO pin : LED_RED_Pin */
   GPIO_InitStruct.Pin = LED_RED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -707,12 +629,22 @@ HAL_GPIO_WritePin(GPIOE, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_RED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PD10 PD11 PD13 PD0
-                           PD1 PD2 PD3 PD4
-                           PD5 PD6 PD7 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_13|GPIO_PIN_0
-                          |GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4
-                          |GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+  /*Configure GPIO pins : STLK_VCP_RX_Pin STLK_VCP_TX_Pin */
+  GPIO_InitStruct.Pin = STLK_VCP_RX_Pin|STLK_VCP_TX_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD10 PD11 PD12 PD13
+                           PD14 PD15 PD0 PD1
+                           PD2 PD3 PD4 PD5
+                           PD6 PD7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13
+                          |GPIO_PIN_14|GPIO_PIN_15|GPIO_PIN_0|GPIO_PIN_1
+                          |GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |GPIO_PIN_6|GPIO_PIN_7;
 GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
 GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused

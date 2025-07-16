@@ -1,5 +1,7 @@
 #include "serial_comm/uart/huart10.h"
 #include "mongoose.h"
+#include <stm32h7xx_hal_uart_ex.h>
+#include <stm32h7xx_hal_uart.h>
 
 
 

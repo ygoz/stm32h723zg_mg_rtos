@@ -55,15 +55,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern DMA_HandleTypeDef hdma_adc3;
-extern ADC_HandleTypeDef hadc1;
-extern ADC_HandleTypeDef hadc2;
-extern ADC_HandleTypeDef hadc3;
-extern COMP_HandleTypeDef hcomp1;
-extern DAC_HandleTypeDef hdac1;
 extern ETH_HandleTypeDef heth;
-extern UART_HandleTypeDef huart8;
-extern UART_HandleTypeDef huart10;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -170,21 +162,6 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles ADC1 and ADC2 global interrupts.
-  */
-void ADC_IRQHandler(void)
-{
-  /* USER CODE BEGIN ADC_IRQn 0 */
-
-  /* USER CODE END ADC_IRQn 0 */
-  HAL_ADC_IRQHandler(&hadc1);
-  HAL_ADC_IRQHandler(&hadc2);
-  /* USER CODE BEGIN ADC_IRQn 1 */
-
-  /* USER CODE END ADC_IRQn 1 */
-}
-
-/**
   * @brief This function handles EXTI line[9:5] interrupts.
   */
 void EXTI9_5_IRQHandler(void)
@@ -206,9 +183,6 @@ void TIM6_DAC_IRQHandler(void)
   /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
 
   /* USER CODE END TIM6_DAC_IRQn 0 */
-  if (hdac1.State != HAL_DAC_STATE_RESET) {
-    HAL_DAC_IRQHandler(&hdac1);
-  }
   HAL_TIM_IRQHandler(&htim6);
   /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
 
@@ -227,76 +201,6 @@ __weak void ETH_IRQHandler(void)
   /* USER CODE BEGIN ETH_IRQn 1 */
 
   /* USER CODE END ETH_IRQn 1 */
-}
-
-/**
-  * @brief This function handles UART8 global interrupt.
-  */
-void UART8_IRQHandler(void)
-{
-  /* USER CODE BEGIN UART8_IRQn 0 */
-
-  /* USER CODE END UART8_IRQn 0 */
-  HAL_UART_IRQHandler(&huart8);
-  /* USER CODE BEGIN UART8_IRQn 1 */
-
-  /* USER CODE END UART8_IRQn 1 */
-}
-
-/**
-  * @brief This function handles ADC3 global interrupt.
-  */
-void ADC3_IRQHandler(void)
-{
-  /* USER CODE BEGIN ADC3_IRQn 0 */
-
-  /* USER CODE END ADC3_IRQn 0 */
-  HAL_ADC_IRQHandler(&hadc3);
-  /* USER CODE BEGIN ADC3_IRQn 1 */
-
-  /* USER CODE END ADC3_IRQn 1 */
-}
-
-/**
-  * @brief This function handles BDMA channel0 global interrupt.
-  */
-void BDMA_Channel0_IRQHandler(void)
-{
-  /* USER CODE BEGIN BDMA_Channel0_IRQn 0 */
-
-  /* USER CODE END BDMA_Channel0_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_adc3);
-  /* USER CODE BEGIN BDMA_Channel0_IRQn 1 */
-
-  /* USER CODE END BDMA_Channel0_IRQn 1 */
-}
-
-/**
-  * @brief This function handles COMP1 and COMP2 global interrupt.
-  */
-void COMP_IRQHandler(void)
-{
-  /* USER CODE BEGIN COMP_IRQn 0 */
-
-  /* USER CODE END COMP_IRQn 0 */
-  HAL_COMP_IRQHandler(&hcomp1);
-  /* USER CODE BEGIN COMP_IRQn 1 */
-
-  /* USER CODE END COMP_IRQn 1 */
-}
-
-/**
-  * @brief This function handles USART10 global interrupt.
-  */
-void USART10_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART10_IRQn 0 */
-
-  /* USER CODE END USART10_IRQn 0 */
-  HAL_UART_IRQHandler(&huart10);
-  /* USER CODE BEGIN USART10_IRQn 1 */
-
-  /* USER CODE END USART10_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
