@@ -232,6 +232,20 @@
 #define SPI5_CLK_PHASE              SPI_PHASE_1EDGE
 #define SPI5_BAUDRATE_PRESCALER     SPI_BAUDRATEPRESCALER_32
 #define SPI5_NSS_MODE               SPI_NSS_HARD_OUTPUT
+
+
+/** USB CDC (Virtual COM Port)
+ * @brief Enables or disables USB CDC communication via `USB_COMPORT` define.
+ *
+ * When `USB_COMPORT == USB_COMPORT_ON`, incoming USB data is processed via
+ * `usb_comport_process_data()`. When off, data is ignored but the device still enumerates.
+ *
+ * Common use: Terminal communication with a host PC over USB.
+ *
+ * @define USB_COMPORT  USB_COMPORT_ON or USB_COMPORT_OFF
+ */
+
+#define USB_COMPORT                 USB_COMPORT_ON
 // SERIAL COMM *********************************************************************************
 
 

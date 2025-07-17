@@ -20,6 +20,7 @@
 #include "main.h"
 #include "string.h"
 #include "cmsis_os.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -41,6 +42,7 @@
 #include "serial_comm/spi/hspi5.h"
 #include "serial_comm/spi/octospi.h"
 #include "flash/w25q128jvsq.h"
+#include "usb_comport.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -226,8 +228,10 @@ int main(void)
   MX_TIM8_Init();
   MX_SPI4_Init();
   MX_SPI5_Init();
-  MX_OCTOSPI2_Init();
   /* USER CODE BEGIN 2 */
+  MX_OCTOSPI2_Init();
+  MX_USB_DEVICE_Init();
+  usb_comport_init();
 
   //init all adcs here + calibration
   adc_init_all_handles();
