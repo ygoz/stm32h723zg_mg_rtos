@@ -117,8 +117,10 @@ HAL_StatusTypeDef W25Q128_OSPI_Configuration(OSPI_HandleTypeDef* hospi)
         return HAL_ERROR;
     }
 
-    w_reg1 = reg1;
-    w_reg2 = reg2 | W25Q_SR_Quad_Enable;
+    // w_reg1 = reg1;
+    // w_reg2 = reg2 | W25Q_SR_Quad_Enable;
+    w_reg1 = 0;
+    w_reg2 = W25Q_SR_Quad_Enable;
     w_reg3 = (reg3 & W25Q_SR_DRV1);
 
     if (W25Q128_Write_Status_Registers(hospi, w_reg1, 1) != HAL_OK)
@@ -134,6 +136,17 @@ HAL_StatusTypeDef W25Q128_OSPI_Configuration(OSPI_HandleTypeDef* hospi)
     {
         return HAL_ERROR;
     }
+
+        // Read again after write
+    if (W25Q128_Read_Status_Registers(hospi, &reg1, 1) != HAL_OK)
+        return HAL_ERROR;
+    if (W25Q128_Read_Status_Registers(hospi, &reg2, 2) != HAL_OK)
+        return HAL_ERROR;
+    if (W25Q128_Read_Status_Registers(hospi, &reg3, 3) != HAL_OK)
+        return HAL_ERROR;
+
+    printf("Status Registers AFTER configuration:\r\n");
+    printf("SR1: 0x%02X, SR2: 0x%02X, SR3: 0x%02X\r\n", reg1, reg2, reg3);
 
     return HAL_OK;
 }
@@ -347,7 +360,8 @@ HAL_StatusTypeDef W25Q128_OSPI_EraseSector(OSPI_HandleTypeDef* hospi, uint32_t E
     	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
     	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
     	/* Instruction */
-    	sCommand.Instruction 				= W25Q_64KB_BLOCK_ERASE_CMD;				/* What We Do? */
+    	// sCommand.Instruction 				= W25Q_64KB_BLOCK_ERASE_CMD;				/* What We Do? */
+        sCommand.Instruction 				= W25Q_SECTOR_ERASE_CMD;
     	/* Address */
     	sCommand.AddressMode       			= HAL_OSPI_ADDRESS_1_LINE;					/* Define Address Lines: Address On a Single Line */
     	sCommand.Address					= (StartAddress & 0xFFFFFF);				/* Byte Address */
