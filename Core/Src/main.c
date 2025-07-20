@@ -43,7 +43,6 @@
 #include "serial_comm/spi/octospi.h"
 #include "flash/w25q128jvsq.h"
 #include "usb_comport.h"
-#include "serial_comm/spi/octospi_spi.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -135,47 +134,12 @@ static void run_mongoose(void) {
 
 
   mg_log_set(MG_LL_DEBUG);  // Set log level to debug
-//  HAL_GPIO_WritePin(GPIOB, LED_GREEN_Pin, GPIO_PIN_SET);
-  // HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 
   for (;;) {                // Infinite event loop
     mg_mgr_poll(&mgr, 10);   // Process network events
   }
 }
-
-
-#include "stm32h7xx_hal.h"  // or your MCU-specific HAL
-
-extern OSPI_HandleTypeDef hospi2;  // Your OCTOSPI/QSPI handle
-
-uint8_t W25Q_ReadStatusRegister1(void)
-{
-    OSPI_RegularCmdTypeDef sCommand = {0};
-    uint8_t reg = 0;
-
-    // 0x05 = Read Status Register-1
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = 0x05; // input the reg definition
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
-    sCommand.DummyCycles        = 0;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.NbData             = 1;
-
-    // Send the command
-    if (HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
-        return 0xFF;
-
-    // Receive the data
-    if (HAL_OSPI_Receive(&hospi2, &reg, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
-        return 0xFF;
-
-    return reg;
-}
-
 /* USER CODE END 0 */
 
 /**
@@ -247,19 +211,19 @@ int main(void)
 
 
 
-  W25Q128_SPI_Init(&hospi2);
+  // W25Q128_SPI_Init(&hospi2);
 
-  W25Q128_SPI_EraseSector(&hospi2, 0, 4096);
+  // W25Q128_SPI_EraseSector(&hospi2, 0, 4096);
 
 
-  uint8_t tx[] = "\0hello";
-  uint8_t rx_buf[256] = {0};
+  // uint8_t tx[] = "\0hello";
+  // uint8_t rx_buf[256] = {0};
 
-  W25Q128_SPI_Write(&hospi2, &tx, 0, sizeof(tx));
+  // W25Q128_SPI_Write(&hospi2, &tx, 0, sizeof(tx));
 
-  HAL_Delay(1);
+  // HAL_Delay(1);
 
-  W25Q128_SPI_Read(&hospi2, &rx_buf, 0, 8);
+  // W25Q128_SPI_Read(&hospi2, &rx_buf, 0, 8);
 
   // **************************SPI***************************************
   // uint8_t *spi_rx;
@@ -291,53 +255,32 @@ int main(void)
   //   printf("Flash read: %s\r\n", read_buf);
 
 // **************************************************QSPI*********************************************
-// uint8_t write_data[] = "Hello";
-// uint8_t *actual_write = write_data;
-//     uint8_t read_data[sizeof(write_data)] = {0};
-//     uint32_t address = 0x000000;
+uint8_t write_data[] = "Hello shalom shalom";
+uint8_t read_data[sizeof(write_data)] = {0};
+uint32_t address = 0x000000;
 
-//     // Init + Reset + Config
-//     W25Q128_OCTO_SPI_Init(&hospi2);
+    // Init + Reset + Config
+    W25Q128_OCTO_SPI_Init(&hospi2);
 
-//     // Erase sector
-//     W25Q128_OSPI_Erase_Chip(&hospi2);
-//     if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
+    // Erase sector
+    if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
 
-//   // W25Q128_OSPI_WriteEnable(&hospi2);
+    // Write
+    if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
 
-// //     uint8_t status_reg = W25Q_ReadStatusRegister1();
-// // printf("status_reg: 0x%02X\n", status_reg);
+    // Read
+    if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
+    // Output
+    printf("Read: %s\r\n", read_data);
+    // Read data
+    if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
 
-// // Check WEL (bit 1) and BUSY (bit 0)
-// // if (status_reg & 0x01) printf("BUSY: Write/Erase in progress\n");
-// // if (status_reg & 0x02) printf("WEL: Write Enable Latch is set\n");
-
-//     // Write
-//     if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
-
-
-// // status_reg = W25Q_ReadStatusRegister1();
-// // printf("status_reg: 0x%02X\n", status_reg);
-
-// // Check WEL (bit 1) and BUSY (bit 0)
-// // if (status_reg & 0x01) printf("BUSY: Write/Erase in progress\n");
-// // if (status_reg & 0x02) printf("WEL: Write Enable Latch is set\n");
-
-
-//     // Read
-//     if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
-
-//     // Output
-//     printf("Read: %s\r\n", read_data);
-// // Read data
-//     if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
-
-//     volatile uint8_t *ptr = (uint8_t *)0x70000000;
-//     printf("First 100 bytes at 0x70000000 (hex):\r\n");
-//     for (int i = 0; i < 100; i++) {
-  //         printf("%02X ", ptr[i]);
-  //         if ((i + 1) % 16 == 0) printf("\r\n");
-  //     }
+    volatile uint8_t *ptr = (uint8_t *)0x70000000;
+    printf("First 100 bytes at 0x70000000 (hex):\r\n");
+    for (int i = 0; i < 100; i++) {
+          printf("%02X ", ptr[i]);
+          if ((i + 1) % 16 == 0) printf("\r\n");
+      }
 // **************************************************QSPI*********************************************
 
   /* USER CODE END 2 */
@@ -623,9 +566,6 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOF, FLASH_WP_Pin|FLASH_HOLD_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
@@ -636,13 +576,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : FLASH_WP_Pin FLASH_HOLD_Pin */
-  GPIO_InitStruct.Pin = FLASH_WP_Pin|FLASH_HOLD_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LED_RED_Pin */
   GPIO_InitStruct.Pin = LED_RED_Pin;
@@ -686,7 +619,6 @@ static void MX_GPIO_Init(void)
 void server(void *argument)
 {
   /* init code for USB_DEVICE */
-  // MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 5 */
   NVIC_EnableIRQ(ETH_IRQn);   // preferably do this in Cube, as the tutorials above instruct
   run_mongoose();

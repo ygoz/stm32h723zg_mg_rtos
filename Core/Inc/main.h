@@ -61,10 +61,6 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
-#define FLASH_WP_Pin GPIO_PIN_2
-#define FLASH_WP_GPIO_Port GPIOF
-#define FLASH_HOLD_Pin GPIO_PIN_3
-#define FLASH_HOLD_GPIO_Port GPIOF
 #define RMII_MDC_Pin GPIO_PIN_1
 #define RMII_MDC_GPIO_Port GPIOC
 #define RMII_REF_CLK_Pin GPIO_PIN_1

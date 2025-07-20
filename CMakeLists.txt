@@ -73,7 +73,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/hspi5.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/utils.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/octospi.c
-    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/spi/octospi_spi.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/usb/usb_comport.c
 

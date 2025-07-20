@@ -15,7 +15,6 @@
         "usbd_cdc.h": "c",
         "usbd_cdc_if.h": "c",
         "usb_comport.h": "c",
-        "w25q128jvsq.h": "c",
-        "octospi_spi.h": "c"
+        "w25q128jvsq.h": "c"
     }
 }
