@@ -43,6 +43,7 @@
 #include "serial_comm/spi/octospi.h"
 #include "flash/w25q128jvsq.h"
 #include "usb_comport.h"
+#include "serial_comm/spi/octospi_spi.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -228,8 +229,8 @@ int main(void)
   MX_TIM8_Init();
   MX_SPI4_Init();
   MX_SPI5_Init();
-  /* USER CODE BEGIN 2 */
   MX_OCTOSPI2_Init();
+  /* USER CODE BEGIN 2 */
   MX_USB_DEVICE_Init();
   usb_comport_init();
 
@@ -243,6 +244,22 @@ int main(void)
   //init uart
   uart10.init(&uart10);
   uart8.init(&uart8);
+
+
+
+  W25Q128_SPI_Init(&hospi2);
+
+  W25Q128_SPI_EraseSector(&hospi2, 0, 4096);
+
+
+  uint8_t tx[] = "\0hello";
+  uint8_t rx_buf[256] = {0};
+
+  W25Q128_SPI_Write(&hospi2, &tx, 0, sizeof(tx));
+
+  HAL_Delay(1);
+
+  W25Q128_SPI_Read(&hospi2, &rx_buf, 0, 8);
 
   // **************************SPI***************************************
   // uint8_t *spi_rx;
@@ -606,6 +623,9 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOF, FLASH_WP_Pin|FLASH_HOLD_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
@@ -616,6 +636,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : FLASH_WP_Pin FLASH_HOLD_Pin */
+  GPIO_InitStruct.Pin = FLASH_WP_Pin|FLASH_HOLD_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LED_RED_Pin */
   GPIO_InitStruct.Pin = LED_RED_Pin;
@@ -658,6 +685,8 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_server */
 void server(void *argument)
 {
+  /* init code for USB_DEVICE */
+  // MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 5 */
   NVIC_EnableIRQ(ETH_IRQn);   // preferably do this in Cube, as the tutorials above instruct
   run_mongoose();
