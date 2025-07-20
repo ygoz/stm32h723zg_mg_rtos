@@ -40,7 +40,7 @@ void MX_OCTOSPI2_Init(void)
 
   /* USER CODE END OCTOSPI2_Init 1 */
   hospi2.Instance = OCTOSPI2;
-  hospi2.Init.FifoThreshold = 1;
+  hospi2.Init.FifoThreshold = 8;//1;
   hospi2.Init.DualQuad = HAL_OSPI_DUALQUAD_DISABLE;
   hospi2.Init.MemoryType = HAL_OSPI_MEMTYPE_MICRON;
   hospi2.Init.DeviceSize = 24;
@@ -71,93 +71,3 @@ void MX_OCTOSPI2_Init(void)
   /* USER CODE END OCTOSPI2_Init 2 */
 
 }
-
-void HAL_OSPI_MspInit(OSPI_HandleTypeDef* ospiHandle)
-{
-
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
-  if(ospiHandle->Instance==OCTOSPI2)
-  {
-  /* USER CODE BEGIN OCTOSPI2_MspInit 0 */
-
-  /* USER CODE END OCTOSPI2_MspInit 0 */
-
-  /** Initializes the peripherals clock
-  */
-    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_OSPI;
-    PeriphClkInitStruct.OspiClockSelection = RCC_OSPICLKSOURCE_D1HCLK;
-    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
-    {
-      Error_Handler();
-    }
-
-    /* OCTOSPI2 clock enable */
-    __HAL_RCC_OCTOSPIM_CLK_ENABLE();
-    __HAL_RCC_OSPI2_CLK_ENABLE();
-
-    __HAL_RCC_GPIOF_CLK_ENABLE();
-    __HAL_RCC_GPIOG_CLK_ENABLE();
-    /**OCTOSPI2 GPIO Configuration
-    PF0     ------> OCTOSPIM_P2_IO0
-    PF1     ------> OCTOSPIM_P2_IO1
-    PF2     ------> OCTOSPIM_P2_IO2
-    PF3     ------> OCTOSPIM_P2_IO3
-    PF4     ------> OCTOSPIM_P2_CLK
-    PG12     ------> OCTOSPIM_P2_NCS
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
-                          |GPIO_PIN_4;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF9_OCTOSPIM_P2;
-    HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = GPIO_PIN_12;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF3_OCTOSPIM_P2;
-    HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-
-  /* USER CODE BEGIN OCTOSPI2_MspInit 1 */
-
-  /* USER CODE END OCTOSPI2_MspInit 1 */
-  }
-}
-
-void HAL_OSPI_MspDeInit(OSPI_HandleTypeDef* ospiHandle)
-{
-
-  if(ospiHandle->Instance==OCTOSPI2)
-  {
-  /* USER CODE BEGIN OCTOSPI2_MspDeInit 0 */
-
-  /* USER CODE END OCTOSPI2_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_OCTOSPIM_CLK_DISABLE();
-    __HAL_RCC_OSPI2_CLK_DISABLE();
-
-    /**OCTOSPI2 GPIO Configuration
-    PF0     ------> OCTOSPIM_P2_IO0
-    PF1     ------> OCTOSPIM_P2_IO1
-    PF2     ------> OCTOSPIM_P2_IO2
-    PF3     ------> OCTOSPIM_P2_IO3
-    PF4     ------> OCTOSPIM_P2_CLK
-    PG12     ------> OCTOSPIM_P2_NCS
-    */
-    HAL_GPIO_DeInit(GPIOF, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
-                          |GPIO_PIN_4);
-
-    HAL_GPIO_DeInit(GPIOG, GPIO_PIN_12);
-
-  /* USER CODE BEGIN OCTOSPI2_MspDeInit 1 */
-
-  /* USER CODE END OCTOSPI2_MspDeInit 1 */
-  }
-}
-
-/* USER CODE BEGIN 1 */
-
-/* USER CODE END 1 */
