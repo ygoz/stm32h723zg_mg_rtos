@@ -4,6 +4,27 @@
 #include "serial_comm/spi/octospi.h"
 #include "flash/w25q128jvsq.h"
 
+
+
+static void ospi_command_default_init(OSPI_RegularCmdTypeDef *sCommand) {
+    sCommand->OperationType             = HAL_OSPI_OPTYPE_COMMON_CFG;             // Common configuration (indirect or auto-polling mode)
+    sCommand->FlashId                   = HAL_OSPI_FLASH_ID_1;                    // Use Flash ID 1
+    sCommand->InstructionDtrMode        = HAL_OSPI_INSTRUCTION_DTR_DISABLE;       // Disable Instruction DDR/DTR Mode
+    sCommand->AddressDtrMode            = HAL_OSPI_ADDRESS_DTR_DISABLE;           // Disable Address DDR/DTR Mode
+    sCommand->DataDtrMode               = HAL_OSPI_DATA_DTR_DISABLE;              // Disable Data DDR/DTR Mode
+    sCommand->DQSMode                   = HAL_OSPI_DQS_DISABLE;                   // Disable Data Strobe (DQS)
+    sCommand->SIOOMode                  = HAL_OSPI_SIOO_INST_EVERY_CMD;           // Send instruction on every command
+    sCommand->AlternateBytesMode        = HAL_OSPI_ALTERNATE_BYTES_NONE;          // No alternate bytes
+    sCommand->AlternateBytes            = HAL_OSPI_ALTERNATE_BYTES_NONE;          // Alternate bytes = 0
+    sCommand->AlternateBytesSize        = HAL_OSPI_ALTERNATE_BYTES_NONE;          // Size = 0
+    sCommand->AlternateBytesDtrMode     = HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE;   // Disable alternate bytes DTR mode
+    sCommand->InstructionMode           = HAL_OSPI_INSTRUCTION_1_LINE;            // Use 1 line for instruction
+    sCommand->InstructionSize           = HAL_OSPI_INSTRUCTION_8_BITS;            // 8-bit instruction
+    sCommand->AddressSize               = HAL_OSPI_ADDRESS_24_BITS;               // 24-bit address
+}
+
+
+
 /* OCTO SPI Initial Function */
 HAL_StatusTypeDef W25Q128_OCTO_SPI_Init(OSPI_HandleTypeDef* hospi)
 {
@@ -36,20 +57,7 @@ HAL_StatusTypeDef W25Q128_OSPI_ResetChip(OSPI_HandleTypeDef* hospi)
 
     /* Enable Reset --------------------------- */
 	/* Common Commands*/
-	sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-	sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-	sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-	sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-	sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-	sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-	sCommand.SIOOMode          			= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-	sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-	sCommand.AlternateBytes				= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-	sCommand.AlternateBytesSize			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-	sCommand.AlternateBytesDtrMode		= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-	sCommand.InstructionMode   			= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
 	/* Instruction */
 	sCommand.Instruction 				= W25Q_ENABLE_RST_CMD;						/* What We Do? */
 	/* Address */
@@ -66,20 +74,7 @@ HAL_StatusTypeDef W25Q128_OSPI_ResetChip(OSPI_HandleTypeDef* hospi)
 
     /* Reset Device --------------------------- */
 	/* Common Commands*/
-	sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-	sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-	sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-	sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-	sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-	sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-	sCommand.SIOOMode          			= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-	sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-	sCommand.AlternateBytes				= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-	sCommand.AlternateBytesSize			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-	sCommand.AlternateBytesDtrMode		= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-	sCommand.InstructionMode   			= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
 	/* Instruction */
 	sCommand.Instruction 				= W25Q_RESET_CMD;							/* What We Do? */
 	/* Address */
@@ -159,20 +154,7 @@ HAL_StatusTypeDef W25Q128_OSPI_WriteEnable(OSPI_HandleTypeDef* hospi)
 
     /* Enable write operations ------------------------------------------ */
 	/* Common Commands*/
-	sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-	sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-	sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-	sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-	sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-	sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-	sCommand.SIOOMode          			= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-	sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-	sCommand.AlternateBytes				= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-	sCommand.AlternateBytesSize			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-	sCommand.AlternateBytesDtrMode		= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-	sCommand.InstructionMode   			= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
 	/* Instruction */
 	sCommand.Instruction 				= W25Q_WRITE_ENABLE_CMD;					/* What We Do? */
 	/* Address */
@@ -188,20 +170,7 @@ HAL_StatusTypeDef W25Q128_OSPI_WriteEnable(OSPI_HandleTypeDef* hospi)
     }
 
 	/* Common Commands*/
-	sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-	sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-	sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-	sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-	sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-	sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-	sCommand.SIOOMode          			= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-	sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-	sCommand.AlternateBytes				= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-	sCommand.AlternateBytesSize			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-	sCommand.AlternateBytesDtrMode		= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-	sCommand.InstructionMode   			= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
 	/* Instruction */
 	sCommand.Instruction 				= W25Q_READ_SR1_CMD;						/* What We Do? */
 	/* Address */
@@ -240,20 +209,7 @@ HAL_StatusTypeDef W25Q128_OSPI_AutoPollingMemReady(OSPI_HandleTypeDef* hospi)
 
     /* Configure automatic polling mode to wait for memory ready ------ */
 	/* Common Commands*/
-	sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-	sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-	sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-	sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-	sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-	sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-	sCommand.SIOOMode          			= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-	sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-	sCommand.AlternateBytes				= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-	sCommand.AlternateBytesSize			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-	sCommand.AlternateBytesDtrMode		= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-	sCommand.InstructionMode   			= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
 	/* Instruction */
 	sCommand.Instruction 				= W25Q_READ_SR1_CMD;						/* What We Do? */
 	/* Address */
@@ -289,20 +245,7 @@ HAL_StatusTypeDef W25Q128_OSPI_Erase_Chip(OSPI_HandleTypeDef* hospi)
 
     /* Erasing Sequence ---------------------------------*/
 	/* Common Commands*/
-	sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-	sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-	sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-	sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-	sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-	sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-	sCommand.SIOOMode          			= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-	sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-	sCommand.AlternateBytes				= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-	sCommand.AlternateBytesSize			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-	sCommand.AlternateBytesDtrMode		= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-	sCommand.InstructionMode   			= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
 	/* Instruction */
 	sCommand.Instruction 				= W25Q_CHIP_ERASE_CMD;						/* What We Do? */
 	/* Address */
@@ -345,23 +288,10 @@ HAL_StatusTypeDef W25Q128_OSPI_EraseSector(OSPI_HandleTypeDef* hospi, uint32_t E
     {
     	/* Erasing Sequence -------------------------------------------------- */
     	/* Common Commands*/
-    	sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-    	sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-    	sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-    	sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-    	sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-    	sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-    	sCommand.SIOOMode          			= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-    	sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-    	sCommand.AlternateBytes				= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-    	sCommand.AlternateBytesSize			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-    	sCommand.AlternateBytesDtrMode		= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-    	sCommand.InstructionMode   			= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-    	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-    	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+        ospi_command_default_init(&sCommand);
     	/* Instruction */
-    	// sCommand.Instruction 				= W25Q_64KB_BLOCK_ERASE_CMD;				/* What We Do? */
-        sCommand.Instruction 				= W25Q_SECTOR_ERASE_CMD;
+    	sCommand.Instruction 				= W25Q_64KB_BLOCK_ERASE_CMD;				/* What We Do? */
+        // sCommand.Instruction 				= W25Q_SECTOR_ERASE_CMD;
     	/* Address */
     	sCommand.AddressMode       			= HAL_OSPI_ADDRESS_1_LINE;					/* Define Address Lines: Address On a Single Line */
     	sCommand.Address					= (StartAddress & 0xFFFFFF);				/* Byte Address */
@@ -418,20 +348,7 @@ HAL_StatusTypeDef W25Q128_OSPI_Write(OSPI_HandleTypeDef* hospi, uint8_t* pData, 
   {
 	/* Initialize the program command */
 	/* Common Commands*/
-	sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-	sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-	sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-	sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-	sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-	sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-	sCommand.SIOOMode          			= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-	sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-	sCommand.AlternateBytes				= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-	sCommand.AlternateBytesSize			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-	sCommand.AlternateBytesDtrMode		= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-	sCommand.InstructionMode   			= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-	sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-	sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
 	/* Instruction */
 	sCommand.Instruction 				= W25Q_PAGE_PROGRAM_QUAD_INP_CMD;			/* What We Do? */
 	/* Address */
@@ -485,20 +402,7 @@ HAL_StatusTypeDef W25Q128_OSPI_Read(OSPI_HandleTypeDef* hospi,uint8_t* pData, ui
   OSPI_RegularCmdTypeDef sCommand={0};
   /* Initialize the read command */
   /* Common Commands*/
-  sCommand.OperationType      		= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-  sCommand.FlashId            		= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-  sCommand.InstructionDtrMode 		= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-  sCommand.AddressDtrMode     		= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-  sCommand.DataDtrMode				= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-  sCommand.DQSMode            		= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-  sCommand.SIOOMode          		= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-  sCommand.AlternateBytesMode 		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-  sCommand.AlternateBytes			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-  sCommand.AlternateBytesSize		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-  sCommand.AlternateBytesDtrMode	= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-  sCommand.InstructionMode   		= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-  sCommand.InstructionSize    		= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-  sCommand.AddressSize 				= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+  ospi_command_default_init(&sCommand);
   /* Instruction */
   sCommand.Instruction 				= W25Q_FAST_READ_QUAD_IO_CMD;				/* What We Do? */
   /* Address */
@@ -622,20 +526,7 @@ HAL_StatusTypeDef W25Q128_Read_Status_Registers(OSPI_HandleTypeDef* hospi, uint8
 	OSPI_RegularCmdTypeDef sCommand={0};
 
 	/* Common Commands*/
-    sCommand.OperationType      	= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-    sCommand.FlashId            	= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-    sCommand.InstructionDtrMode 	= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-    sCommand.AddressDtrMode     	= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-    sCommand.DataDtrMode			= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-    sCommand.DQSMode            	= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-    sCommand.SIOOMode          		= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-    sCommand.AlternateBytesMode 	= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-    sCommand.AlternateBytes			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-    sCommand.AlternateBytesSize		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-    sCommand.AlternateBytesDtrMode	= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-    sCommand.InstructionMode   		= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-    sCommand.InstructionSize    	= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-    sCommand.AddressSize 			= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
     /* Instruction */
     sCommand.Instruction 			= 0;										/* What We Do? */
     /* Address */
@@ -674,20 +565,7 @@ HAL_StatusTypeDef W25Q128_Write_Status_Registers(OSPI_HandleTypeDef* hospi, uint
 	OSPI_RegularCmdTypeDef sCommand;
 
 	/* Common Commands*/
-    sCommand.OperationType      	= HAL_OSPI_OPTYPE_COMMON_CFG; 				/* Common configuration (indirect or auto-polling mode) */
-    sCommand.FlashId            	= HAL_OSPI_FLASH_ID_1; 						/* Set The OCTO SPI Flash ID */
-    sCommand.InstructionDtrMode 	= HAL_OSPI_INSTRUCTION_DTR_DISABLE; 		/* Disable Instruction DDR/DTR Mode */
-    sCommand.AddressDtrMode     	= HAL_OSPI_ADDRESS_DTR_DISABLE; 			/* Disable Address DDR/DTR Mode */
-    sCommand.DataDtrMode			= HAL_OSPI_DATA_DTR_DISABLE; 				/* Disable Data DDR/DTR Mode */
-    sCommand.DQSMode            	= HAL_OSPI_DQS_DISABLE; 					/* Disable Data Strobe */
-    sCommand.SIOOMode          		= HAL_OSPI_SIOO_INST_EVERY_CMD; 			/* SIOO Mode: Send instruction on every transaction */
-    sCommand.AlternateBytesMode 	= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Disable Alternate Bytes Mode */
-    sCommand.AlternateBytes			= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes = 0 */
-    sCommand.AlternateBytesSize		= HAL_OSPI_ALTERNATE_BYTES_NONE; 			/* Alternate Bytes Size = 0 */
-    sCommand.AlternateBytesDtrMode	= HAL_OSPI_ALTERNATE_BYTES_DTR_DISABLE; 	/* Disable Alternate Bytes DDR/DTR Mode */
-    sCommand.InstructionMode   		= HAL_OSPI_INSTRUCTION_1_LINE;				/* Instruction on a single line */
-    sCommand.InstructionSize    	= HAL_OSPI_INSTRUCTION_8_BITS;				/* 8-bit Instruction */
-    sCommand.AddressSize 			= HAL_OSPI_ADDRESS_24_BITS;					/* 24-bit Address */
+    ospi_command_default_init(&sCommand);
     /* Instruction */
     sCommand.Instruction 			= W25Q_WRITE_DISABLE_CMD;					/* What We Do? */
     /* Address */
@@ -740,4 +618,66 @@ HAL_StatusTypeDef W25Q128_Write_Status_Registers(OSPI_HandleTypeDef* hospi, uint
     }
 
 	return HAL_OK;
+}
+
+
+
+
+
+
+void test_ext_flash(OSPI_HandleTypeDef *hospi) {
+    static const uint32_t sectors_count = 10;
+    static const uint32_t memory_sector_size = 1024 * 64;
+
+    uint8_t buffer_test[memory_sector_size];  // Size must match memory_sector_size if static array
+    uint32_t var = 0;
+
+    // Initialize OSPI
+    W25Q128_OCTO_SPI_Init(hospi);
+
+    // Fill buffer with test data
+    for (var = 0; var < memory_sector_size; var++) {
+        buffer_test[var] = (var & 0xFF);
+    }
+
+    // Erase and write to each sector
+    for (var = 0; var < sectors_count; var++) {
+        printf("Writing sector %lu to address 0x%08lX\r\n", var, var * memory_sector_size);
+
+        if (W25Q128_OSPI_EraseSector(hospi, var * memory_sector_size,
+                                     (var + 1) * memory_sector_size - 1) != HAL_OK) {
+            printf("Erase failed at sector %lu\r\n", var);
+            while (1);  // Error
+        }
+
+        if (W25Q128_OSPI_Write(hospi, buffer_test, var * memory_sector_size, memory_sector_size) != HAL_OK) {
+            printf("Write failed at sector %lu\r\n", var);
+            while (1);  // Error
+        }
+    }
+
+    // Enable memory-mapped mode
+    if (W25Q128_OSPI_EnableMemoryMappedMode(hospi) != HAL_OK) {
+        printf("Failed to enable memory-mapped mode\r\n");
+        while (1); // Error
+    }
+
+    // Validate written data via memory-mapped access
+    for (var = 0; var < sectors_count; var++) {
+        uint8_t *flash_ptr = (uint8_t*)(0x70000000 + var * memory_sector_size);
+
+        printf("\r\nChecking sector %lu at address 0x%08lX\r\n", var, (uint32_t)flash_ptr);
+        printf("First 100 bytes:\r\n");
+        for (int i = 0; i < 100; i++) {
+            printf("%02X ", flash_ptr[i]);
+            if ((i + 1) % 16 == 0) printf("\r\n");
+        }
+
+        if (memcmp(buffer_test, flash_ptr, memory_sector_size) != 0) {
+            printf("\r\nMismatch at sector %lu (address 0x%08lX)\r\n", var, (uint32_t)flash_ptr);
+            while (1);  // Error
+        }
+    }
+
+    printf("\r\nQSPI memory check passed for %lu sectors.\r\n", sectors_count);
 }
