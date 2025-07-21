@@ -95,3 +95,6 @@ HAL_StatusTypeDef W25Q128_OSPI_EnableMemoryMappedMode(OSPI_HandleTypeDef* hospi)
 HAL_StatusTypeDef W25Q128_IsBusy(OSPI_HandleTypeDef* hospi);
 HAL_StatusTypeDef W25Q128_Read_Status_Registers(OSPI_HandleTypeDef* hospi, uint8_t* register_data, uint8_t register_num);
 HAL_StatusTypeDef W25Q128_Write_Status_Registers(OSPI_HandleTypeDef* hospi, uint8_t reg_data, uint8_t reg_num);
+
+
+void test_ext_flash(OSPI_HandleTypeDef *hospi);

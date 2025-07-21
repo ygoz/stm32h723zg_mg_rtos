@@ -210,6 +210,11 @@ int main(void)
   uart8.init(&uart8);
 
 
+/* USER CODE BEGIN 0 */
+test_ext_flash(&hospi2);
+
+
+/* USER CODE END 2 */
 
   // W25Q128_SPI_Init(&hospi2);
 
@@ -257,12 +262,13 @@ int main(void)
 // **************************************************QSPI*********************************************
 uint8_t write_data[] = "Hello shalom shalom";
 uint8_t read_data[sizeof(write_data)] = {0};
-uint32_t address = 0x000000;
+uint32_t address = 0x000000 + 4096;
 
     // Init + Reset + Config
     W25Q128_OCTO_SPI_Init(&hospi2);
 
     // Erase sector
+    // if (W25Q128_OSPI_Erase_Chip(&hospi2) != HAL_OK) return;
     if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
 
     // Write
@@ -275,8 +281,8 @@ uint32_t address = 0x000000;
     // Read data
     if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
 
-    volatile uint8_t *ptr = (uint8_t *)0x70000000;
-    printf("First 100 bytes at 0x70000000 (hex):\r\n");
+    volatile uint8_t *ptr = (uint8_t *)0x70001000;
+    printf("First 100 bytes at 0x70001000 (hex):\r\n");
     for (int i = 0; i < 100; i++) {
           printf("%02X ", ptr[i]);
           if ((i + 1) % 16 == 0) printf("\r\n");
