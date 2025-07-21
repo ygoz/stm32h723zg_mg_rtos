@@ -260,33 +260,33 @@ test_ext_flash(&hospi2);
   //   printf("Flash read: %s\r\n", read_buf);
 
 // **************************************************QSPI*********************************************
-uint8_t write_data[] = "Hello shalom shalom";
-uint8_t read_data[sizeof(write_data)] = {0};
-uint32_t address = 0x000000 + 4096;
+// uint8_t write_data[] = "Hello shalom shalom";
+// uint8_t read_data[sizeof(write_data)] = {0};
+// uint32_t address = 0x000000 + 4096;
 
-    // Init + Reset + Config
-    W25Q128_OCTO_SPI_Init(&hospi2);
+//     // Init + Reset + Config
+//     W25Q128_OCTO_SPI_Init(&hospi2);
 
-    // Erase sector
-    // if (W25Q128_OSPI_Erase_Chip(&hospi2) != HAL_OK) return;
-    if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
+//     // Erase sector
+//     // if (W25Q128_OSPI_Erase_Chip(&hospi2) != HAL_OK) return;
+//     if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
 
-    // Write
-    if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
+//     // Write
+//     if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
 
-    // Read
-    if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
-    // Output
-    printf("Read: %s\r\n", read_data);
-    // Read data
-    if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
+//     // Read
+//     if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
+//     // Output
+//     printf("Read: %s\r\n", read_data);
+//     // Read data
+//     if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
 
-    volatile uint8_t *ptr = (uint8_t *)0x70001000;
-    printf("First 100 bytes at 0x70001000 (hex):\r\n");
-    for (int i = 0; i < 100; i++) {
-          printf("%02X ", ptr[i]);
-          if ((i + 1) % 16 == 0) printf("\r\n");
-      }
+//     volatile uint8_t *ptr = (uint8_t *)0x70001000;
+//     printf("First 100 bytes at 0x70001000 (hex):\r\n");
+//     for (int i = 0; i < 100; i++) {
+//           printf("%02X ", ptr[i]);
+//           if ((i + 1) % 16 == 0) printf("\r\n");
+//       }
 // **************************************************QSPI*********************************************
 
   /* USER CODE END 2 */
