@@ -15,6 +15,9 @@
         "usbd_cdc.h": "c",
         "usbd_cdc_if.h": "c",
         "usb_comport.h": "c",
-        "w25q128jvsq.h": "c"
+        "w25q128jvsq.h": "c",
+        "string.h": "c",
+        "octospi.h": "c",
+        "dev_inf.h": "c"
     }
 }
