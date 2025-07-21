@@ -88,7 +88,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/comp/hcomp1.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/exti/exti.c
-    ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/exti/user_button.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/peripherals/timer/htim8.c
 

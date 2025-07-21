@@ -9,18 +9,7 @@ ADC_HandleTypeDef hadc2;
 
 
 
-
-#if ADC2_POLLING_OR_DMA_MODE == ADC_DMA_MODE 
-
-// define buffer for adc dma data
-
-// return the dma buffer pointer
-uint16_t* adc2_get_value(void) {
-return adc2_dma_buffer;  // Returns a pointer to the first element
-}
-
-#elif ADC2_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
-
+#if ADC2_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
 // set adc value and return HAL Status
 HAL_StatusTypeDef adc2_get_value(uint16_t *adc_value) {
 return adc_polling_get_value(&hadc2, adc_value, ADC2_POLLING_TIMEOUT);
