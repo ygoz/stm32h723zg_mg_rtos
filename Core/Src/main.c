@@ -211,7 +211,7 @@ int main(void)
 
 
 /* USER CODE BEGIN 0 */
-test_ext_flash(&hospi2);
+// test_ext_flash(&hospi2);
 
 
 /* USER CODE END 2 */
@@ -260,7 +260,9 @@ test_ext_flash(&hospi2);
   //   printf("Flash read: %s\r\n", read_buf);
 
 // **************************************************QSPI*********************************************
-// uint8_t write_data[] = "Hello shalom shalom";
+// static __attribute__((section(".extflash"))) uint8_t write_data_ext_flash[] = "Hello shalom shalom";
+// printf("%s\r\n\r\n\r\n", write_data_ext_flash);
+
 // uint8_t read_data[sizeof(write_data)] = {0};
 // uint32_t address = 0x000000 + 4096;
 

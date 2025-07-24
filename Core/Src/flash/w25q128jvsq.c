@@ -626,7 +626,7 @@ HAL_StatusTypeDef W25Q128_Write_Status_Registers(OSPI_HandleTypeDef* hospi, uint
 
 
 void test_ext_flash(OSPI_HandleTypeDef *hospi) {
-    static const uint32_t sectors_count = 10;
+    static const uint32_t sectors_count = 256;
     static const uint32_t memory_sector_size = 1024 * 64;
 
     uint8_t buffer_test[memory_sector_size];  // Size must match memory_sector_size if static array
