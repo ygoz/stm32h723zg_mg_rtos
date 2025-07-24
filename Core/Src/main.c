@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "string.h"
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -59,32 +58,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-#if defined ( __ICCARM__ ) /*!< IAR Compiler */
-#pragma location=0x30000000
-ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-#pragma location=0x30000080
-ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
-
-#elif defined ( __CC_ARM )  /* MDK ARM Compiler */
-
-__attribute__((at(0x30000000))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-__attribute__((at(0x30000080))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
-
-#elif defined ( __GNUC__ ) /* GNU Compiler */
-
-ETH_DMADescTypeDef DMARxDscrTab[ETH_RX_DESC_CNT] __attribute__((section(".RxDescripSection"))); /* Ethernet Rx DMA Descriptors */
-ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDescripSection")));   /* Ethernet Tx DMA Descriptors */
-#endif
-
-ETH_TxPacketConfig TxConfig;
-
-
-ETH_HandleTypeDef heth;
 
 RNG_HandleTypeDef hrng;
-
-UART_HandleTypeDef huart3;
-
 
 /* Definitions for Server */
 osThreadId_t ServerHandle;
@@ -100,7 +75,6 @@ const osThreadAttr_t Server_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_ETH_Init(void);
 static void MX_RNG_Init(void);
 void server(void *argument);
 
@@ -206,8 +180,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ETH_Init();
-  MX_RNG_Init();
+  // MX_RNG_Init();
   /* USER CODE BEGIN 2 */
   // MX_OCTOSPI2_Init();
 
@@ -413,55 +386,6 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief ETH Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_ETH_Init(void)
-{
-
-  /* USER CODE BEGIN ETH_Init 0 */
-
-  /* USER CODE END ETH_Init 0 */
-
-   static uint8_t MACAddr[6];
-
-  /* USER CODE BEGIN ETH_Init 1 */
-
-  /* USER CODE END ETH_Init 1 */
-  heth.Instance = ETH;
-  MACAddr[0] = 0x00;
-  MACAddr[1] = 0x80;
-  MACAddr[2] = 0xE1;
-  MACAddr[3] = 0x00;
-  MACAddr[4] = 0x00;
-  MACAddr[5] = 0x00;
-  heth.Init.MACAddr = &MACAddr[0];
-  heth.Init.MediaInterface = HAL_ETH_RMII_MODE;
-  heth.Init.TxDesc = DMATxDscrTab;
-  heth.Init.RxDesc = DMARxDscrTab;
-  heth.Init.RxBuffLen = 1524;
-
-  /* USER CODE BEGIN MACADDRESS */
-
-  /* USER CODE END MACADDRESS */
-
-  if (HAL_ETH_Init(&heth) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  memset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));
-  TxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
-  TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
-  TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
-  /* USER CODE BEGIN ETH_Init 2 */
-
-  /* USER CODE END ETH_Init 2 */
-
-}
-
-/**
   * @brief RNG Initialization Function
   * @param None
   * @retval None
@@ -517,8 +441,8 @@ static void MX_GPIO_Init(void)
                           |GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9
                           |GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13
                           |GPIO_PIN_14|GPIO_PIN_15|GPIO_PIN_0|GPIO_PIN_1;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
 HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
@@ -526,15 +450,15 @@ HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 HAL_GPIO_WritePin(GPIOE, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PC13 PC14 PC15 PC0
-                           PC2 PC3 PC6 PC7
-                           PC8 PC9 PC10 PC11
-                           PC12 */
+                           PC1 PC2 PC3 PC4
+                           PC5 PC6 PC7 PC8
+                           PC9 PC10 PC11 PC12 */
   GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15|GPIO_PIN_0
-                          |GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_6|GPIO_PIN_7
-                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
-                          |GPIO_PIN_12;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+                          |GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4
+                          |GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8
+                          |GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
 HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
@@ -549,8 +473,8 @@ HAL_GPIO_WritePin(GPIOC, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
                           |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
                           |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
                           |GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
 HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
@@ -559,24 +483,24 @@ HAL_GPIO_WritePin(GPIOF, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PH0 PH1 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
 HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
 // Set output level to LOW
 HAL_GPIO_WritePin(GPIOH, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PA0 PA3 PA4 PA5
-                           PA6 PA8 PA9 PA10
-                           PA11 PA12 PA13 PA14
-                           PA15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
-                          |GPIO_PIN_6|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10
-                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14
-                          |GPIO_PIN_15;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+  /*Configure GPIO pins : PA0 PA1 PA2 PA3
+                           PA4 PA5 PA6 PA7
+                           PA8 PA9 PA10 PA11
+                           PA12 PA13 PA14 PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
+                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
+                          |GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
 HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
@@ -584,15 +508,15 @@ HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 HAL_GPIO_WritePin(GPIOA, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PB0 PB1 PB2 PB10
-                           PB11 PB12 PB14 PB15
-                           PB3 PB4 PB5 PB6
-                           PB7 PB8 PB9 */
+                           PB11 PB12 PB13 PB14
+                           PB15 PB3 PB4 PB5
+                           PB6 PB7 PB8 PB9 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_10
-                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_14|GPIO_PIN_15
-                          |GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6
-                          |GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14
+                          |GPIO_PIN_15|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
 HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
@@ -606,9 +530,9 @@ HAL_GPIO_WritePin(GPIOB, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
                           |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
                           |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_12
-                          |GPIO_PIN_14|GPIO_PIN_15;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+                          |GPIO_PIN_14|GPIO_PIN_15|RMII_TX_EN_Pin|RMII_TXD0_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
 HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
@@ -623,13 +547,22 @@ HAL_GPIO_WritePin(GPIOG, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
                           |GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15
                           |GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
                           |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
-GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;      // Output Push-Pull
-GPIO_InitStruct.Pull = GPIO_NOPULL;              // No internal pull-up/down
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     // Low speed is fine for unused
 HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 // Set output level to LOW
 HAL_GPIO_WritePin(GPIOD, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
+
+//   /*Configure GPIO pins : RMII_TX_EN_Pin RMII_TXD0_Pin */
+//   GPIO_InitStruct.Pin = RMII_TX_EN_Pin|RMII_TXD0_Pin;
+//   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+//   GPIO_InitStruct.Pull = GPIO_NOPULL;
+//   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+//   // GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
+//   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+// HAL_GPIO_WritePin(GPIOG, GPIO_InitStruct.Pin, GPIO_PIN_RESET);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
