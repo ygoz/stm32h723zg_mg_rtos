@@ -214,88 +214,24 @@ int main(void)
   uart8.init(&uart8);
 
 
+if (W25Q128_OCTO_SPI_Init(&hospi2) != HAL_OK) {
+    MG_INFO(("External flash init failed"));
+    return;
+}
+
+if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) {
+    MG_INFO(("Failed to enable memory-mapped mode"));
+    return;
+}
+  // W25Q128
+  // ext_flash_exe_test();
+
+
 /* USER CODE BEGIN 0 */
 // test_ext_flash(&hospi2);
 
 
 /* USER CODE END 2 */
-
-  // W25Q128_SPI_Init(&hospi2);
-
-  // W25Q128_SPI_EraseSector(&hospi2, 0, 4096);
-
-
-  // uint8_t tx[] = "\0hello";
-  // uint8_t rx_buf[256] = {0};
-
-  // W25Q128_SPI_Write(&hospi2, &tx, 0, sizeof(tx));
-
-  // HAL_Delay(1);
-
-  // W25Q128_SPI_Read(&hospi2, &rx_buf, 0, 8);
-
-  // **************************SPI***************************************
-  // uint8_t *spi_rx;
-  // uint8_t spi_tx[10] = "shalom aa";
-
-  // const uint32_t test_addr = 0x000000;  // Must be sector-aligned (multiple of 4096)
-  //   const char *test_data = "Hello from shalom Flash!";
-  //   uint8_t read_buf[64] = {0};
-
-  //   // 1. Erase sector
-  //   if (my_flash.erase_sector(&my_flash, test_addr) != HAL_OK) {
-  //       printf("Flash erase failed!\r\n");
-  //       return;
-  //   }
-
-  //   // 2. Write string to flash
-  //   if (my_flash.write_page(&my_flash, test_addr, (uint8_t *)test_data, strlen(test_data)) != HAL_OK) {
-  //       printf("Flash write failed!\r\n");
-  //       return;
-  //   }
-
-  //   // 3. Read back the string
-  //   if (my_flash.read(&my_flash, test_addr, read_buf, strlen(test_data)) != HAL_OK) {
-  //       printf("Flash read failed!\r\n");
-  //       return;
-  //   }
-
-  //   // 4. Print result
-  //   printf("Flash read: %s\r\n", read_buf);
-
-// **************************************************QSPI*********************************************
-// static volatile __attribute__((section(".extflash"))) uint8_t write_data_ext_flash[] = "Big papaya shalom";
-//     printf("String: %s\n", write_data_ext_flash);
-    // printf("Address: %p\n", (void*)write_data_ext_flash);
-// printf("%s\r\n\r\n\r\n", write_data_ext_flash);
-
-// uint8_t read_data[sizeof(write_data)] = {0};
-// uint32_t address = 0x000000 + 4096;
-
-//     // Init + Reset + Config
-    W25Q128_OCTO_SPI_Init(&hospi2);
-
-//     // Erase sector
-//     // if (W25Q128_OSPI_Erase_Chip(&hospi2) != HAL_OK) return;
-//     if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
-
-//     // Write
-//     if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
-
-//     // Read
-//     if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
-//     // Output
-//     printf("Read: %s\r\n", read_data);
-//     // Read data
-    if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
-
-//     volatile uint8_t *ptr = (uint8_t *)0x70001000;
-//     printf("First 100 bytes at 0x70001000 (hex):\r\n");
-//     for (int i = 0; i < 100; i++) {
-//           printf("%02X ", ptr[i]);
-//           if ((i + 1) % 16 == 0) printf("\r\n");
-//       }
-// **************************************************QSPI*********************************************
 
   /* USER CODE END 2 */
 

@@ -681,3 +681,10 @@ void test_ext_flash(OSPI_HandleTypeDef *hospi) {
 
     printf("\r\nQSPI memory check passed for %lu sectors.\r\n", sectors_count);
 }
+
+
+
+EXT_FLASH_SECTION void ext_flash_exe_test(void)
+{
+  printf("External flash XIP works\r\n");
+}

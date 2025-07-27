@@ -3,6 +3,10 @@
 
 #include <stdbool.h>
 /* USER CODE BEGIN Private defines */
+#define EXT_FLASH_SECTION __attribute__((section(".extflash")))
+
+
+
 #define W25Q_FLASH_SIZE                  			0x1000000 /* 128 MBits => 16MBytes  256x64x1024*/
 #define W25Q_SECTOR_SIZE                 			0x10000   /* 64x1024 - 256 sectors of 64KBytes */
 #define W25Q_SUBSECTOR_SIZE              			0x1000    /* 4*1024 = 4096 subsectors of 4kBytes */
