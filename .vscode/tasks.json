@@ -18,8 +18,8 @@
                 "port=swd",
                 "--download",
                 "${command:cmake.launchTargetPath}",
-                // "--extload",
-                // "${workspaceFolder}/W25Q128_t2.stldr",
+                "--extload",
+                "${workspaceFolder}/W25Q128_HaGeneral.stldr",
                 // Let CMake extension decide executable: "${command:cmake.launchTargetPath}",
                 "-hardRst", // Hardware reset - if rst pin is connected
                 "-rst", // Software reset (backup)

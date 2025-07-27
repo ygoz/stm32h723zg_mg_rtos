@@ -29,7 +29,7 @@
             ],
             //"preLaunchTask": "Build + Flash"
             /* If you use external loader, add additional arguments */
-            //"serverArgs": ["--extload", "${workspaceFolder}/W25Q128_HaGeneral.stldr"],
+            "serverArgs": ["--extload", "${workspaceFolder}/W25Q128_HaGeneral.stldr"],
         },
         {
             "name": "Attach to Microcontroller - ST-Link",
