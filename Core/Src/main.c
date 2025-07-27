@@ -140,6 +140,10 @@ static void run_mongoose(void) {
     mg_mgr_poll(&mgr, 10);   // Process network events
   }
 }
+
+
+
+// const __attribute__((section(".extflash"))) uint8_t write_data_ext_flash[] = "Hello shalom shalom";
 /* USER CODE END 0 */
 
 /**
@@ -260,14 +264,16 @@ int main(void)
   //   printf("Flash read: %s\r\n", read_buf);
 
 // **************************************************QSPI*********************************************
-// static __attribute__((section(".extflash"))) uint8_t write_data_ext_flash[] = "Hello shalom shalom";
+// static volatile __attribute__((section(".extflash"))) uint8_t write_data_ext_flash[] = "Big papaya shalom";
+//     printf("String: %s\n", write_data_ext_flash);
+    // printf("Address: %p\n", (void*)write_data_ext_flash);
 // printf("%s\r\n\r\n\r\n", write_data_ext_flash);
 
 // uint8_t read_data[sizeof(write_data)] = {0};
 // uint32_t address = 0x000000 + 4096;
 
 //     // Init + Reset + Config
-//     W25Q128_OCTO_SPI_Init(&hospi2);
+    W25Q128_OCTO_SPI_Init(&hospi2);
 
 //     // Erase sector
 //     // if (W25Q128_OSPI_Erase_Chip(&hospi2) != HAL_OK) return;
@@ -281,7 +287,7 @@ int main(void)
 //     // Output
 //     printf("Read: %s\r\n", read_data);
 //     // Read data
-//     if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
+    if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
 
 //     volatile uint8_t *ptr = (uint8_t *)0x70001000;
 //     printf("First 100 bytes at 0x70001000 (hex):\r\n");

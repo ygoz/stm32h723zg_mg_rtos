@@ -49,7 +49,7 @@ MEMORY
   RAM_D1  (xrw)    : ORIGIN = 0x24000000,   LENGTH = 320K
   RAM_D2  (xrw)    : ORIGIN = 0x30000000,   LENGTH = 32K
   RAM_D3  (xrw)    : ORIGIN = 0x38000000,   LENGTH = 16K
-  QSPI_FLASH (r)   : ORIGIN = 0x70000000,   LENGTH = 16M
+  QSPI_FLASH (rx)   : ORIGIN = 0x70000000,   LENGTH = 16M
 }
 
 /* Define output sections */
@@ -184,7 +184,7 @@ SECTIONS
     libgcc.a ( * )
   }
 
-  .extflashSection (NOLOAD) :
+  .extflashSection :
   {
     *(.extflash*)
   } > QSPI_FLASH
