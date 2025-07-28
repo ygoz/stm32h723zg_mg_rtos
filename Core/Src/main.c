@@ -134,17 +134,12 @@ static void run_mongoose(void) {
 
 
   mg_log_set(MG_LL_DEBUG);  // Set log level to debug
-  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 
   for (;;) {                // Infinite event loop
     mg_mgr_poll(&mgr, 10);   // Process network events
   }
 }
 
-
-
-// const __attribute__((section(".extflash"))) uint8_t write_data_ext_flash[] = "Hello shalom shalom";
-/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -214,21 +209,26 @@ int main(void)
   uart8.init(&uart8);
 
 
-if (W25Q128_OCTO_SPI_Init(&hospi2) != HAL_OK) {
+if (w25q128_driver.init() != HAL_OK) {
     MG_INFO(("External flash init failed"));
     return;
 }
 
-if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) {
+if (w25q128_driver.memmap_enable() != HAL_OK) {
     MG_INFO(("Failed to enable memory-mapped mode"));
     return;
 }
+
   // W25Q128
   // ext_flash_exe_test();
 
 
 /* USER CODE BEGIN 0 */
-// test_ext_flash(&hospi2);
+
+// if (w25q128_test() != HAL_OK) {
+//     MG_INFO(("External flash did not pass unit testing!"));
+//     return;
+// }
 
 
 /* USER CODE END 2 */

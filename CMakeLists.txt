@@ -99,7 +99,6 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
     ${CMAKE_SOURCE_DIR}/Core/Inc
 
-    ${CMAKE_SOURCE_DIR}/Core/Inc/http/web_ui/file_system
     ${CMAKE_SOURCE_DIR}/Core/Inc/http/settings
     ${CMAKE_SOURCE_DIR}/Core/Inc/http/routers
     ${CMAKE_SOURCE_DIR}/Core/Inc/http/FOTA
