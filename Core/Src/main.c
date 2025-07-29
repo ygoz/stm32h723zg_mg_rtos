@@ -219,6 +219,11 @@ if (w25q128_driver.memmap_enable() != HAL_OK) {
     return;
 }
 
+if (w25q128_driver.test() != HAL_OK) {
+    MG_INFO(("Unit test failed"));
+    return;
+}
+
   // W25Q128
   // ext_flash_exe_test();
 

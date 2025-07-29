@@ -7,14 +7,19 @@
 
 
 const qspi_flash_driver_t w25q128_driver = {
-    .init = w25q128_init,
-    .write = w25q128_write,
-    .read = w25q128_read,
-    .memmap_enable = w25q128_memmap_enable,
-    .memmap_disable = w25q128_memmap_disable,
-    .erase_chip = w25q128_erase_chip,
-    .erase_sector = w25q128_erase_sector
+    .init                   = w25q128_init,
+    .write                  = w25q128_write,
+    .read                   = w25q128_read,
+    .memmap_enable          = w25q128_memmap_enable,
+    .memmap_disable         = w25q128_memmap_disable,
+    .erase_chip             = w25q128_erase_chip,
+    .erase_sector           = w25q128_erase_sector,
+    .reset_chip             = w25q128_reset_chip,
+    .read_status_registers  = w25q128_read_status_registers,
+    .write_status_registers = w25q128_write_status_registers,
+    .test                   = w25q128_test
 };
+
 
 
 
@@ -128,7 +133,11 @@ HAL_StatusTypeDef w25q128_config(void)
     if (w25q128_write_status_registers(w_reg3, 3) != HAL_OK)
         return HAL_ERROR;
 
-        // Read again after write
+    /* 
+    HAL_OK means the read or write op was completed but
+    the register values may not change, read again to verify
+    that the target values has been set
+    */
     if (w25q128_read_status_registers(&reg1, 1) != HAL_OK)
         return HAL_ERROR;
     if (w25q128_read_status_registers(&reg2, 2) != HAL_OK)
@@ -314,7 +323,7 @@ HAL_StatusTypeDef w25q128_erase_sector(uint32_t EraseStartAddress, uint32_t Eras
 }
 
 /* Write Function */
-HAL_StatusTypeDef w25q128_write(uint8_t* pData, uint32_t WriteAddr, uint32_t Size)
+HAL_StatusTypeDef w25q128_write(const uint8_t* pData, uint32_t WriteAddr, uint32_t Size)
 {
   OSPI_RegularCmdTypeDef sCommand={0};
   uint32_t end_addr=0, current_size=0, current_addr=0;
