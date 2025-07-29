@@ -112,3 +112,72 @@ uint8_t adc_init_all_handles(void);
  * @note The result is truncated to 16 bits, even if the ADC has a higher resolution.
  */
 HAL_StatusTypeDef adc_polling_get_value(ADC_HandleTypeDef *hadc, uint16_t *adc_value, uint16_t polling_timeout);
+
+
+
+/**
+ * @brief Retrieves the DMA buffer pointer associated with the given ADC handle.
+ *
+ * @param[in] hadc Pointer to the ADC handle (e.g., &hadc1, &hadc2, &hadc3).
+ *
+ * @return Pointer to the uint16_t DMA buffer for the given ADC handle.
+ *         - If `hadc` is &hadc3, returns `adc3_dma_buffer`.
+ * @example
+ *   uint16_t *dma_buffer = adc_get_dma_buffer(&hadc3);
+ *   if (dma_buffer) {
+ *       printf("First DMA sample: %u\n", dma_buffer[0]);
+ *   } else {
+ *       printf("DMA buffer unavailable.\n");
+ *   }
+ */
+uint16_t * adc_get_dma_buffer(ADC_HandleTypeDef *hadc);
+
+
+
+
+/**
+ * @brief Generates an HTTP-style response string based on the ADC status and mode.
+ *
+ * This function reads the ADC value (either by polling or DMA) from the specified ADC handle (`hadc`)
+ * and fills the provided response buffer with a formatted string containing the ADC result or an error message.
+ * It also returns an HTTP-like status code indicating the success or failure of the operation.
+ *
+ * @param[out] adc_value Pointer to a uint16_t where the polled ADC value will be stored (only used in polling mode).
+ * @param[out] response Pointer to a character buffer where the formatted response message will be written.
+ * @param[in] response_size Size of the `response` buffer in bytes. Ensure it is large enough to hold the output string.
+ * @param[in] hadc Pointer to the ADC handle (e.g., &hadc1, &hadc2, &hadc3) used for reading the ADC value.
+ * @param[in] ADC_POLLING_OR_DMA_MODE Mode of ADC operation:
+ *             - `ADC_DMA_MODE` for reading values from DMA buffer.
+ *             - `ADC_POLLING_MODE` for polling a single ADC value.
+ * @param[in] ADC_HANDLE_STATUS Handle status indicating whether the ADC is ON or OFF:
+ *             - `HANDLE_ON` to enable ADC read.
+ *             - `HANDLE_OFF` to disable ADC read.
+ *
+ * @return uint16_t HTTP-like status code:
+ *             - 200: Success, ADC value(s) read successfully.
+ *             - 400: ADC handle is off or invalid mode/status.
+ *             - 500: ADC read failed or DMA buffer error.
+ *
+ * @note - If `ADC_POLLING_OR_DMA_MODE` is `ADC_DMA_MODE`, this function calls `adc_get_dma_buffer(hadc)`
+ *         to retrieve a pointer to the DMA buffer.
+ *       - If `ADC_POLLING_OR_DMA_MODE` is `ADC_POLLING_MODE`, this function calls `adc_polling_get_value(hadc, adc_value, 100)`
+ *         with a timeout of 100ms.
+ *       - The function formats the result into `response` using snprintf, e.g., "adc value : %u, %u\n".
+ *       - Ensure `response_size` is sufficient (suggested at least 64 bytes).
+ *
+ * @example
+ *   uint16_t adc_value = 0;
+ *   char response[256] = {0};
+ *   uint16_t status = adc_get_http_response(&adc_value, response, sizeof(response),
+ *                                           &hadc3, ADC_POLLING_MODE, HANDLE_ON);
+ *   printf("HTTP Status: %u\n", status);
+ *   printf("Response: %s\n", response);
+ */
+uint16_t adc_get_http_response(
+    uint16_t *adc_value,
+    char *response,
+    size_t response_size,
+    ADC_HandleTypeDef *hadc,
+    uint8_t ADC_POLLING_OR_DMA_MODE,
+    uint8_t ADC_HANDLE_STATUS
+);

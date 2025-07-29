@@ -8,8 +8,12 @@
 #include "http/settings/network.h"
 #include "string.h"
 #include "serial_comm/i2c/hi2c4.h"
+#include "serial_comm/i2c/hi2c1.h"
 #include "peripherals/adc/hadc3.h"
-
+#include "peripherals/adc/hadc2.h"
+#include "peripherals/adc/hadc1.h"
+#include "peripherals/dts/hdts.h"
+#include "http/auth/users.h"
 
 
 
@@ -24,16 +28,62 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		}
 
 	else if (mg_match(hm->uri, mg_str("/api/led/green/get"), NULL)) {
-	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(GPIOB, LED_GREEN_Pin));
+	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(LED_BLUE_GPIO_Port, LED_BLUE_Pin));
 	    }
+	else if (mg_match(hm->uri, mg_str("/api/login"), NULL)) {
+		struct user *current_user = authenticate(hm);
+		if (current_user == NULL){
+			mg_http_reply(c, 404, "", "user not found\n");
+		}
+		else{
+			handle_login(c, current_user);
+		}
+	}
+	else if (mg_match(hm->uri, mg_str("/api/logout"), NULL)) {
+		handle_logout(c);
+	}
 
 	else if (mg_match(hm->uri, mg_str("/api/led/green/toggle"), NULL)) {
-		HAL_GPIO_TogglePin(GPIOB, LED_GREEN_Pin); // Can be different on your board
+		HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin); // Can be different on your board
 	    mg_http_reply(c, 200, "", "true\n");
 	    }
 
 
+
+
+
+	else if (mg_match(hm->uri, mg_str("/api/periph/dts"), NULL)) {
+		int32_t temperature = 0;
+		HAL_StatusTypeDef status = dts_get_temperature(&temperature);
+
+		if (status == HAL_OK) {
+			mg_http_reply(c, 200, "Content-Type: text/plain\r\n", "%d", temperature);
+		} else {
+			mg_http_reply(c, 500, "Content-Type: application/json\r\n",
+				"{\"success\":false,\"status\":%d}\n", status);
+		}
+
+		mg_http_reply(c, http_status_code, "", response);
+	}
+
+	else if (mg_match(hm->uri, mg_str("/api/periph/comp1"), NULL)) {
+		uint32_t comp_val = 0;
+		HAL_StatusTypeDef status = comp1_get_value(&comp_val);
+  
+
+		if (status == HAL_OK) {
+			mg_http_reply(c, 200, "Content-Type: text/plain\r\n", "%d", comp_val);
+		} else {
+			mg_http_reply(c, 500, "Content-Type: application/json\r\n",
+				"{\"success\":false,\"status\":%d}\n", status);
+		}
+
+		mg_http_reply(c, http_status_code, "", response);
+	}
+
+
 	else if (mg_match(hm->uri, mg_str("/api/periph/adc#"), NULL)) {
+		uint16_t adc_value = 0;
 
 		if (hm->uri.len != 16) {
             mg_http_reply(c, 400, "", "Invalid URI length: %d\n", hm->uri.len);
@@ -46,38 +96,19 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 
         switch (adc_num) {
 			case 1:
-				snprintf(response, sizeof(response), "ADC%d not yet supported\n", adc_num);
-				http_status_code = 404;
+				http_status_code = adc_get_http_response(
+					&adc_value, response, sizeof(response), &hadc1, ADC1_POLLING_OR_DMA_MODE, ADC1_HANDLE_STATUS
+				);
 				break;
 			case 2:
-				snprintf(response, sizeof(response), "ADC%d not yet supported\n", adc_num);
-				http_status_code = 404;
+				http_status_code = adc_get_http_response(
+					&adc_value, response, sizeof(response), &hadc2, ADC2_POLLING_OR_DMA_MODE, ADC2_HANDLE_STATUS
+				);
 				break;
 			case 3:
-			#if ADC3_HANDLE_STATUS == HANDLE_OFF
-				snprintf(response, sizeof(response), "adc3 handle is off");
-				http_status_code = 400;
-
-			#elif ADC3_HANDLE_STATUS == HANDLE_ON
-				#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
-
-					uint16_t* my_buffer = adc3_get_value();
-					snprintf(response, sizeof(response), "adc3 value : %u, %u\n", my_buffer[0], my_buffer[1]);
-					http_status_code = 200;
-
-				#elif ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
-
-					uint16_t adc_value = 0;
-					if (adc3_get_value(&adc_value) == HAL_OK) {
-						snprintf(response, sizeof(response), "adc3 value : %u\n", adc_value);
-						http_status_code = 200;
-					} else {
-						snprintf(response, sizeof(response), "adc3 read failed\n");
-						http_status_code = 500;
-					}
-				
-				#endif
-				#endif
+				http_status_code = adc_get_http_response(
+					&adc_value, response, sizeof(response), &hadc3, ADC3_POLLING_OR_DMA_MODE, ADC3_HANDLE_STATUS
+				);
 				break;
 			default:
 				snprintf(response, sizeof(response), "adc%d not supported\n", adc_num);
@@ -110,7 +141,10 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 			.size = size
 		};
 
-		HAL_StatusTypeDef status = I2C4_mem_read(mem_addr, packet, slave_addr);
+		// HAL_StatusTypeDef status = I2C4_mem_read(mem_addr, packet, slave_addr);
+		HAL_StatusTypeDef status = I2C1_mem_read(mem_addr, packet, slave_addr);
+
+
 		if (status == HAL_OK) {
 			mg_http_reply(c, 200, "Content-Type: text/plain\r\n", "%.*s", packet.size, (char *)packet.data);
 		} else {

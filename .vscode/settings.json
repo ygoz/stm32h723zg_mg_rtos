@@ -5,6 +5,15 @@
         "utils.h": "c",
         "hadc3.h": "c",
         "compare": "c",
-        "cmsis_os.h": "c"
+        "cmsis_os.h": "c",
+        "hadc1.h": "c",
+        "huart8.h": "c",
+        "stm32h7xx_hal.h": "c",
+        "hspi4.h": "c",
+        "usb_device.h": "c",
+        "usbd_def.h": "c",
+        "usbd_cdc.h": "c",
+        "usbd_cdc_if.h": "c",
+        "usb_comport.h": "c"
     }
 }

@@ -20,15 +20,29 @@
 #include "main.h"
 #include "string.h"
 #include "cmsis_os.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "mongoose.h"
+#include "stm32h7xx_hal.h"
 #include "http/routers/main_router.h"
 #include "http/settings/network.h"
 #include "serial_comm/i2c/hi2c4.h"
 #include "peripherals/adc/hadc3.h"
+#include "peripherals/adc/hadc2.h"
 #include "peripherals/adc/utils.h"
+#include "peripherals/dac/hdac1.h"
+#include "peripherals/dts/hdts.h"
+#include "peripherals/comp/hcomp1.h"
+#include "serial_comm/uart/huart10.h"
+#include "serial_comm/uart/huart8.h"
+#include "peripherals/timer/htim8.h"
+#include "serial_comm/spi/hspi4.h"
+#include "serial_comm/spi/hspi5.h"
+#include "serial_comm/spi/octospi.h"
+#include "flash/w25q128jvsq.h"
+#include "usb_comport.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,6 +80,7 @@ ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDesc
 
 ETH_TxPacketConfig TxConfig;
 
+
 ETH_HandleTypeDef heth;
 
 RNG_HandleTypeDef hrng;
@@ -85,6 +100,7 @@ const osThreadAttr_t Server_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void PeriphCommonClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_ETH_Init(void);
@@ -119,12 +135,46 @@ static void run_mongoose(void) {
 
   mg_log_set(MG_LL_DEBUG);  // Set log level to debug
 //  HAL_GPIO_WritePin(GPIOB, LED_GREEN_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
+  // HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 
   for (;;) {                // Infinite event loop
     mg_mgr_poll(&mgr, 10);   // Process network events
   }
 }
+
+
+#include "stm32h7xx_hal.h"  // or your MCU-specific HAL
+
+extern OSPI_HandleTypeDef hospi2;  // Your OCTOSPI/QSPI handle
+
+uint8_t W25Q_ReadStatusRegister1(void)
+{
+    OSPI_RegularCmdTypeDef sCommand = {0};
+    uint8_t reg = 0;
+
+    // 0x05 = Read Status Register-1
+    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
+    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
+    sCommand.Instruction        = 0x05; // input the reg definition
+    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
+    sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE;
+    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
+    sCommand.DummyCycles        = 0;
+    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
+    sCommand.NbData             = 1;
+
+    // Send the command
+    if (HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+        return 0xFF;
+
+    // Receive the data
+    if (HAL_OSPI_Receive(&hospi2, &reg, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+        return 0xFF;
+
+    return reg;
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -152,6 +202,9 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
+  /* Configure the peripherals common clocks */
+  PeriphCommonClock_Config();
+
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
@@ -164,12 +217,112 @@ int main(void)
   MX_RNG_Init();
   MX_I2C4_Init();
   MX_ADC3_Init();
+  MX_ADC2_Init();
+  MX_ADC1_Init();
+  MX_DAC1_Init();
+  MX_DTS_Init();
+  MX_I2C1_Init();
+  MX_COMP1_Init();
+  MX_USART10_UART_Init();
+  MX_UART8_Init();
+  MX_TIM8_Init();
+  MX_SPI4_Init();
+  MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
+  MX_OCTOSPI2_Init();
+  MX_USB_DEVICE_Init();
+  usb_comport_init();
 
   //init all adcs here + calibration
   adc_init_all_handles();
 
-  
+  //init comp
+  uint32_t comp_output;
+  comp1_get_value(&comp_output);
+
+  //init uart
+  uart10.init(&uart10);
+  uart8.init(&uart8);
+
+  // **************************SPI***************************************
+  // uint8_t *spi_rx;
+  // uint8_t spi_tx[10] = "shalom aa";
+
+  // const uint32_t test_addr = 0x000000;  // Must be sector-aligned (multiple of 4096)
+  //   const char *test_data = "Hello from shalom Flash!";
+  //   uint8_t read_buf[64] = {0};
+
+  //   // 1. Erase sector
+  //   if (my_flash.erase_sector(&my_flash, test_addr) != HAL_OK) {
+  //       printf("Flash erase failed!\r\n");
+  //       return;
+  //   }
+
+  //   // 2. Write string to flash
+  //   if (my_flash.write_page(&my_flash, test_addr, (uint8_t *)test_data, strlen(test_data)) != HAL_OK) {
+  //       printf("Flash write failed!\r\n");
+  //       return;
+  //   }
+
+  //   // 3. Read back the string
+  //   if (my_flash.read(&my_flash, test_addr, read_buf, strlen(test_data)) != HAL_OK) {
+  //       printf("Flash read failed!\r\n");
+  //       return;
+  //   }
+
+  //   // 4. Print result
+  //   printf("Flash read: %s\r\n", read_buf);
+
+// **************************************************QSPI*********************************************
+// uint8_t write_data[] = "Hello";
+// uint8_t *actual_write = write_data;
+//     uint8_t read_data[sizeof(write_data)] = {0};
+//     uint32_t address = 0x000000;
+
+//     // Init + Reset + Config
+//     W25Q128_OCTO_SPI_Init(&hospi2);
+
+//     // Erase sector
+//     W25Q128_OSPI_Erase_Chip(&hospi2);
+//     if (W25Q128_OSPI_EraseSector(&hospi2, address, address + 4095) != HAL_OK) return;
+
+//   // W25Q128_OSPI_WriteEnable(&hospi2);
+
+// //     uint8_t status_reg = W25Q_ReadStatusRegister1();
+// // printf("status_reg: 0x%02X\n", status_reg);
+
+// // Check WEL (bit 1) and BUSY (bit 0)
+// // if (status_reg & 0x01) printf("BUSY: Write/Erase in progress\n");
+// // if (status_reg & 0x02) printf("WEL: Write Enable Latch is set\n");
+
+//     // Write
+//     if (W25Q128_OSPI_Write(&hospi2, write_data, address, sizeof(write_data)) != HAL_OK) return;
+
+
+// // status_reg = W25Q_ReadStatusRegister1();
+// // printf("status_reg: 0x%02X\n", status_reg);
+
+// // Check WEL (bit 1) and BUSY (bit 0)
+// // if (status_reg & 0x01) printf("BUSY: Write/Erase in progress\n");
+// // if (status_reg & 0x02) printf("WEL: Write Enable Latch is set\n");
+
+
+//     // Read
+//     if (W25Q128_OSPI_Read(&hospi2, read_data, address, sizeof(read_data)) != HAL_OK) return;
+
+//     // Output
+//     printf("Read: %s\r\n", read_data);
+// // Read data
+//     if (W25Q128_OSPI_EnableMemoryMappedMode(&hospi2) != HAL_OK) return;
+
+//     volatile uint8_t *ptr = (uint8_t *)0x70000000;
+//     printf("First 100 bytes at 0x70000000 (hex):\r\n");
+//     for (int i = 0; i < 100; i++) {
+  //         printf("%02X ", ptr[i]);
+  //         if ((i + 1) % 16 == 0) printf("\r\n");
+  //     }
+// **************************************************QSPI*********************************************
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -282,6 +435,32 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief Peripherals Common Clock Configuration
+  * @retval None
+  */
+void PeriphCommonClock_Config(void)
+{
+  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
+
+  /** Initializes the peripherals clock
+  */
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+  PeriphClkInitStruct.PLL2.PLL2M = 8;
+  PeriphClkInitStruct.PLL2.PLL2N = 32;
+  PeriphClkInitStruct.PLL2.PLL2P = 64;
+  PeriphClkInitStruct.PLL2.PLL2Q = 2;
+  PeriphClkInitStruct.PLL2.PLL2R = 2;
+  PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
+  PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOWIDE;
+  PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
+  PeriphClkInitStruct.AdcClockSelection = RCC_ADCCLKSOURCE_PLL2;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
   * @brief ETH Initialization Function
   * @param None
   * @retval None
@@ -357,6 +536,7 @@ static void MX_RNG_Init(void)
 
 }
 
+
 /**
   * @brief USART3 Initialization Function
   * @param None
@@ -417,19 +597,19 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
-  __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LED_GREEN_Pin|LED_RED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -437,19 +617,29 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LED_GREEN_Pin LED_RED_Pin */
-  GPIO_InitStruct.Pin = LED_GREEN_Pin|LED_RED_Pin;
+  /*Configure GPIO pin : LED_RED_Pin */
+  GPIO_InitStruct.Pin = LED_RED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  HAL_GPIO_Init(LED_RED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LED_YELLOW_Pin */
-  GPIO_InitStruct.Pin = LED_YELLOW_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  /*Configure GPIO pin : USER_BUTTON_Pin */
+  GPIO_InitStruct.Pin = USER_BUTTON_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(USER_BUTTON_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LED_BLUE_Pin */
+  GPIO_InitStruct.Pin = LED_BLUE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_YELLOW_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(LED_BLUE_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(USER_BUTTON_EXTI_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(USER_BUTTON_EXTI_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

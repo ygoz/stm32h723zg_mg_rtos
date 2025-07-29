@@ -2,11 +2,11 @@ import httpx
 from httpx import Response
 from httpx import TimeoutException, TransportError
 from time import sleep
-# from rest_api.utils import request_handler
-from utils import request_handler
+from rest_api.utils import request_handler
+# from utils import request_handler
 from typing import Optional
 import asyncio
-# from rest_api.fota import ST_FOTA_manager
+from rest_api.fota import ST_FOTA_manager
 
 
 
@@ -69,10 +69,39 @@ class api_test_manager:
     
     
     @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/adc4")
+    async def get_adc4(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
+    @classmethod
     @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/adc3")
     async def get_adc3(response: httpx.Response, *args, **kwargs) -> Response:
         return response
     
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/adc2")
+    async def get_adc2(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/adc1")
+    async def get_adc1(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
+    @classmethod
+    @request_handler("POST", f"{STM32_HTTP_SERVER}/api/periph/dac1")
+    async def set_dac1(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/dts")
+    async def get_dts(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
+    
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/periph/comp1")
+    async def get_comp1(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
     
     
     @classmethod
@@ -109,6 +138,7 @@ async def main():
     # result = await api_test_manager.toggle_green_led()
     # result = await api_test_manager.get_green_led_status()
     result = await api_test_manager.get_adc3()
+    result = await api_test_manager.get_adc1()
     # mem
     # read_params = {"addr" : addr , "slave" : 0xa0, "size" : 300}
     # result = await api_test_manager.read_eeprom(params=read_params)

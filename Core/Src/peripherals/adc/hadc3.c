@@ -50,11 +50,11 @@ DMA_HandleTypeDef hdma_adc3;
 
 
 
-
-#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE 
-
 // define buffer for adc dma data
 SRAM4_BDMA uint16_t adc3_dma_buffer[ADC3_DMA_BUFFER_SIZE] ALIGN4;
+
+
+#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE 
 
 // return the dma buffer pointer
 uint16_t* adc3_get_value(void) {
@@ -70,12 +70,11 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value) {
 #endif
 
 
-#if ADC3_ANALOG_WATCHDOG == HANDLE_ON
 // this function will be called if the watchdog passes a threshold set
 void adc3_wdg_process_anomaly(void){
   MG_INFO(("ADC3 ANOMALLY!!"));
 }
-#endif
+
 
 /**
   * @brief ADC3 Initialization Function
@@ -103,8 +102,13 @@ void adc3_wdg_process_anomaly(void){
    hadc3.Init.ScanConvMode = ADC_SCAN_DISABLE;
    hadc3.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
    hadc3.Init.LowPowerAutoWait = DISABLE;
+
+   hadc3.Init.ContinuousConvMode = ENABLE;
+   #if ADC3_ANALOG_WATCHDOG == HANDLE_OFF
+   hadc3.Init.ContinuousConvMode = DISABLE;
+   #endif
+
    #if ADC3_POLLING_OR_DMA_MODE == ADC_POLLING_MODE
-    hadc3.Init.ContinuousConvMode = ENABLE;
     hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
     hadc3.Init.DMAContinuousRequests = DISABLE;
    #elif ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE

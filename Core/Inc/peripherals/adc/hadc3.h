@@ -10,6 +10,7 @@
  * @details
  * This file provides the configuration for ADC3, including its resolution and pin assignments.
  * - 12-bit resolution
+ * - Working modes: ADC_POLLING_MODE, ADC_DMA_MODE
  * - Pin mappings:
  *     - PC3_C (ADC3_INP1): Used for single-ended input.
  *     - PC2_C (ADC3_INN1): Used as negative input for differential mode.
@@ -77,8 +78,6 @@
 #endif
 
 
-// DMA SETTINGS
-#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
 
 
 /**
@@ -91,6 +90,10 @@
  * The linker script is configured to place this buffer in SRAM4, which has a size limit of 16KB.
  */
 extern uint16_t adc3_dma_buffer[ADC3_DMA_BUFFER_SIZE];
+
+
+// DMA SETTINGS
+#if ADC3_POLLING_OR_DMA_MODE == ADC_DMA_MODE
 
 
 /**
@@ -120,7 +123,6 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value);
 
 #endif
 
-#if ADC3_ANALOG_WATCHDOG == HANDLE_ON
 
 /**
  * @brief Handles an anomaly detected by the ADC3 analog watchdog.
@@ -138,7 +140,7 @@ HAL_StatusTypeDef adc3_get_value(uint16_t *adc_value);
  */
 void adc3_wdg_process_anomaly(void);
 
-#endif
+
 
 //dma 
 extern DMA_HandleTypeDef hdma_adc3;

@@ -7,6 +7,7 @@ from httpx import Response
 @pytest.mark.asyncio
 async def test_set_fota_update():
     response = await api_test_manager.fota_update()
+    print(response)
     assert response.status_code == 200
 
 @pytest.mark.asyncio
@@ -63,3 +64,22 @@ async def test_eeprom():
     
     assert response.status_code == 200
     assert text in response.text
+    
+    
+@pytest.mark.asyncio
+async def test_adcs():
+    response = await api_test_manager.get_adc4()
+    assert response.status_code == 404
+    response = await api_test_manager.get_adc3()
+    assert response.status_code == 200  
+    
+    
+    assert "adc" in response.text
+    response = await api_test_manager.get_adc2()
+    assert response.status_code == 200
+    assert "adc" in response.text
+    response = await api_test_manager.get_adc1()
+    assert response.status_code == 200
+    assert "adc" in response.text
+    
+    
