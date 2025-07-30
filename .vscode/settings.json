@@ -18,6 +18,8 @@
         "w25q128jvsq.h": "c",
         "string.h": "c",
         "octospi.h": "c",
-        "dev_inf.h": "c"
+        "dev_inf.h": "c",
+        "mongoose.h": "c",
+        "firmware_update.h": "c"
     }
 }

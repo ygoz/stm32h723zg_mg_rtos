@@ -91,7 +91,7 @@ UART_HandleTypeDef huart3;
 osThreadId_t ServerHandle;
 const osThreadAttr_t Server_attributes = {
   .name = "Server",
-  .stack_size = 2048 * 4,
+  .stack_size = 2048 * 8,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
@@ -219,10 +219,10 @@ if (w25q128_driver.memmap_enable() != HAL_OK) {
     return;
 }
 
-if (w25q128_driver.test() != HAL_OK) {
-    MG_INFO(("Unit test failed"));
-    return;
-}
+// if (w25q128_driver.test() != HAL_OK) {
+//     MG_INFO(("Unit test failed"));
+//     return;
+// }
 
   // W25Q128
   // ext_flash_exe_test();

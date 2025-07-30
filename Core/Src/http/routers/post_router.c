@@ -16,12 +16,12 @@
 void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	char response[256] = {0};
 
-	if (mg_match(hm->uri, mg_str("/api/firmware/upload"), NULL)) {
-	  // add non blocking timer and send http reply at mg_ota_end?
-	  handle_firmware_upload(c, hm);
-	}
+	// if (mg_match(hm->uri, mg_str("/api/firmware_update/rtos_mg.bin"), NULL)) {
+	//   // add non blocking timer and send http reply at mg_ota_end?
+	//   handle_firmware_upload(c, hm, "rtos_mg.bin");
+	// }
 
-	else if (mg_match(hm->uri, mg_str("/flash/settings/set"), NULL)) {
+	if (mg_match(hm->uri, mg_str("/flash/settings/set"), NULL)) {
 
 		network_settings new_settings;  // put in the begining
 		new_settings.is_initialized = 0xDEADBEEF; // magic word to initialize the settings in the flash

@@ -10,6 +10,11 @@
 
 #include "mongoose.h"
 
+
+
+
+#define NO_CACHE_HEADERS "Cache-Control: no-cache\r\n"
+#define JSON_HEADERS "Content-Type: application/json\r\n" NO_CACHE_HEADERS
 /**
  * @brief Handle firmware upload over HTTP using Mongoose.
  *
@@ -45,5 +50,7 @@
  * @param[in] hm Mongoose HTTP message containing body and query parameters.
  */
 void handle_firmware_upload(struct mg_connection *c, struct mg_http_message *hm);
+
+void handle_uploads(struct mg_connection *c, int ev, void *ev_data);
 
 #endif /* INC_HTTP_FOTA_FIRMWARE_UPDATE_H_ */
