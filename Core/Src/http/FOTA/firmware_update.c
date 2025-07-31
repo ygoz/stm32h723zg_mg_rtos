@@ -7,75 +7,10 @@
 
 #include "mongoose.h"
 #include "http/FOTA/firmware_update.h"
+#include "http/auth/users.h"
 
 
-static const char *s_json_header =
-    "Content-Type: application/json\r\n"
-    "Cache-Control: no-cache\r\n";
-
-
-
-
-// put documentaion in header, and organize the code 
-void handle_firmware_upload(struct mg_connection *c, struct mg_http_message *hm) {
-  char name[64], offset[20], total[20]; // next line inits the vars, faster then {0}.
-  name[0] = offset[0] = '\0';
-  long ofs = -1, tot = -1;
-
-  // set http body in data variable, type mongoose string
-  struct mg_str data = hm->body;
-
-  // parse http query variables
-  mg_http_get_var(&hm->query, "name", name, sizeof(name));
-  mg_http_get_var(&hm->query, "offset", offset, sizeof(offset));
-  mg_http_get_var(&hm->query, "total", total, sizeof(total));
-
-  // log to putty...
-  MG_INFO(("File %s, offset %s, len %lu", name, offset, data.len));
-
-  // make sure the client side has initialized the fota request through the rest api
-  // example:
-  // -  offset = 0
-  // -  total (size of the firmware, the .bin file) = 158K
-  if ((ofs = mg_json_get_long(mg_str(offset), "$", -1)) < 0 ||
-      (tot = mg_json_get_long(mg_str(total), "$", -1)) < 0) {
-    mg_http_reply(c, 500, "", "offset and total not set\n");
-  }
-
-  // mg_ota_begin does the following:
-  // -  raises flag that ota has began, 
-  // -  checks that the total firmware size isn't too big, 
-  //    up to 3 sectors allowed, each sector is of size 128KB
-   else if (ofs == 0 && mg_ota_begin((size_t) tot) == false) {
-    mg_http_reply(c, 500, "", "mg_ota_begin(%ld) failed\n", tot);
-  } 
-  
-  // mg_ota_write writes the firmware to the second half of the flash at 0x08080000
-  // 1KB chunks of the .bin file are recieved and mapped to the flash address at 0x08080000 + offset
-  // if error, call mg_ota_end to stop the firmware update process...
-  else if (data.len > 0 && mg_ota_write(data.buf, data.len) == false) {
-    mg_http_reply(c, 500, "", "mg_ota_write(%lu) @%ld failed\n", data.len, ofs);
-    mg_ota_end();
-  } 
-  
-  // the last chunk recieved should be an empty chunck to signal that 
-  // the whole .bin file has already been sent and the firmware should be updcated
-  // mg_ota_end does the following:
-  // -  rearranges the flash sectors:
-  //      sectors 0-3 are for the current firmware
-  //      sectors 4-6 are for the new firmware
-  //      sector 7 is used as a temp sector to rearrange the flash sectors
-  // -  reboots the MCU when done
-  else if (data.len == 0 && mg_ota_end() == false) {
-    mg_http_reply(c, 500, "", "mg_ota_end() failed\n", tot);
-  } 
-  
-  else {
-    mg_http_reply(c, 200, s_json_header, "true\n");
-  }
-}
-
-
+#define MAX_FILE_NAME 32
 
 
 
@@ -191,12 +126,32 @@ static void upload_handler(struct mg_connection *c, int ev, void *ev_data) {
 }
 
 
+
+static void get_file_name_from_uri(struct mg_str uri, char *buf, size_t len) {
+  struct mg_str parts[3];
+  memset(parts, 0, sizeof(parts));           // Init match parts
+  mg_match(uri, mg_str("/api/*/#"), parts);  // Fetch file name
+  mg_url_decode(parts[1].buf, parts[1].len, buf, len, 0);
+}
+
+
+
+
+
+
 static void prep_upload(struct mg_connection *c, struct mg_http_message *hm,
                         void *(*fn_open)(char *, size_t),
                         bool (*fn_close)(void *),
                         bool (*fn_write)(void *, void *, size_t)) {
   struct upload_state *us = (struct upload_state *) c->data;
-  const char* path = "mg_rtos.bin";
+
+
+  char path[MAX_FILE_NAME];
+  get_file_name_from_uri(hm->uri, path, sizeof(path));
+
+
+
+  // const char* path = "mg_rtos.bin";
   memset(us, 0, sizeof(*us));  // Cleanup upload state
   us->fp = fn_open(path, hm->body.len);
   MG_DEBUG(("file: [%s] size: %lu fp: %p", path, hm->body.len, us->fp));
@@ -217,26 +172,6 @@ static void prep_upload(struct mg_connection *c, struct mg_http_message *hm,
 
 
 
-// static void handle_uploads(struct mg_connection *c, int ev, void *ev_data) {
-//   struct upload_state *us = (struct upload_state *) c->data;
-//   struct mg_http_message *hm = (struct mg_http_message *) ev_data;
-
-//   // Catch /upload requests early, without buffering whole body
-//   // When we receive MG_EV_HTTP_HDRS event, that means we've received all
-//   // HTTP headers but not necessarily full HTTP body
-//   if (ev == MG_EV_HTTP_HDRS && us->marker == 0 &&
-//       mg_strcmp(hm->method, mg_str("POST")) == 0) {
-//     struct apihandler *h = find_handler(hm);
-//     if (h != NULL &&
-//         (strcmp(h->type, "upload") == 0 || strcmp(h->type, "ota") == 0)) {
-//       struct apihandler_upload *hu = (struct apihandler_upload *) h;
-//       prep_upload(c, hm, hu->opener, hu->closer, hu->writer);
-//     } else if (h != NULL && strcmp(h->type, "file") == 0) {
-//       struct apihandler_file *hf = (struct apihandler_file *) h;
-//       prep_upload(c, hm, hf->opener, file_closer, file_writer);
-//     }
-//   }
-// }
 
 
 void handle_uploads(struct mg_connection *c, int ev, void *ev_data) {
@@ -246,12 +181,20 @@ void handle_uploads(struct mg_connection *c, int ev, void *ev_data) {
   if (ev == MG_EV_HTTP_HDRS && us->marker == 0 &&
       mg_strcmp(hm->method, mg_str("POST")) == 0) {
     // Match against your OTA upload endpoint
-    if (mg_match(hm->uri, mg_str("/api/firmware_update/rtos_mg.bin"), NULL)) {
+    if (mg_match(hm->uri, mg_str("/api/firmware_update/*"), NULL)) {
+
+		struct user *current_user = authenticate(hm);
+		if (current_user == NULL){
+			mg_http_reply(c, 404, "", "user not found\n");
+		}
+		else{
+        prep_upload(c, hm,
+              s_apihandler_firmware_update.opener,
+              s_apihandler_firmware_update.closer,
+              s_apihandler_firmware_update.writer);
+      }
       // Directly prep the upload with your static handler
-      prep_upload(c, hm,
-                  s_apihandler_firmware_update.opener,
-                  s_apihandler_firmware_update.closer,
-                  s_apihandler_firmware_update.writer);
+
     }
   }
 }
