@@ -21,6 +21,7 @@
         "dev_inf.h": "c",
         "mongoose.h": "c",
         "firmware_update.h": "c",
-        "internal_flash.h": "c"
+        "internal_flash.h": "c",
+        "users.h": "c"
     }
 }

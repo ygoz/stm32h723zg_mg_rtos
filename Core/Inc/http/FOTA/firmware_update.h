@@ -15,42 +15,43 @@
 
 #define NO_CACHE_HEADERS "Cache-Control: no-cache\r\n"
 #define JSON_HEADERS "Content-Type: application/json\r\n" NO_CACHE_HEADERS
-/**
- * @brief Handle firmware upload over HTTP using Mongoose.
- *
- * This handler manages the Over-The-Air (OTA) firmware update process by
- * receiving and writing firmware binary data in chunks via HTTP POST requests.
- *
- * It performs the following steps:
- * - Parses `name`, `offset`, and `total` from the HTTP query string.
- * - Calls `mg_ota_begin()` to initialize OTA when `offset == 0`.
- * - Writes data chunks to flash at address `0x08080000 + offset` using `mg_ota_write()`.
- * - Calls `mg_ota_end()` after receiving the final empty chunk to finalize the update.
- *   On success, this rearranges flash sectors and triggers an MCU reboot to load the new firmware.
- *
- * Error Handling:
- * - Errors (e.g., missing parameters, OTA init failure, flash write failure) are
- *   reported to the client via HTTP 500 responses with explanatory messages.
- * - A successful write operation responds with HTTP 200 and a `"true\n"` message.
- *
- * Expected client-side upload flow:
- * 1. Start with `offset = 0` and `total =` full size of the `.bin` file.
- * 2. Send binary data in chunks (e.g., 1KB each) with correct `offset` values.
- * 3. Send an empty chunk to indicate completion.
- *
- * Flash Sector Usage:
- * - Sectors 0–3: Current firmware
- * - Sectors 4–6: New firmware (OTA update area)
- * - Sector 7: Temporary swap area used during finalization
- *
- * Requirements:
- * - Firmware size must not exceed 384KB (3 sectors of 128KB).
- *
- * @param[in] c  Mongoose connection handle.
- * @param[in] hm Mongoose HTTP message containing body and query parameters.
- */
-void handle_firmware_upload(struct mg_connection *c, struct mg_http_message *hm);
 
+
+
+/**
+ * @brief State structure for tracking an ongoing file upload.
+ *
+ * This structure is stored in `c->data` during an HTTP POST-based upload
+ * (e.g., OTA firmware update). It holds the file pointer, progress tracking,
+ * and function callbacks required to process and complete the upload.
+ *
+ * The `marker` field is used to flag that a given connection is currently
+ * handling an upload. This helps the upload handler differentiate between
+ * normal and upload-specific traffic.
+ */
+struct upload_state {
+  char marker;               // Tells that we're a file upload connection
+  size_t expected;           // POST data length, bytes
+  size_t received;           // Already received bytes
+  void *fp;                  // Opened file
+  bool (*fn_close)(void *);  // Close function
+  bool (*fn_write)(void *, void *, size_t);  // Write function
+};
+
+
+
+/**
+ * @brief Handles OTA firmware upload requests over HTTP.
+ *
+ * This function should be called from within the main HTTP event handler.
+ * It checks if the request is a POST to `/api/firmware_update/*`, performs
+ * user authentication, and if successful, prepares the connection for receiving
+ * a file upload (typically firmware data).
+ *
+ * @param c         Pointer to the Mongoose connection.
+ * @param ev        Event type (e.g., MG_EV_HTTP_HDRS).
+ * @param ev_data   Event data, expected to be a pointer to `struct mg_http_message`.
+ */
 void handle_uploads(struct mg_connection *c, int ev, void *ev_data);
 
 #endif /* INC_HTTP_FOTA_FIRMWARE_UPDATE_H_ */

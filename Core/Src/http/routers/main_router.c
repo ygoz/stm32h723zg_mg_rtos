@@ -63,25 +63,11 @@ inline static uint8_t numconns(struct mg_mgr *mgr) {
 }
 
 
-struct action_state {
-  char marker;       // Tells that we're an action connection
-  bool (*fn)(void);  // Pointer to a function that returns the action's status
-};
-
 // handles mongoose (network) events
 void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 	// handle streams, for example ota firmware update or file uploads
 	if (c->is_websocket == 0) handle_uploads(c, ev, ev_data);
-	// handle the rest
-	if (ev == MG_EV_POLL && c->is_websocket == 0 && c->data[0] == 'A') {
-    // Check if action in progress is complete
-		struct action_state *as = (struct action_state *) c->data;
-		if (as->fn() == false) {
-		mg_http_reply(c, 200, JSON_HEADERS, "true");
-		memset(as, 0, sizeof(*as));
-		}
-  	} 
-	else if (ev == MG_EV_HTTP_MSG && c->is_websocket == 0 && c->data[0] == 0) {
+	if ((ev == MG_EV_HTTP_MSG || ev == MG_EV_ACCEPT) && c->is_websocket == 0 && c->data[0] == 0) {
 	switch (ev) {
 		// handle incoming http request
 		case MG_EV_HTTP_MSG: {
@@ -91,7 +77,7 @@ void event_handler(struct mg_connection *c, int ev, void *ev_data) {
 		// handle an incoming connection, accept connection if there is room, else decline
 		case MG_EV_ACCEPT: {
 			uint8_t active_connections = numconns(c->mgr);
-			printf("Active TCP connections: %d\r\n", active_connections);
+			MG_INFO(("Active TCP connections: %d\r\n", active_connections));
 			if (active_connections > 10) {
 				MG_ERROR(("Too many connections\r\n"));
 				c->is_closing = 1;
