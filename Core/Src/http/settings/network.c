@@ -107,6 +107,17 @@ MG_IRAM void set_ip_configurations(void *arg) {
 
 
 
+bool is_valid_addr(const char *addr) {
+  int a, b, c, d;
+  return addr != NULL &&
+         sscanf(addr, "%d.%d.%d.%d", &a, &b, &c, &d) == 4 &&
+         a >= 0 && a <= 255 &&
+         b >= 0 && b <= 255 &&
+         c >= 0 && c <= 255 &&
+         d >= 0 && d <= 255;
+}
+
+
 
 
 

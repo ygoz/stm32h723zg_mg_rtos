@@ -22,6 +22,8 @@
         "mongoose.h": "c",
         "firmware_update.h": "c",
         "internal_flash.h": "c",
-        "users.h": "c"
+        "users.h": "c",
+        "network.h": "c",
+        "main_router.h": "c"
     }
 }

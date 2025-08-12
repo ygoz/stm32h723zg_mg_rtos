@@ -16,26 +16,45 @@
 void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	char response[256] = {0};
 
-	if (mg_match(hm->uri, mg_str("/flash/settings/set"), NULL)) {
+	if (mg_match(hm->uri, mg_str("/api/network_settings"), NULL)) {
 
 		network_settings new_settings;  // put in the begining
 		new_settings.is_initialized = 0xDEADBEEF; // magic word to initialize the settings in the flash
 
-		// Netmask
-		if (mg_http_get_var(&hm->query, "netmask", new_settings.netmask, sizeof(new_settings.netmask)) <= 0) {
-		    strncpy(new_settings.netmask, HAGENRAL_DEFAULT_SUBNETMASK, sizeof(new_settings.netmask));
-		}
-		// Gateway
-		if (mg_http_get_var(&hm->query, "gateway", new_settings.gateway, sizeof(new_settings.gateway)) <= 0) {
-		    strncpy(new_settings.gateway, HAGENRAL_DEFAULT_GATEWAY, sizeof(new_settings.gateway));
-		}
-		// IP
-		if (mg_http_get_var(&hm->query, "ip", new_settings.ip, sizeof(new_settings.ip)) <= 0) {
-		    strncpy(new_settings.ip, HAGENRAL_DEFAULT_IP, sizeof(new_settings.ip));
-		}
-		// DHCP
-		mg_http_get_var(&hm->query, "dhcp", (char *)&new_settings.dhcp, sizeof(new_settings.dhcp));
+		// Set defaults first
+		strncpy(new_settings.ip, HAGENRAL_DEFAULT_IP, sizeof(new_settings.ip));
+		strncpy(new_settings.gateway, HAGENRAL_DEFAULT_GATEWAY, sizeof(new_settings.gateway));
+		strncpy(new_settings.netmask, HAGENRAL_DEFAULT_SUBNETMASK, sizeof(new_settings.netmask));
+		new_settings.dhcp = false;
+		
+		struct mg_str json = hm->body;
 
+		// Extract "ip_address"
+		char *ip = mg_json_get_str(json, "$.ip_address");
+		if (ip != NULL && is_valid_addr(ip)) {
+		strncpy(new_settings.ip, ip, sizeof(new_settings.ip));
+		free(ip);
+		}
+
+		// Extract "gw_address"
+		char *gw = mg_json_get_str(json, "$.gw_address");
+		if (gw != NULL && is_valid_addr(gw)) {
+		strncpy(new_settings.gateway, gw, sizeof(new_settings.gateway));
+		free(gw);
+		}
+
+		// Extract "netmask"
+		char *mask = mg_json_get_str(json, "$.netmask");
+		if (mask != NULL && is_valid_addr(mask)) {
+		strncpy(new_settings.netmask, mask, sizeof(new_settings.netmask));
+		free(mask);
+		}
+
+		// Extract "dhcp" boolean
+		// bool dhcp_value;
+		// if (mg_json_get_bool(json, "$.dhcp", &dhcp_value)) {
+		// new_settings.dhcp = dhcp_value;
+		// }
 
 		if (set_network_settings(&new_settings, c->mgr)){
 			mg_http_reply(c, 500, "", "could not set network settings\r\n");

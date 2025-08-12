@@ -131,7 +131,7 @@ void set_ip_configurations(void *arg);
 
 
 // void change_driver_settings(network_settings *settings, struct mg_mgr *mgr);
-
+bool is_valid_addr(const char *addr);
 
 
 
