@@ -27,6 +27,30 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		mg_http_reply(c, 200, "", "GET ping\r\n");
 		}
 
+	else if (mg_match(hm->uri, mg_str("/api/heartbeat"), NULL)) {
+		mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{ \"online\": true }");
+	    }
+
+	else if (mg_match(hm->uri, mg_str("/api/network_settings"), NULL)) {
+
+		network_settings settings;
+		get_network_settings(&settings);
+		mg_http_reply(c, 200, "Content-Type: application/json\r\n",
+              "{"
+              "\"ip_address\": \"%s\","
+              "\"gw_address\": \"%s\","
+              "\"netmask\": \"%s\","
+              "\"dhcp\": %s"
+              "}",
+              settings.ip,
+              settings.gateway,
+              settings.netmask,
+              settings.dhcp ? "true" : "false");
+		}
+
+	else if (mg_match(hm->uri, mg_str("/websocket"), NULL)) {
+		mg_ws_upgrade(c, hm, NULL);
+	}
 	else if (mg_match(hm->uri, mg_str("/api/led/green/get"), NULL)) {
 	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(LED_BLUE_GPIO_Port, LED_BLUE_Pin));
 	    }

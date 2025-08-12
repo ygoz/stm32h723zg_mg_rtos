@@ -113,6 +113,35 @@ void server(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+struct ws_handler {
+  unsigned timeout_ms;
+  void (*fn)(struct mg_connection *);
+};
+static struct ws_handler
+    s_ws_handlers[sizeof(((struct mg_connection *) 0)->data) /
+                  sizeof(struct ws_handler)];
+static size_t s_ws_handlers_count;
+
+void mongoose_add_ws_handler(unsigned ms, void (*fn)(struct mg_connection *)) {
+  size_t max = sizeof(s_ws_handlers) / sizeof(s_ws_handlers[0]);
+  if (s_ws_handlers_count >= max) {
+    MG_ERROR(("WS handlers limit exceeded, max %lu", max));
+  } else {
+    s_ws_handlers[s_ws_handlers_count].timeout_ms = ms;
+    s_ws_handlers[s_ws_handlers_count].fn = fn;
+    s_ws_handlers_count++;
+  }
+};
+
+
+static void ws_500(struct mg_connection *c) {
+  mg_ws_printf(c, WEBSOCKET_OP_TEXT,
+             "{%m: %d, %m: %.1f, %m: %.1f}",
+             MG_ESC("voltage"), 47,
+             MG_ESC("pressure"), 32.2,
+             MG_ESC("temperature"), 22.5);
+  printf("shalom shalom wswswsws");
+}
 
 //  try to move to syscalls.c 
 int _write(int fd, unsigned char *buf, int len) {
@@ -120,6 +149,26 @@ int _write(int fd, unsigned char *buf, int len) {
     HAL_UART_Transmit(&huart3, buf, len, 999);  // Print to the UART
   }
   return len;
+}
+static void send_websocket_data(struct mg_mgr *mgr) {
+  struct mg_connection *c;
+  uint64_t now = mg_millis();
+
+  for (c = mgr->conns; c != NULL; c = c->next) {
+    uint64_t *timers = (uint64_t *)&c->data[0];
+    size_t i;
+
+    if (c->is_websocket == 0) continue;  // Not a websocket connection? Skip
+    if (c->send.len > 2048) continue;    // Too much data already? Skip
+
+    for (i = 0; i < s_ws_handlers_count; i++) {
+      if (c->pfn_data == NULL ||
+          mg_timer_expired(&timers[i], s_ws_handlers[i].timeout_ms, now)) {
+        s_ws_handlers[i].fn(c);
+        c->pfn_data = (void *)1;
+      }
+    }
+  }
 }
 
 
@@ -135,8 +184,12 @@ static void run_mongoose(void) {
 
   mg_log_set(MG_LL_DEBUG);  // Set log level to debug
 
+  mongoose_add_ws_handler(500, ws_500);
+
   for (;;) {                // Infinite event loop
     mg_mgr_poll(&mgr, 10);   // Process network events
+    send_websocket_data(&mgr);
+
   }
 }
 

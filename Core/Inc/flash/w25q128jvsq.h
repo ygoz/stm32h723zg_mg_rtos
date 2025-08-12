@@ -30,6 +30,7 @@
 
 #include <stdbool.h>
 #include "mongoose.h"
+#include "main.h"
 
 
 
