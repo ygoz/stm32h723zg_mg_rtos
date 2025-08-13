@@ -117,9 +117,9 @@
       "read_level": 3, 
       "write_level": 3, 
       "attributes": {
-        "led1": {"type": "bool", "value": false}, 
-        "led2": {"type": "bool", "value": true}, 
-        "led3": {"type": "bool", "value": false}
+        "red": {"type": "bool", "value": false}, 
+        "green": {"type": "bool", "value": true}, 
+        "blue": {"type": "bool", "value": false}
       }
     }, 
     "network_settings": {
@@ -207,7 +207,7 @@
               ]}
           ]}
       ]}, 
-    "heartbeat": 5, 
+    "heartbeat": 1, 
     "theme": {
     }, 
     "classes": "", 
@@ -228,16 +228,16 @@
                   {"classes": "panel", "layout": [
                       {"classes": "title", "format": "LED control panel"},
                       {"classes": "labeled", "layout": [
-                          {"classes": "label", "format": "LED1"},
-                          {"type": "toggle", "ref": "leds.led1", "autosave": true}
+                          {"classes": "label", "format": "Red"},
+                          {"type": "toggle", "ref": "leds.red", "autosave": true}
                         ]},
                       {"classes": "labeled", "layout": [
-                          {"classes": "label", "format": "LED2"},
-                          {"type": "toggle", "ref": "leds.led2", "autosave": true}
+                          {"classes": "label", "format": "Green"},
+                          {"type": "toggle", "ref": "leds.green", "autosave": true}
                         ]},
                       {"classes": "labeled", "layout": [
-                          {"classes": "label", "format": "LED3"},
-                          {"type": "toggle", "ref": "leds.led3", "autosave": true}
+                          {"classes": "label", "format": "Blue"},
+                          {"type": "toggle", "ref": "leds.blue", "autosave": true}
                         ]}
                     ]},
                   {"classes": "panel", "layout": [

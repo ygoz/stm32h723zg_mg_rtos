@@ -58,8 +58,11 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	    }
 
 	else if (mg_match(hm->uri, mg_str("/api/leds"), NULL)) {
-		HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin); // Can be different on your board
-	    mg_http_reply(c, 200, "", "true\n");
+		mg_http_reply(c, 200, "Content-Type: application/json\r\n",
+              "{\"red\": %s, \"green\": %s, \"blue\": %s}",
+              HAL_GPIO_ReadPin(LED_RED_D1_GPIO_Port, LED_RED_D1_Pin) == 0 ? "true" : "false",
+              HAL_GPIO_ReadPin(LED_GREEN_D1_GPIO_Port, LED_GREEN_D1_Pin) == 0 ? "true" : "false",
+              HAL_GPIO_ReadPin(LED_BLUE_D1_GPIO_Port, LED_BLUE_D1_Pin) == 0 ? "true" : "false");
 	    }
 
 

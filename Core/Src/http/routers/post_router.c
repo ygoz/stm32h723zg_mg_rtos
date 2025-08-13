@@ -11,6 +11,7 @@
 #include "serial_comm/i2c/hi2c4.h"
 #include "serial_comm/i2c/hi2c1.h"
 #include "peripherals/dac/hdac1.h"
+#include "http/routers/main_router.h"
 
 
 void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
@@ -100,6 +101,29 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 			mg_http_reply(c, 500, "Content-Type: application/json\r\n",
 				"{\"success\":false,\"status\":%d}\n", status);
 		}
+	}
+
+	else if (mg_match(hm->uri, mg_str("/api/leds"), NULL)) {
+		bool val;
+
+		// Red LED
+		if (mg_json_get_bool(hm->body, "$.red", &val)) {
+			HAL_GPIO_WritePin(LED_RED_D1_GPIO_Port, LED_RED_D1_Pin, val ? GPIO_PIN_RESET : GPIO_PIN_SET);
+		}
+
+		// Green LED
+		if (mg_json_get_bool(hm->body, "$.green", &val)) {
+			HAL_GPIO_WritePin(LED_GREEN_D1_GPIO_Port, LED_GREEN_D1_Pin, val ? GPIO_PIN_RESET : GPIO_PIN_SET);
+		}
+
+		// Blue LED
+		if (mg_json_get_bool(hm->body, "$.blue", &val)) {
+			HAL_GPIO_WritePin(LED_BLUE_D1_GPIO_Port, LED_BLUE_D1_Pin, val ? GPIO_PIN_RESET : GPIO_PIN_SET);
+		}
+
+		s_device_change_version++;
+
+		mg_http_reply(c, 200, "", "{\"status\": \"ok\"}");
 	}
 
 	else if (mg_match(hm->uri, mg_str("/api/periph/dac1"), NULL)) {

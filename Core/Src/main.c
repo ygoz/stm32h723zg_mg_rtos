@@ -135,12 +135,18 @@ void mongoose_add_ws_handler(unsigned ms, void (*fn)(struct mg_connection *)) {
 
 
 static void ws_500(struct mg_connection *c) {
-  mg_ws_printf(c, WEBSOCKET_OP_TEXT,
-             "{%m: %d, %m: %.1f, %m: %.1f}",
-             MG_ESC("voltage"), 47,
-             MG_ESC("pressure"), 32.2,
-             MG_ESC("temperature"), 22.5);
-  printf("shalom shalom wswswsws");
+
+  int32_t temperature = 0;
+	HAL_StatusTypeDef status = dts_get_temperature(&temperature);
+
+  if (status != HAL_OK) {
+    temperature = -1;
+  }
+    mg_ws_printf(c, WEBSOCKET_OP_TEXT,
+              "{%m: %d, %m: %.1f, %m: %d}",
+              MG_ESC("voltage"), 47,
+              MG_ESC("pressure"), 32.2,
+              MG_ESC("temperature"), temperature);
 }
 
 //  try to move to syscalls.c 
@@ -596,7 +602,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : LED_RED_D1_Pin LED_GREEN_D1_Pin LED_BLUE_D1_Pin */
   GPIO_InitStruct.Pin = LED_RED_D1_Pin|LED_GREEN_D1_Pin|LED_BLUE_D1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
