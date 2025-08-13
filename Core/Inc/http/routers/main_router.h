@@ -12,8 +12,17 @@
 
 #include "mongoose.h"
 
+
+
+#define NO_CACHE_HEADERS "Cache-Control: no-cache\r\n"
+#define JSON_HEADERS "Content-Type: application/json\r\n" NO_CACHE_HEADERS
+
+
+
+
 static const uint64_t s_timeout_ms = 1500;  // Connect timeout in milliseconds -- MG_EV_POLL
 
+extern unsigned long s_device_change_version;
 
 
 /**

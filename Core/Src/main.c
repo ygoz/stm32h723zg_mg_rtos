@@ -184,7 +184,7 @@ static void run_mongoose(void) {
 
   mg_log_set(MG_LL_DEBUG);  // Set log level to debug
 
-  mongoose_add_ws_handler(500, ws_500);
+  mongoose_add_ws_handler(2000, ws_500);
 
   for (;;) {                // Infinite event loop
     mg_mgr_poll(&mgr, 10);   // Process network events

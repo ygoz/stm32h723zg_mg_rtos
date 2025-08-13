@@ -43,7 +43,59 @@
         [1724577147,22.5],
         [1724577207,22.2],
         [1724577267,23.3],
-        [1724577327,23.9]
+        [1724577327,23.9],
+[
+          1755073928698,
+          null
+        ],
+[
+          1755073933419,
+          null
+        ],
+[
+          1755073934927,
+          null
+        ],
+[
+          1755073935193,
+          null
+        ],
+[
+          1755073936423,
+          null
+        ],
+[
+          1755073937265,
+          null
+        ],
+[
+          1755073938081,
+          null
+        ],
+[
+          1755073938271,
+          null
+        ],
+[
+          1755073938488,
+          null
+        ],
+[
+          1755073939189,
+          null
+        ],
+[
+          1755073939266,
+          null
+        ],
+[
+          1755073939315,
+          null
+        ],
+[
+          1755073943927,
+          null
+        ]
       ]
     }, 
     "state": {
@@ -171,7 +223,7 @@
                   {"format": "${state.version}"}
                 ]}
             ]},
-          {"classes": "container", "css": "gap:0.5rem;", "layout": [
+          {"classes": "container", "css": "gap: 0.5rem;", "layout": [
               {"classes": "container", "css": "flex-direction: column; gap: 0.5rem; flex: 0 0 auto; width: 16rem;", "layout": [
                   {"classes": "panel", "layout": [
                       {"classes": "title", "format": "LED control panel"},
@@ -210,7 +262,7 @@
                   {"classes": "container", "css": "gap:0.5rem;", "layout": [
                       {"classes": "panel", "css": "flex-grow: 1;", "layout": [
                           {"format": "Temperature", "classes": "title"},
-                          {"type": "graph", "ref": "graph_data"}
+                          {"type": "graph", "ref": "websocket.temperature", "css": "flex-grow: 1;\nheight: 7.5rem;", "options": {"xrange": 60}}
                         ]}
                     ]},
                   {"classes": "container", "layout": [
@@ -266,15 +318,15 @@
                     ]},
                   {"classes": "labeled", "layout": [
                       {"classes": "label", "format": "IP address"},
-                      {"type": "input", "ref": "network_settings.ip_address", "css": "flex: 0 0 auto;\nwidth: 8rem;", "disabled": "${network_settings.dhcp}", "autosave": true}
+                      {"type": "input", "ref": "network_settings.ip_address", "css": "flex: 0 0 auto;\nwidth: 8rem;", "disabled": "${network_settings.dhcp}", "autosave": false}
                     ]},
                   {"classes": "labeled", "layout": [
                       {"classes": "label", "format": "Gateway address"},
-                      {"type": "input", "ref": "network_settings.gw_address", "css": "flex: 0 0 auto;\nwidth: 8rem;", "autosave": true, "disabled": "${network_settings.dhcp}"}
+                      {"type": "input", "ref": "network_settings.gw_address", "css": "flex: 0 0 auto;\nwidth: 8rem;", "autosave": false, "disabled": "${network_settings.dhcp}"}
                     ]},
                   {"classes": "labeled", "layout": [
                       {"classes": "label", "format": "Network mask"},
-                      {"type": "input", "ref": "network_settings.netmask", "css": "width:8rem;", "autosave": true, "disabled": "${network_settings.dhcp}"}
+                      {"type": "input", "ref": "network_settings.netmask", "css": "width:8rem;", "autosave": false, "disabled": "${network_settings.dhcp}"}
                     ]},
                   {"classes": "labeled", "css": "margin-top: 0.25rem; justify-content:end;", "layout": [
                       {"type": "savebutton", "ref": "network_settings", "title": "save", "icon": "save"}

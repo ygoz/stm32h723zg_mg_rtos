@@ -9,12 +9,12 @@
 #define INC_HTTP_FOTA_FIRMWARE_UPDATE_H_
 
 #include "mongoose.h"
+#include "http/routers/main_router.h"
 
 
 
 
-#define NO_CACHE_HEADERS "Cache-Control: no-cache\r\n"
-#define JSON_HEADERS "Content-Type: application/json\r\n" NO_CACHE_HEADERS
+
 
 
 

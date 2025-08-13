@@ -15,6 +15,11 @@
 #include "main.h"
 
 
+
+unsigned long s_device_change_version = 0;
+
+
+
 // generates random numbers, use to generate MAC addr
 void mg_random(void *buf, size_t len) {  // Use on-board RNG
   extern RNG_HandleTypeDef hrng;

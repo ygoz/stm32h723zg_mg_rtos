@@ -14,7 +14,7 @@
 #include "peripherals/adc/hadc1.h"
 #include "peripherals/dts/hdts.h"
 #include "http/auth/users.h"
-
+#include "http/routers/main_router.h"
 
 
 
@@ -28,7 +28,9 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		}
 
 	else if (mg_match(hm->uri, mg_str("/api/heartbeat"), NULL)) {
-		mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{ \"online\": true }");
+		// mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{ \"online\": true }");
+		mg_http_reply(c, 200, JSON_HEADERS, "{%m:%lu}\n", MG_ESC("version"),
+                    s_device_change_version);
 	    }
 
 	else if (mg_match(hm->uri, mg_str("/websocket"), NULL)) {
@@ -51,6 +53,11 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	}
 
 	else if (mg_match(hm->uri, mg_str("/api/led/green/toggle"), NULL)) {
+		HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin); // Can be different on your board
+	    mg_http_reply(c, 200, "", "true\n");
+	    }
+
+	else if (mg_match(hm->uri, mg_str("/api/leds"), NULL)) {
 		HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin); // Can be different on your board
 	    mg_http_reply(c, 200, "", "true\n");
 	    }
