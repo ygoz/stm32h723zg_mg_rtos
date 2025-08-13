@@ -31,23 +31,6 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{ \"online\": true }");
 	    }
 
-	else if (mg_match(hm->uri, mg_str("/api/network_settings"), NULL)) {
-
-		network_settings settings;
-		get_network_settings(&settings);
-		mg_http_reply(c, 200, "Content-Type: application/json\r\n",
-              "{"
-              "\"ip_address\": \"%s\","
-              "\"gw_address\": \"%s\","
-              "\"netmask\": \"%s\","
-              "\"dhcp\": %s"
-              "}",
-              settings.ip,
-              settings.gateway,
-              settings.netmask,
-              settings.dhcp ? "true" : "false");
-		}
-
 	else if (mg_match(hm->uri, mg_str("/websocket"), NULL)) {
 		mg_ws_upgrade(c, hm, NULL);
 	}
@@ -177,28 +160,39 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		}
 	}
 
-	else if (mg_match(hm->uri, mg_str("/flash/settings/get"), NULL)){
+	else if (mg_match(hm->uri, mg_str("/api/network_settings"), NULL)){
 		network_settings settings;
 		if (get_network_settings(&settings)){ // Read settings from flash and convert to struct
 			mg_http_reply(c, 500, "", "could not read settings from flash\r\n"); // Read failed
 		}  
 		else{
-			if (settings.is_initialized != 0xDEADBEEF) { // check if settings were initialized
-				mg_http_reply(c, 400, "", "error: settings were never initialized\r\n");
+			if (settings.is_initialized != 0xDEADBEEF) { // check if settings were initialized, if not, return default settings
+				// mg_http_reply(c, 400, "", "error: settings were never initialized\r\n");
+				mg_http_reply(c, 200, "Content-Type: application/json\r\n",
+							"{"
+							"\"ip_address\": \"%s\","
+							"\"gw_address\": \"%s\","
+							"\"netmask\": \"%s\","
+							"\"dhcp\": %s"
+							"}",
+							default_network_settings.ip,
+							default_network_settings.gateway,
+							default_network_settings.netmask,
+							default_network_settings.dhcp ? "true" : "false");
 			} 
 			else {
 				// Settings are valid, return them
-				snprintf(response, sizeof(response),
-						 "ok settings were set:\r\n"
-						 "IP: %s\r\n"
-						 "Gateway: %s\r\n"
-						 "Netmask: %s\r\n"
-						 "DHCP: %s\r\n",
-						 settings.ip,
-						 settings.gateway,
-						 settings.netmask,
-						 settings.dhcp ? "Enabled" : "Disabled");
-				mg_http_reply(c, 200, "", "%s", response);
+				mg_http_reply(c, 200, "Content-Type: application/json\r\n",
+							"{"
+							"\"ip_address\": \"%s\","
+							"\"gw_address\": \"%s\","
+							"\"netmask\": \"%s\","
+							"\"dhcp\": %s"
+							"}",
+							settings.ip,
+							settings.gateway,
+							settings.netmask,
+							settings.dhcp ? "true" : "false");
 			}
 		}
 	}
