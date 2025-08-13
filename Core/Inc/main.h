@@ -81,6 +81,12 @@ void Error_Handler(void);
 #define STLK_VCP_RX_GPIO_Port GPIOD
 #define STLK_VCP_TX_Pin GPIO_PIN_9
 #define STLK_VCP_TX_GPIO_Port GPIOD
+#define LED_RED_D1_Pin GPIO_PIN_3
+#define LED_RED_D1_GPIO_Port GPIOG
+#define LED_GREEN_D1_Pin GPIO_PIN_4
+#define LED_GREEN_D1_GPIO_Port GPIOG
+#define LED_BLUE_D1_Pin GPIO_PIN_5
+#define LED_BLUE_D1_GPIO_Port GPIOG
 #define USER_BUTTON_Pin GPIO_PIN_7
 #define USER_BUTTON_GPIO_Port GPIOG
 #define USER_BUTTON_EXTI_IRQn EXTI9_5_IRQn

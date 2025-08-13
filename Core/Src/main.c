@@ -193,6 +193,7 @@ static void run_mongoose(void) {
   }
 }
 
+/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -288,8 +289,6 @@ if (w25q128_driver.memmap_enable() != HAL_OK) {
 //     return;
 // }
 
-
-/* USER CODE END 2 */
 
   /* USER CODE END 2 */
 
@@ -577,6 +576,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOG, LED_RED_D1_Pin|LED_GREEN_D1_Pin|LED_BLUE_D1_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
@@ -591,6 +593,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_RED_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED_RED_D1_Pin LED_GREEN_D1_Pin LED_BLUE_D1_Pin */
+  GPIO_InitStruct.Pin = LED_RED_D1_Pin|LED_GREEN_D1_Pin|LED_BLUE_D1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /*Configure GPIO pin : USER_BUTTON_Pin */
   GPIO_InitStruct.Pin = USER_BUTTON_Pin;
@@ -627,6 +636,7 @@ static void MX_GPIO_Init(void)
 void server(void *argument)
 {
   /* init code for USB_DEVICE */
+  // MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 5 */
   NVIC_EnableIRQ(ETH_IRQn);   // preferably do this in Cube, as the tutorials above instruct
   run_mongoose();
