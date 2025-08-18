@@ -29,87 +29,16 @@
       "write_level": 7, 
       "readonly": false
     }, 
-    "graph_data": {
-      "type": "custom", 
-      "read_level": 3, 
-      "write_level": 3, 
-      "value": [
-        [1724576787,20.3],
-        [1724576847,27.2],
-        [1724576907,29.7],
-        [1724576967,27.9],
-        [1724577027,25.1],
-        [1724577087,23.8],
-        [1724577147,22.5],
-        [1724577207,22.2],
-        [1724577267,23.3],
-        [1724577327,23.9],
-[
-          1755073928698,
-          null
-        ],
-[
-          1755073933419,
-          null
-        ],
-[
-          1755073934927,
-          null
-        ],
-[
-          1755073935193,
-          null
-        ],
-[
-          1755073936423,
-          null
-        ],
-[
-          1755073937265,
-          null
-        ],
-[
-          1755073938081,
-          null
-        ],
-[
-          1755073938271,
-          null
-        ],
-[
-          1755073938488,
-          null
-        ],
-[
-          1755073939189,
-          null
-        ],
-[
-          1755073939266,
-          null
-        ],
-[
-          1755073939315,
-          null
-        ],
-[
-          1755073943927,
-          null
-        ]
-      ]
-    }, 
     "state": {
       "type": "data", 
       "readonly": true, 
       "attributes": {
-        "speed": {"type": "int", "value": 42}, 
-        "temperature": {"type": "int", "value": 27}, 
-        "humidity": {"type": "int", "value": 67}, 
-        "uptime": {"type": "int", "value": 10}, 
+        "used_heap_memory": {"type": "int", "value": 42}, 
+        "total_heap_memory": {"type": "int", "value": 42}, 
+        "free_heap_memory": {"type": "int", "value": 42}, 
         "version": {"type": "string", "value": "1.0.0", "size": 20}, 
         "online": {"type": "bool", "value": true}, 
-        "lights": {"type": "bool", "value": false}, 
-        "level": {"type": "int", "value": 83}
+        "lights": {"type": "bool", "value": true}
       }
     }, 
     "leds": {
@@ -145,36 +74,6 @@
         "bool_val": {"type": "bool", "value": true}
       }
     }, 
-    "security": {
-      "type": "data", 
-      "read_level": 7, 
-      "write_level": 7, 
-      "attributes": {
-        "admin_password": {"type": "string", "value": "admin", "size": 40}, 
-        "user_password": {"type": "string", "value": "user", "size": 40}
-      }
-    }, 
-    "loglevels": {
-      "type": "custom", 
-      "value":       ["disabled","error","info","debug","verbose"]
-    }, 
-    "events": {
-      "type": "custom", 
-      "value": [
-        {
-          "priority": 1, 
-          "timestamp": 1738653279, 
-          "active": false, 
-          "message": "event 1"
-        },
-        {
-          "priority": 2, 
-          "timestamp": 1738653390, 
-          "active": true, 
-          "message": "event 2"
-        }
-      ]
-    }, 
     "login": {"type": "local", "attributes": {"username": {"type": "string", "value": "", "size": 20}, "password": {"type": "string", "value": "", "size": 20}}}, 
     "local": {
       "type": "local", 
@@ -199,7 +98,7 @@
                 {"type": "icon", "icon": "circle", "css": "flex: 0 0 auto;\nheight: 1rem;\nwidth: 1rem;\n${local.online ? \"color:var(--drawColor);\" : \"color:var(--bgColor);\"}"},
                 {"type": "text", "format": "last sync: ${local.lastsync}", "css": "margin: 0 0 0 0.5rem;", "classes": "${local.heartbeat.status ? 'hidden' : ''}"},
                 {"type": "text", "format": "|", "css": "margin:0 0.5rem;"},
-                {"type": "text", "format": "My product console"},
+                {"type": "text", "format": "HaGeneral Console"},
                 {"type": "text", "format": "|", "css": "margin:0 0.5rem;"},
                 {"type": "text", "format": "${local.username}"},
                 {"type": "icon", "icon": "user", "css": "margin: 0 0.5rem"},
@@ -213,10 +112,10 @@
     "classes": "", 
     "pages": [
       {"title": "Dashboard", "icon": "desktop", "level": 0, "classes": "page", "layout": [
-          {"classes": "container", "css": "flex-wrap:wrap; gap:0.5rem;", "layout": [
+          {"classes": "container", "css": "flex-wrap: wrap;\ngap: 0.5rem;", "layout": [
               {"classes": "card", "layout": [
                   {"format": "Temperature"},
-                  {"format": "${websocket.temperature} °C", "css": "height: 2rem;\n${state.temperature > 25 ? \"color: #c33; font-weight: 900;\" : \"\"}"}
+                  {"format": "${websocket.temperature} °C", "css": "height: 2rem;\n${websocket.temperature < 45 ? \"color: green; font-weight: 900;\" : websocket.temperature < 60 ? \"color: orange; font-weight: 900;\" : \"color: #c33; font-weight: 900;\"}"}
                 ]},
               {"classes": "card", "layout": [
                   {"format": "Firmware version"},
@@ -233,11 +132,11 @@
                         ]},
                       {"classes": "labeled", "layout": [
                           {"classes": "label", "format": "Green"},
-                          {"type": "toggle", "ref": "leds.green", "autosave": true}
+                          {"type": "toggle", "ref": "leds.green", "autosave": true, "css": "background-color: #22c55e !important;"}
                         ]},
                       {"classes": "labeled", "layout": [
                           {"classes": "label", "format": "Blue"},
-                          {"type": "toggle", "ref": "leds.blue", "autosave": true}
+                          {"type": "toggle", "ref": "leds.blue", "autosave": true, "css": "height: 1.600000023841858rem;"}
                         ]}
                     ]},
                   {"classes": "panel", "layout": [
@@ -251,14 +150,26 @@
                           {"type": "icon", "icon": "circle", "css": "${state.lights ? \"color:var(--drawColor);\" : \"color:var(--bgColor);\"}"}
                         ]}
                     ]},
-                  {"type": "container", "classes": "container", "css": "flex-direction: column; gap: 0.5rem;", "layout": [
-                      {"type": "container", "classes": "card", "layout": [
-                          {"type": "text", "format": "Voltage (real-time)"},
-                          {"type": "text", "format": "${websocket.voltage} V"}
+                  {"type": "container", "classes": "container", "css": "flex-direction: column;\ngap: 0.5rem;", "layout": [
+                      {"classes": "panel", "css": "flex: 0 0 auto;\nflex-basis: 0 0 auto;\nwidth: 16rem;", "layout": [
+                          {"classes": "container", "css": "gap: 0.5rem;", "layout": [
+                              {"css": "white-space: nowrap;\ntext-overflow: ellipsis;\nfont-weight: 700;", "format": "Heap Memory"}
+                            ]},
+                          {"css": "display: flex;\nalign-items: center;\njustify-content: space-between;\ngap: 1rem;", "layout": [
+                              {"format": "Total Heap"},
+                              {"type": "input", "ref": "state.total_heap_memory", "css": "flex: 0 0 auto;\nwidth: 8rem;"}
+                            ]},
+                          {"css": "display: flex;\nalign-items: center;\njustify-content: space-between;\ngap: 1rem;", "layout": [
+                              {"format": "Free Heap"},
+                              {"type": "input", "ref": "state.free_heap_memory", "css": "flex: 0 0 auto;\nwidth: 8rem;"}
+                            ]},
+                          {"css": "margin-top: 0.25rem; justify-content:end;display:flex; align-items:center; gap: 1rem;", "layout": [
+                              {"type": "progress", "ref": "state.used_heap_memory"}
+                            ]}
                         ]}
                     ]}
                 ]},
-              {"classes": "container", "css": "flex-direction: column; gap: 0.5rem;", "layout": [
+              {"classes": "container", "css": "flex-direction: column;\ngap: 0.5rem;", "layout": [
                   {"classes": "container", "css": "gap:0.5rem;", "layout": [
                       {"classes": "panel", "css": "flex-grow: 1;", "layout": [
                           {"format": "Temperature", "classes": "title"},
@@ -273,7 +184,7 @@
                           {"format": "To attach UI control to your device, add REST API endpoint first, then select a control and set the 'API variable' to that endpoint."},
                           {"format": "To edit the configuration manually, click on the \"export\" button to download wizard.json configuration file. Edit it, and import back."},
                           {"format": "Click on the \"Docs\" toolbar button to view the JSON format details."}
-                        ]}
+                        ], "css": "height: 14rem;"}
                     ]}
                 ]}
             ]}

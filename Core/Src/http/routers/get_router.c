@@ -207,13 +207,30 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		}
 	}
 
-	else if (mg_match(hm->uri, mg_str("/mem/ram/get"), NULL)) {
+	else if (mg_match(hm->uri, mg_str("/api/state"), NULL)) {
 	    uint32_t free_memory = xPortGetFreeHeapSize();  // Example: Get the available heap memory
 	    uint32_t total_memory = configTOTAL_HEAP_SIZE;  // Total heap memory size from FreeRTOS config
+		uint32_t used_heap_memory = (total_memory - free_memory) * 100 / total_memory;
+
 
 	    // Format the response as JSON or plain text
-	    snprintf(response, sizeof(response), "{\"free_memory\": %lu, \"total_memory\": %lu}\n", free_memory, total_memory);
-	    mg_http_reply(c, 200, "", response);
+	    mg_http_reply(
+			c,
+			200,
+			JSON_HEADERS,
+			"{"
+			"\"lights\": false, "
+			"\"online\": false, "
+			"\"version\": \"%s\", "
+			"\"free_heap_memory\": %u, "
+			"\"used_heap_memory\": %u, "
+			"\"total_heap_memory\": %u"
+			"}\n",
+			HAGENRAL_VERSION,
+			free_memory,
+			used_heap_memory,
+			total_memory
+		);
 	}
 
 	else {
