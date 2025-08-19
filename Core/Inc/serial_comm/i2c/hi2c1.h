@@ -160,3 +160,12 @@ HAL_StatusTypeDef I2C1_mem_write(uint16_t mem_address, I2C_packet data_packet, u
  * @note No delay is inserted after read, as EEPROM reads typically do not require a wait period.
  */
 HAL_StatusTypeDef I2C1_mem_read(uint16_t mem_address, I2C_packet buffer_packet, uint16_t slave_addr);
+
+
+
+// non-blocking calls
+
+HAL_StatusTypeDef I2C1_master_transmit_IT(I2C_packet data_packet, uint16_t slave_addr);
+HAL_StatusTypeDef I2C1_master_receive_IT(I2C_packet buffer_packet, uint16_t slave_addr);
+HAL_StatusTypeDef I2C1_slave_transmit_IT(I2C_packet data_packet);
+HAL_StatusTypeDef I2C1_slave_receive_IT(I2C_packet buffer_packet);

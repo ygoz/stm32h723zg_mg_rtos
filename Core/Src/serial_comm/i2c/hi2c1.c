@@ -45,7 +45,7 @@ void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.OwnAddress1 = 0x50;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c1.Init.OwnAddress2 = 0;
@@ -110,5 +110,24 @@ HAL_StatusTypeDef I2C1_mem_read(uint16_t mem_address, I2C_packet buffer_packet, 
 
 
 
+// non-blocking calls...
 
+// Master transmit (interrupt-based)
+HAL_StatusTypeDef I2C1_master_transmit_IT(I2C_packet data_packet, uint16_t slave_addr) {
+    return HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, data_packet.data, data_packet.size);
+}
 
+// Master receive (interrupt-based)
+HAL_StatusTypeDef I2C1_master_receive_IT(I2C_packet buffer_packet, uint16_t slave_addr) {
+    return HAL_I2C_Master_Receive_IT(&hi2c1, slave_addr, buffer_packet.data, buffer_packet.size);
+}
+
+// Slave transmit (interrupt-based)
+HAL_StatusTypeDef I2C1_slave_transmit_IT(I2C_packet data_packet) {
+    return HAL_I2C_Slave_Transmit_IT(&hi2c1, data_packet.data, data_packet.size);
+}
+
+// Slave receive (interrupt-based)
+HAL_StatusTypeDef I2C1_slave_receive_IT(I2C_packet buffer_packet) {
+    return HAL_I2C_Slave_Receive_IT(&hi2c1, buffer_packet.data, buffer_packet.size);
+}

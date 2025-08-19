@@ -29,6 +29,8 @@
 #include "http/routers/main_router.h"
 #include "http/settings/network.h"
 #include "serial_comm/i2c/hi2c4.h"
+#include "serial_comm/i2c/hi2c1.h"
+#include "serial_comm/i2c/i2c_hil_test.h"
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
 #include "peripherals/adc/utils.h"
@@ -260,6 +262,10 @@ int main(void)
   //init all adcs here + calibration
   adc_init_all_handles();
 
+  I2C1_Start_Receive();
+  // if (i2c_start_status != HAL_OK) {
+  //   printf("i2c_start_status failed, status=%d\n", i2c_start_status);
+
   //init comp
   uint32_t comp_output;
   comp1_get_value(&comp_output);
@@ -279,6 +285,72 @@ if (w25q128_driver.memmap_enable() != HAL_OK) {
     return;
 }
 
+
+
+printf("Starting I2C1....\n");
+
+char *i2c_message = "A";
+uint8_t *i2c_buffer = (uint8_t *)i2c_message;
+uint16_t i2c_slave_addr = 0x50;   // <-- replace with your slave’s actual 7-bit address
+
+// ---- TRANSMIT ----
+I2C_packet tx_packet = {
+    .data = i2c_buffer,
+    .size = 1
+};
+
+HAL_StatusTypeDef status = I2C1_master_transmit_IT(tx_packet, i2c_slave_addr);
+
+if (status != HAL_OK) {
+    printf("I2C1 failed, status=%d\n", status);
+} else {
+    // Wait for completion with timeout
+    uint32_t start_tick = HAL_GetTick();
+    while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY) {
+        if ((HAL_GetTick() - start_tick) > 1000) {
+            printf("I2C1 timed out!\n");
+            status = HAL_TIMEOUT;
+            break;
+        }
+    }
+}
+
+if (status != HAL_OK) {
+    printf("I2C1 transmit failed, status=%d\n", status);
+} else {
+    printf("I2C1 transmit success\n");
+}
+
+// ---- RECEIVE ----
+uint8_t rx_buffer[32] = {0};   // adjust size to expected response
+I2C_packet rx_packet = {
+    .data = rx_buffer,
+    .size = sizeof(rx_buffer) - 1   // keep space for string null terminator
+};
+
+status = I2C1_master_receive_IT(rx_packet, i2c_slave_addr);
+
+if (status != HAL_OK) {
+    printf("I2C1 receive failed to start, status=%d\n", status);
+} else {
+    // Wait for completion with timeout
+    uint32_t start_tick = HAL_GetTick();
+    while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY) {
+        if ((HAL_GetTick() - start_tick) > 1000) {
+            printf("I2C1 timed out!\n");
+            status = HAL_TIMEOUT;
+            break;
+        }
+    }
+
+    if (status == HAL_OK) {
+        // Null-terminate safely
+        rx_buffer[rx_packet.size] = '\0';
+        printf("I2C1 received: %s\n", rx_buffer);
+    }
+}
+
+printf("Done with I2C1....\n");
 // if (w25q128_driver.test() != HAL_OK) {
 //     MG_INFO(("Unit test failed"));
 //     return;

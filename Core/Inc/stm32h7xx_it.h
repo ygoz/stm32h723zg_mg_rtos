@@ -54,6 +54,8 @@ void UsageFault_Handler(void);
 void DebugMon_Handler(void);
 void ADC_IRQHandler(void);
 void EXTI9_5_IRQHandler(void);
+void I2C1_EV_IRQHandler(void);
+void I2C1_ER_IRQHandler(void);
 void TIM6_DAC_IRQHandler(void);
 void ETH_IRQHandler(void);
 void OTG_HS_IRQHandler(void);

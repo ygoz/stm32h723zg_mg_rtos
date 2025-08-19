@@ -24,6 +24,8 @@
         "internal_flash.h": "c",
         "users.h": "c",
         "network.h": "c",
-        "main_router.h": "c"
+        "main_router.h": "c",
+        "hi2c1.h": "c",
+        "i2c_hil_test.h": "c"
     }
 }

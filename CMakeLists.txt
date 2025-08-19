@@ -64,6 +64,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c4.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/hi2c1.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/i2c/i2c_hil_test.c
 
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/utils.c
     ${CMAKE_SOURCE_DIR}/Core/Src/serial_comm/uart/huart10.c

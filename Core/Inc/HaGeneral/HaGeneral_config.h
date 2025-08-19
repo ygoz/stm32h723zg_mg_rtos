@@ -25,7 +25,7 @@
 #define HAGENRAL_VERSION		"1.0.1"
 
 
-
+#define HIL_TEST_MODE
 
 
 
@@ -99,7 +99,7 @@
  * I2C1_BASE_SLAVE_ADDR  ->      7-BIT ADDR SHIFTED TO THE LEFT
  * I2C1_OP_DELAY         ->      UNITS == ms
  */
-#define I2C1_MODE I2C_MODE_FAST
+#define I2C1_MODE I2C_MODE_STD
 #define I2C1_BASE_SLAVE_ADDR (0x50 << 1) // EEPROM ADDR
 #define I2C1_OP_DELAY 50
 
