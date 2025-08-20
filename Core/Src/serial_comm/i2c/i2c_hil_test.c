@@ -8,7 +8,7 @@
 static uint8_t rx_buffer[3];          // Receive buffer (matches master send size)
 static uint8_t tx_buffer[] = "hi";    // Response buffer
 
-#define RxSIZE  6
+#define RxSIZE  32
 uint8_t RxData[RxSIZE];
 
 int count = 0;
@@ -20,31 +20,37 @@ void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c)
 
 void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, uint16_t AddrMatchCode)
 {
-	if (TransferDirection == I2C_DIRECTION_TRANSMIT)  // if the master wants to transmit the data
-	{
-        printf("tx\r\n");
-		// receive using sequential function.
-		// The I2C_FIRST_AND_LAST_FRAME implies that the slave will send a NACK after receiving "entered" num of bytes
-		HAL_I2C_Slave_Sequential_Receive_IT(hi2c, RxData, 3, I2C_FIRST_AND_LAST_FRAME);
-	}
-	else  // if the master requests the data from the slave
-	{
-        printf("rx\r\n");
+    if (TransferDirection == I2C_DIRECTION_TRANSMIT)  // Master writing to slave
+    {
+        printf("Master wants to transmit\r\n");
 
-		// Error_Handler();  // call error handler
-	}
+        // Start receiving the first byte
+        count = 0;  // reset count for new transfer
+        HAL_I2C_Slave_Sequential_Receive_IT(hi2c, &RxData[count], 1, I2C_FIRST_FRAME);
+    }
+    else
+    {
+        printf("Master requests data (read) - not handled\r\n");
+    }
 }
 
+// Called each time a byte is received
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
-	// count++;
-    printf("Received bytes: ");
-    for (int i = 0; i < RxSIZE; i++) {
-        printf("%u ", RxData[i]);  // Print each byte as a number
-    }
-    printf("\r\n");
+    count++;  // increment received byte count
+    printf("Received byte %d: %u\r\n", count, RxData[count-1]);
 
+    if (count < RxSIZE)
+    {
+        // Prepare to receive next byte
+        HAL_I2C_Slave_Sequential_Receive_IT(hi2c, &RxData[count], 1, I2C_NEXT_FRAME);
+    }
+    else
+    {
+        printf("Buffer full, stopping reception\r\n");
+    }
 }
+
 
 void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
 {
