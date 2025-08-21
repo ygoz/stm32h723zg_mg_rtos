@@ -15,12 +15,12 @@
 
 #include "stm32h7xx_hal.h"
 #include "HaGeneral/HaGeneral_config.h"
-#include "serial_comm/i2c/hi2c1.h"
 
 
+#define I2C_SLAVE_RESPONSE_PASS "shalom master! this is slave."
 
-#ifdef HIL_TEST_MODE
+#ifdef HIL_SLAVE_MODE
 
-HAL_StatusTypeDef I2C1_Start_Receive(void);
 
 #endif
+

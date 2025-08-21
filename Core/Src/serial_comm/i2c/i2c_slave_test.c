@@ -2,13 +2,19 @@
 #include <stdio.h>
 #include "HaGeneral/HaGeneral_config.h"
 #include "serial_comm/i2c/hi2c1.h"
+#include "serial_comm/i2c/hi2c4.h"
+#include "serial_comm/i2c/i2c_master_test.h"
+#include "serial_comm/i2c/i2c_slave_test.h"
 
 
-#ifdef HIL_TEST_MODE
+
+
+
+
+#ifdef HIL_SLAVE_MODE
 
 
 #define I2C_MASTER_REQUEST      "shalom from master! can you hear me?"
-#define I2C_SLAVE_RESPONSE_PASS "shalom master! this is slave."
 #define I2C_BUFF_SIZE           64
 
 

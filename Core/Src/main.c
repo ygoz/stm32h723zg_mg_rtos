@@ -30,7 +30,8 @@
 #include "http/settings/network.h"
 #include "serial_comm/i2c/hi2c4.h"
 #include "serial_comm/i2c/hi2c1.h"
-#include "serial_comm/i2c/i2c_hil_test.h"
+#include "serial_comm/i2c/i2c_master_test.h"
+#include "serial_comm/i2c/i2c_slave_test.h"
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
 #include "peripherals/adc/utils.h"
@@ -265,7 +266,10 @@ int main(void)
   #ifdef HIL_SLAVE_MODE
 
   if (HAL_I2C_EnableListen_IT(&hi2c1) != HAL_OK) {
-    MG_INFO(("I2C HIL listen failed..."));
+    MG_INFO(("I2C1 HIL listen failed..."));
+  }
+  if (HAL_I2C_EnableListen_IT(&hi2c4) != HAL_OK) {
+    MG_INFO(("I2C4 HIL listen failed..."));
   }
   
   #endif
