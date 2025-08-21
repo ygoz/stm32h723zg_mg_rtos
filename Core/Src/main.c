@@ -262,7 +262,7 @@ int main(void)
   //init all adcs here + calibration
   adc_init_all_handles();
 
-  #ifdef HIL_TEST_MODE
+  #ifdef HIL_SLAVE_MODE
 
   if (HAL_I2C_EnableListen_IT(&hi2c1) != HAL_OK) {
     MG_INFO(("I2C HIL listen failed..."));
@@ -293,9 +293,9 @@ if (w25q128_driver.memmap_enable() != HAL_OK) {
 
 HAL_StatusTypeDef result = hil_test_i2c(&hi2c1);
 if (result == HAL_OK) {
-    printf("HIL I2C test passed!\n");
+    printf("\r\n----TEST PASSED----\r\n");
 } else {
-    printf("HIL I2C test failed with status=%d\n", result);
+    printf("\r\n----TEST FAILED, status : %d----\r\n", result);
 }
 // if (w25q128_driver.test() != HAL_OK) {
 //     MG_INFO(("Unit test failed"));

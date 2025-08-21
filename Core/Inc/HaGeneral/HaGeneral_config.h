@@ -25,9 +25,30 @@
 #define HAGENRAL_VERSION		"1.0.1"
 
 
+
+/**
+ * @brief 
+ * TODO: ADD DOCS!
+ * 
+ */
 #define HIL_TEST_MODE
 
+#define HIL_MASTER_MODE
+// #define HIL_SLAVE_MODE
 
+#ifdef HIL_TEST_MODE
+
+  // Error if both master and slave are defined
+  #if defined(HIL_MASTER_MODE) && defined(HIL_SLAVE_MODE)
+    #error "HIL_TEST_MODE: Cannot define both HIL_MASTER_MODE and HIL_SLAVE_MODE at the same time!"
+  #endif
+
+  // Error if neither master nor slave is defined
+  #if !defined(HIL_MASTER_MODE) && !defined(HIL_SLAVE_MODE)
+    #error "HIL_TEST_MODE: Must define either HIL_MASTER_MODE or HIL_SLAVE_MODE!"
+  #endif
+
+#endif
 
 
 // SETTINGS ************************************************************************************
