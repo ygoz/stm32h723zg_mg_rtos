@@ -294,13 +294,15 @@ if (w25q128_driver.memmap_enable() != HAL_OK) {
 }
 
 
-
+#ifdef HIL_MASTER_MODE
 HAL_StatusTypeDef result = hil_test_i2c(&hi2c1);
 if (result == HAL_OK) {
     printf("\r\n----TEST PASSED----\r\n");
 } else {
     printf("\r\n----TEST FAILED, status : %d----\r\n", result);
 }
+
+#endif
 // if (w25q128_driver.test() != HAL_OK) {
 //     MG_INFO(("Unit test failed"));
 //     return;

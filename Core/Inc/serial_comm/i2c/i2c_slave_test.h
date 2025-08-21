@@ -1,14 +1,13 @@
 /**
- * @file i2c_hil_test.h
+ * @file i2c_slave_test.h
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
- * @date 2025-08-19
+ * @date 2025-08-21
  * 
  * @copyright Copyright (c) 2025
  * 
  */
-
 
 
 #pragma once
@@ -19,7 +18,10 @@
 
 #define I2C_SLAVE_RESPONSE_PASS "shalom master! this is slave."
 
+
 #ifdef HIL_SLAVE_MODE
+
+#define I2C_BUFF_SIZE           64
 
 
 #endif
