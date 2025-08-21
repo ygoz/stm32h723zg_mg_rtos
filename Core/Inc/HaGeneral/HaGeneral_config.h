@@ -26,18 +26,37 @@
 
 
 
-/**
- * @brief 
- * TODO: ADD DOCS!
- * 
+// HIL tests *********************************************************************************
+
+/** 
+ * @brief Hardware-In-the-Loop (HIL) test configuration macros.
+ *
+ * These macros are used to configure the firmware for HIL unit testing of 
+ * serial communication between two PCBs (e.g., I2C Master ↔ Slave).  
+ * The test setup requires one PCB to act as a **Master** and the other 
+ * as a **Slave**:
+ *
+ * - Define @ref HIL_TEST_MODE to enable HIL test build mode.  
+ * - Then define **exactly one** of the following:  
+ *   - @ref HIL_MASTER_MODE → The board acts as a Master and initiates communication.  
+ *   - @ref HIL_SLAVE_MODE → The board acts as a Slave and responds to the Master.  
+ *
+ * @note If both @ref HIL_MASTER_MODE and @ref HIL_SLAVE_MODE are defined at the 
+ * same time, a compilation error is raised to prevent role conflicts.  
+ *
+ * @note If neither @ref HIL_MASTER_MODE nor @ref HIL_SLAVE_MODE is defined, 
+ * a compilation error is raised because one role must always be selected 
+ * for valid testing.  
+ *
+ * This mechanism ensures that the two PCBs in the HIL setup have complementary 
+ * roles, enabling reliable verification of the communication protocol.
  */
 #define HIL_TEST_MODE
 
-// #define HIL_MASTER_MODE
-#define HIL_SLAVE_MODE
+#define HIL_MASTER_MODE
+// #define HIL_SLAVE_MODE
 
 #ifdef HIL_TEST_MODE
-
   // Error if both master and slave are defined
   #if defined(HIL_MASTER_MODE) && defined(HIL_SLAVE_MODE)
     #error "HIL_TEST_MODE: Cannot define both HIL_MASTER_MODE and HIL_SLAVE_MODE at the same time!"
@@ -47,7 +66,6 @@
   #if !defined(HIL_MASTER_MODE) && !defined(HIL_SLAVE_MODE)
     #error "HIL_TEST_MODE: Must define either HIL_MASTER_MODE or HIL_SLAVE_MODE!"
   #endif
-
 #endif
 
 

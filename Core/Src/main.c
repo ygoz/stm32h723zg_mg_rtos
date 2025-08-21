@@ -265,11 +265,8 @@ int main(void)
 
   #ifdef HIL_SLAVE_MODE
 
-  if (HAL_I2C_EnableListen_IT(&hi2c1) != HAL_OK) {
-    MG_INFO(("I2C1 HIL listen failed..."));
-  }
-  if (HAL_I2C_EnableListen_IT(&hi2c4) != HAL_OK) {
-    MG_INFO(("I2C4 HIL listen failed..."));
+  if (i2c_slave_init() != HAL_OK) {
+    printf("i2c init failed....\r\n");
   }
   
   #endif
@@ -297,9 +294,17 @@ if (w25q128_driver.memmap_enable() != HAL_OK) {
 #ifdef HIL_MASTER_MODE
 HAL_StatusTypeDef result = hil_test_i2c(&hi2c1);
 if (result == HAL_OK) {
-    printf("\r\n----TEST PASSED----\r\n");
+    printf("\r\n----TEST PASSED I2C1----\r\n");
 } else {
-    printf("\r\n----TEST FAILED, status : %d----\r\n", result);
+    printf("\r\n----TEST FAILED I2C1, status : %d----\r\n", result);
+}
+
+
+result = hil_test_i2c(&hi2c4);
+if (result == HAL_OK) {
+    printf("\r\n----TEST PASSED I2C4----\r\n");
+} else {
+    printf("\r\n----TEST FAILED I2C4, status : %d----\r\n", result);
 }
 
 #endif

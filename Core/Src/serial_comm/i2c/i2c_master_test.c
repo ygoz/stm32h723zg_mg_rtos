@@ -39,6 +39,8 @@ HAL_StatusTypeDef wait_for_i2c(I2C_HandleTypeDef *hi2c, uint16_t timeout){
 // Function to test I2C transmit + receive
 HAL_StatusTypeDef hil_test_i2c(I2C_HandleTypeDef *hi2c)
 {
+    memset(i2c_master_rx_buffer, 0, I2C_BUFF_SIZE); // clean rx buffer for new transfer
+
     printf("Starting I2C test....\n");
 
     // ---- TRANSMIT ----
