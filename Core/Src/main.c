@@ -306,6 +306,15 @@ if (result == HAL_OK) {
     printf("\r\n----TEST FAILED I2C4, status : %d----\r\n", result);
 }
 
+
+
+result = hil_test_spi(&hspi4);
+if (result == HAL_OK) {
+    printf("\r\n----TEST PASSED spi4----\r\n");
+} else {
+    printf("\r\n----TEST FAILED spi4, status : %d----\r\n", result);
+}
+
 #endif
 // if (w25q128_driver.test() != HAL_OK) {
 //     MG_INFO(("Unit test failed"));

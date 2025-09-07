@@ -53,8 +53,8 @@
  */
 #define HIL_TEST_MODE
 
-#define HIL_MASTER_MODE
-// #define HIL_SLAVE_MODE
+// #define HIL_MASTER_MODE
+#define HIL_SLAVE_MODE
 
 #ifdef HIL_TEST_MODE
   // Error if both master and slave are defined
