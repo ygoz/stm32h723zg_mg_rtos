@@ -3,8 +3,7 @@
 #include "HaGeneral/HaGeneral_config.h"
 #include "serial_comm/i2c/hi2c1.h"
 #include "serial_comm/i2c/hi2c4.h"
-#include "serial_comm/i2c/i2c_master_test.h"
-#include "serial_comm/i2c/i2c_slave_test.h"
+#include "serial_comm/i2c/i2c_hil_test.h"
 
 
 

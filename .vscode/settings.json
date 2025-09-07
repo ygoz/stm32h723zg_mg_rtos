@@ -27,6 +27,7 @@
         "main_router.h": "c",
         "hi2c1.h": "c",
         "i2c_master_test.h": "c",
-        "i2c_slave_test.h": "c"
+        "i2c_slave_test.h": "c",
+        "i2c_hil_test.h": "c"
     }
 }
