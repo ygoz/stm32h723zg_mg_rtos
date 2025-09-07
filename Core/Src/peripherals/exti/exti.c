@@ -8,7 +8,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
     if (GPIO_Pin == USER_BUTTON_Pin) 
     {
-        HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+        HAL_GPIO_TogglePin(LED_BLUE_D2_GPIO_Port, LED_BLUE_D2_Pin);
 
         Toggle_PWM(&htim8, TIM_CHANNEL_4);
 

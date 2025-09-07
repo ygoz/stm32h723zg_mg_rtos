@@ -90,8 +90,12 @@ void Error_Handler(void);
 #define USER_BUTTON_Pin GPIO_PIN_7
 #define USER_BUTTON_GPIO_Port GPIOG
 #define USER_BUTTON_EXTI_IRQn EXTI9_5_IRQn
-#define LED_BLUE_Pin GPIO_PIN_8
-#define LED_BLUE_GPIO_Port GPIOC
+#define LED_RED_D2_Pin GPIO_PIN_6
+#define LED_RED_D2_GPIO_Port GPIOC
+#define LED_GREEN_D2_Pin GPIO_PIN_7
+#define LED_GREEN_D2_GPIO_Port GPIOC
+#define LED_BLUE_D2_Pin GPIO_PIN_8
+#define LED_BLUE_D2_GPIO_Port GPIOC
 #define SWDIO_Pin GPIO_PIN_13
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14

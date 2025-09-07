@@ -37,7 +37,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		mg_ws_upgrade(c, hm, NULL);
 	}
 	else if (mg_match(hm->uri, mg_str("/api/led/green/get"), NULL)) {
-	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(LED_BLUE_GPIO_Port, LED_BLUE_Pin));
+	    mg_http_reply(c, 200, "", "%d\n", HAL_GPIO_ReadPin(LED_BLUE_D2_GPIO_Port, LED_BLUE_D2_Pin));
 	    }
 	else if (mg_match(hm->uri, mg_str("/api/login"), NULL)) {
 		struct user *current_user = authenticate(hm);
@@ -53,7 +53,7 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 	}
 
 	else if (mg_match(hm->uri, mg_str("/api/led/green/toggle"), NULL)) {
-		HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin); // Can be different on your board
+		HAL_GPIO_TogglePin(LED_BLUE_D2_GPIO_Port, LED_BLUE_D2_Pin); // Can be different on your board
 	    mg_http_reply(c, 200, "", "true\n");
 	    }
 
