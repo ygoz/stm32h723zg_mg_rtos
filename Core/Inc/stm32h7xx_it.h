@@ -60,6 +60,8 @@ void TIM6_DAC_IRQHandler(void);
 void ETH_IRQHandler(void);
 void OTG_HS_IRQHandler(void);
 void UART8_IRQHandler(void);
+void SPI4_IRQHandler(void);
+void SPI5_IRQHandler(void);
 void I2C4_EV_IRQHandler(void);
 void I2C4_ER_IRQHandler(void);
 void ADC3_IRQHandler(void);

@@ -91,7 +91,7 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
     if (hi2c->Instance == I2C1 || hi2c->Instance == I2C4){
         if (TransferDirection == I2C_DIRECTION_TRANSMIT)  // Master writing to slave
         {
-            printf("Master wants to transmit\r\n");
+            printf("I2C Master wants to transmit\r\n");
             slave_rx_i2c_byte_count = 0;  // reset slave_rx_i2c_byte_count for new transfer
             memset(i2c_slave_rx_buffer, 0, I2C_BUFF_SIZE); // clean rx buffer for new transfer
             HAL_I2C_Slave_Sequential_Receive_IT(hi2c, &i2c_slave_rx_buffer[slave_rx_i2c_byte_count], 1, I2C_FIRST_FRAME);
@@ -122,7 +122,7 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
 void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
     if (hi2c->Instance == I2C1 || hi2c->Instance == I2C4) {
-        printf("Slave finished sending: %s\r\n", i2c_slave_tx_data);
+        printf("I2C Slave finished sending: %s\r\n", i2c_slave_tx_data);
     }
 }
 

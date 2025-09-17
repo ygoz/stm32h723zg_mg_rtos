@@ -17,12 +17,14 @@ static uint8_t rx_buffer[SPI_BUFF_SIZE] = {0};
 HAL_StatusTypeDef hil_test_spi(SPI_HandleTypeDef *hspi)
 {
     // Send test string to slave
-    if (HAL_SPI_Transmit(hspi, tx_buffer, sizeof(tx_buffer), HAL_MAX_DELAY) != HAL_OK)
-        return HAL_ERROR;
+    HAL_StatusTypeDef status = HAL_SPI_Transmit(hspi, tx_buffer, sizeof(tx_buffer), HAL_MAX_DELAY);
+    if (status != HAL_OK)
+        return status;
 
     // Receive response from slave
-    if (HAL_SPI_Receive(hspi, rx_buffer, sizeof(SPI_SLAVE_RESPONSE), HAL_MAX_DELAY) != HAL_OK)
-        return HAL_ERROR;
+    status = HAL_SPI_Receive(hspi, rx_buffer, sizeof(SPI_SLAVE_RESPONSE), HAL_MAX_DELAY);
+    if (status != HAL_OK)
+        return status;
 
     // Compare response with expected
     if (strncmp((char *)rx_buffer, SPI_SLAVE_RESPONSE, strlen(SPI_SLAVE_RESPONSE)) == 0)

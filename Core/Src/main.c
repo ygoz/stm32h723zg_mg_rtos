@@ -268,6 +268,10 @@ int main(void)
     printf("i2c init failed....\r\n");
   }
   
+  if (spi_slave_init() != HAL_OK) {
+    printf("spi init failed....\r\n");
+  }
+  
   #endif
 
   //init comp
@@ -614,8 +618,10 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   #ifdef HIL_MASTER_MODE
+    // GREEN LED ON
     HAL_GPIO_WritePin(GPIOC, LED_RED_D2_Pin|LED_BLUE_D2_Pin, GPIO_PIN_SET);
   #else
+    // BLUE LED ON
     HAL_GPIO_WritePin(GPIOC, LED_RED_D2_Pin|LED_GREEN_D2_Pin, GPIO_PIN_SET);
   #endif
     /*Configure GPIO pin : B1_Pin */

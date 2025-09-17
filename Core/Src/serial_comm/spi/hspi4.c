@@ -23,13 +23,21 @@ void MX_SPI4_Init(void){
   /* USER CODE END SPI4_Init 1 */
   /* SPI4 parameter configuration*/
   hspi4.Instance = SPI4;
-  hspi4.Init.Mode = SPI_MODE_MASTER;
+  #ifdef HIL_SLAVE_MODE
+    hspi4.Init.Mode = SPI_MODE_SLAVE;
+    // hspi4.Init.NSS = SPI_NSS_HARD_INPUT;
+    hspi4.Init.NSS = SPI_NSS_SOFT;
+
+
+  #else
+    hspi4.Init.Mode = SPI_MODE_MASTER;
+    hspi4.Init.NSS = SPI4_NSS_MODE; // config
+    hspi4.Init.BaudRatePrescaler = SPI4_BAUDRATE_PRESCALER; // config
+  #endif
   hspi4.Init.Direction = SPI_DIRECTION_2LINES;
   hspi4.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi4.Init.CLKPolarity = SPI4_CLK_POLARITY; // config
-  hspi4.Init.CLKPhase = SPI4_CLK_PHASE; // config
-  hspi4.Init.NSS = SPI4_NSS_MODE; // config
-  hspi4.Init.BaudRatePrescaler = SPI4_BAUDRATE_PRESCALER; // config
+  hspi4.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi4.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi4.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi4.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi4.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
