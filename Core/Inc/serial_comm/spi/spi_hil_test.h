@@ -68,7 +68,7 @@ HAL_StatusTypeDef hil_test_spi(SPI_HandleTypeDef *hspi);
 
 
 
-HAL_StatusTypeDef spi_slave_init(void);
+HAL_StatusTypeDef spi_slave_init(SPI_HandleTypeDef *hspi);
 
 #endif
 

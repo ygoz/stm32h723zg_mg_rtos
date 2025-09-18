@@ -53,7 +53,7 @@
  */
 #define HIL_TEST_MODE
 
-// #define HIL_MASTER_MODE
+// #define HIL_MASTER_MODE //
 #define HIL_SLAVE_MODE
 
 #ifdef HIL_TEST_MODE
