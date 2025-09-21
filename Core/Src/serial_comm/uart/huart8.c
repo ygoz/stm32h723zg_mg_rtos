@@ -56,7 +56,12 @@ void MX_UART8_Init(void){
   huart8.Init.OverSampling = UART_OVERSAMPLING_16;
   huart8.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   huart8.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  #ifdef HIL_SLAVE_MODE
+  huart8.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_SWAP_INIT;
+  huart8.AdvancedInit.Swap = UART_ADVFEATURE_SWAP_ENABLE;
+  #else
   huart8.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  #endif
   if (HAL_UART_Init(&huart8) != HAL_OK)
   {
     Error_Handler();
