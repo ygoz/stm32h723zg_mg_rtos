@@ -52,7 +52,12 @@ void MX_USART10_UART_Init(void){
   huart10.Init.OverSampling = UART_OVERSAMPLING_16;
   huart10.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   huart10.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  #ifdef HIL_SLAVE_MODE
+  huart10.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_SWAP_INIT;
+  huart10.AdvancedInit.Swap = UART_ADVFEATURE_SWAP_ENABLE;
+  #else
   huart10.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  #endif
   if (HAL_UART_Init(&huart10) != HAL_OK)
   {
     Error_Handler();
