@@ -42,6 +42,7 @@
 #include "peripherals/timer/htim8.h"
 #include "serial_comm/spi/hspi4.h"
 #include "serial_comm/spi/hspi5.h"
+#include "serial_comm/spi/spi_hil_test.h"
 #include "serial_comm/spi/octospi.h"
 #include "flash/w25q128jvsq.h"
 #include "usb_comport.h"
@@ -297,26 +298,34 @@ if (w25q128_driver.memmap_enable() != HAL_OK) {
 #ifdef HIL_MASTER_MODE
 HAL_StatusTypeDef result = hil_test_i2c(&hi2c1);
 if (result == HAL_OK) {
-    printf("\r\n----TEST PASSED I2C1----\r\n");
+    printf("\r\n---- TEST PASSED I2C1 ----\r\n");
 } else {
-    printf("\r\n----TEST FAILED I2C1, status : %d----\r\n", result);
+    printf("\r\n---- TEST FAILED I2C1, status : %d ----\r\n", result);
 }
 
 
 result = hil_test_i2c(&hi2c4);
 if (result == HAL_OK) {
-    printf("\r\n----TEST PASSED I2C4----\r\n");
+    printf("\r\n---- TEST PASSED I2C4 ----\r\n");
 } else {
-    printf("\r\n----TEST FAILED I2C4, status : %d----\r\n", result);
+    printf("\r\n---- TEST FAILED I2C4, status : %d ----\r\n", result);
 }
 
 
 
+
+result = hil_test_spi(&hspi5);
+if (result == HAL_OK) {
+  printf("\r\n---- TEST PASSED SPI5 ----\r\n");
+} else {
+  printf("\r\n---- TEST FAILED SPI5, status : %d ----\r\n", result);
+}
+
 result = hil_test_spi(&hspi4);
 if (result == HAL_OK) {
-    printf("\r\n----TEST PASSED spi4----\r\n");
+    printf("\r\n---- TEST PASSED SPI4 ----\r\n");
 } else {
-    printf("\r\n----TEST FAILED spi4, status : %d----\r\n", result);
+    printf("\r\n---- TEST FAILED SPI4, status : %d ----\r\n", result);
 }
 
 #endif

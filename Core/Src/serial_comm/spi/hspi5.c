@@ -23,13 +23,21 @@ void MX_SPI5_Init(void){
   /* USER CODE END SPI5_Init 1 */
   /* SPI5 parameter configuration*/
   hspi5.Instance = SPI5;
-  hspi5.Init.Mode = SPI_MODE_MASTER;
+  #ifdef HIL_SLAVE_MODE
+    hspi5.Init.Mode = SPI_MODE_SLAVE;
+    hspi5.Init.NSS = SPI_NSS_HARD_INPUT;
+    // hspi5.Init.NSS = SPI_NSS_SOFT;
+
+
+  #else
+    hspi5.Init.Mode = SPI_MODE_MASTER;
+    hspi5.Init.NSS = SPI5_NSS_MODE; // config
+    hspi5.Init.BaudRatePrescaler = SPI5_BAUDRATE_PRESCALER; // config
+  #endif
   hspi5.Init.Direction = SPI_DIRECTION_2LINES;
   hspi5.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi5.Init.CLKPolarity = SPI5_CLK_POLARITY; // config
   hspi5.Init.CLKPhase = SPI5_CLK_PHASE; // config
-  hspi5.Init.NSS = SPI5_NSS_MODE; // config
-  hspi5.Init.BaudRatePrescaler = SPI5_BAUDRATE_PRESCALER; // config
   hspi5.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi5.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi5.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
