@@ -30,6 +30,8 @@
         "i2c_slave_test.h": "c",
         "i2c_hil_test.h": "c",
         "spi_hil_test.h": "c",
-        "hspi5.h": "c"
+        "hspi5.h": "c",
+        "huart10.h": "c",
+        "uart_hil_test.h": "c"
     }
 }

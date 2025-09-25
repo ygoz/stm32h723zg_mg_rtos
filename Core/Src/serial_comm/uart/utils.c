@@ -37,16 +37,20 @@ HAL_StatusTypeDef uart_rx_interrupt_callback(Uart *uart) {
     if (*(uart->rx_index) < uart->rx_buffer_size - 1) {
         uart->rx_buffer[(*(uart->rx_index))++] = *(uart->rx_byte);
 
+        // look for termination, either \r or \n
         if (*(uart->rx_byte) == '\r' || *(uart->rx_byte) == '\n') {
+            // set null termination
             uart->rx_buffer[*(uart->rx_index)] = '\0';
             *(uart->rx_status) = HAL_OK;
         } else {
-            // MG_INFO(("UART buff: %s", uart->rx_buffer));
+            // keep listening for the next byte
             *(uart->rx_status) = restart_rx(uart);
         }
     } else {
         // Buffer overflow
+        //reset index
         *(uart->rx_index) = 0;
+        // clear buff
         memset(uart->rx_buffer, 0, uart->rx_buffer_size);
         *(uart->rx_status) = restart_rx(uart);
     }

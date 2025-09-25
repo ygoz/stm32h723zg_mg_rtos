@@ -39,6 +39,7 @@
 #include "peripherals/comp/hcomp1.h"
 #include "serial_comm/uart/huart10.h"
 #include "serial_comm/uart/huart8.h"
+#include "serial_comm/uart/uart_hil_test.h"
 #include "peripherals/timer/htim8.h"
 #include "serial_comm/spi/hspi4.h"
 #include "serial_comm/spi/hspi5.h"
@@ -272,6 +273,10 @@ int main(void)
   if (spi_slave_init() != HAL_OK) {
     printf("spi init failed....\r\n");
   }
+
+  if (uart_slave_init() != HAL_OK) {
+    printf("uart init failed....\r\n");
+  }
   
   #endif
 
@@ -328,11 +333,29 @@ if (result == HAL_OK) {
     printf("\r\n---- TEST FAILED SPI4, status : %d ----\r\n", result);
 }
 
-#endif
+
+result = hil_test_uart(&uart8);
+if (result == HAL_OK) {
+    printf("\r\n---- TEST PASSED UART8 ----\r\n");
+} else {
+    printf("\r\n---- TEST FAILED UART8, status : %d ----\r\n", result);
+}
+
+
+result = hil_test_uart(&uart10);
+if (result == HAL_OK) {
+    printf("\r\n---- TEST PASSED UART10 ----\r\n");
+} else {
+    printf("\r\n---- TEST FAILED UART10, status : %d ----\r\n", result);
+}
+
+
 // if (w25q128_driver.test() != HAL_OK) {
 //     MG_INFO(("Unit test failed"));
 //     return;
 // }
+
+#endif
 
 /* USER CODE BEGIN 0 */
 

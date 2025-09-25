@@ -53,8 +53,8 @@
  */
 #define HIL_TEST_MODE
 
-// #define HIL_MASTER_MODE
-#define HIL_SLAVE_MODE
+#define HIL_MASTER_MODE
+// #define HIL_SLAVE_MODE
 
 #ifdef HIL_TEST_MODE
   // Error if both master and slave are defined
@@ -197,7 +197,7 @@
  * UART8_BAUD_RATE          ->   Typically 9600, 115200, etc. — ensure both ends of the communication match  
  * UART8_CTS_RTS_MODE       ->   UART_CTS_RTS_ENABLED || UART_CTS_RTS_DISABLED
  */
-#define UART8_HANDLE_STATUS        UART_HANDLE_OFF
+#define UART8_HANDLE_STATUS        UART_HANDLE_ON
 #define UART8_RX_BUFFER_SIZE       128
 #define UART8_BAUD_RATE            9600
 #define UART8_CTS_RTS_MODE         UART_CTS_RTS_DISABLED
