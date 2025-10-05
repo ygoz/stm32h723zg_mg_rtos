@@ -9,12 +9,20 @@
 #include "string.h"
 #include "serial_comm/i2c/hi2c4.h"
 #include "serial_comm/i2c/hi2c1.h"
+#include "serial_comm/i2c/i2c_hil_test.h"
+#include "serial_comm/uart/huart10.h"
+#include "serial_comm/uart/huart8.h"
+#include "serial_comm/uart/uart_hil_test.h"
+#include "serial_comm/spi/hspi4.h"
+#include "serial_comm/spi/hspi5.h"
+#include "serial_comm/spi/spi_hil_test.h"
 #include "peripherals/adc/hadc3.h"
 #include "peripherals/adc/hadc2.h"
 #include "peripherals/adc/hadc1.h"
 #include "peripherals/dts/hdts.h"
 #include "http/auth/users.h"
 #include "http/routers/main_router.h"
+#include "cmsis_os.h"
 
 
 
@@ -65,6 +73,31 @@ void GET_requests_router(struct mg_connection *c, struct mg_http_message *hm){
               HAL_GPIO_ReadPin(LED_BLUE_D1_GPIO_Port, LED_BLUE_D1_Pin) == 0 ? "true" : "false");
 	    }
 
+	else if (mg_match(hm->uri, mg_str("/api/hil"), NULL)) {
+		#ifdef HIL_MASTER_MODE
+
+		HAL_StatusTypeDef spi5_res = hil_test_spi(&hspi5);
+		// Delay?
+		HAL_StatusTypeDef spi4_res = hil_test_spi(&hspi4);
+
+		mg_http_reply(c, 200, "Content-Type: application/json\r\n",
+			"{\"master\": true, \"i2c1\": %s, \"i2c4\": %s, \"spi4\": %s, \"spi5\": %s, \"uart8\": %s, \"uart10\": %s}",
+			hil_test_i2c(&hi2c1) == HAL_OK ? "true" : "false",
+			hil_test_i2c(&hi2c4) == HAL_OK ? "true" : "false",
+			spi4_res == HAL_OK ? "true" : "false",
+			spi5_res == HAL_OK ? "true" : "false",
+			hil_test_uart(&uart8) == HAL_OK ? "true" : "false",
+			hil_test_uart(&uart10) == HAL_OK ? "true" : "false"
+		);
+
+		#else 
+
+		mg_http_reply(c, 200, "Content-Type: application/json\r\n",
+			"{\"master\": false, \"i2c1\": false, \"i2c4\": false, \"spi5\": false, \"spi4\": false, \"uart8\": false, \"uart10\": false}"
+		);
+
+		#endif
+	}
 
 
 

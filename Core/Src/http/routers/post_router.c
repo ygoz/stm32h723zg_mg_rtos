@@ -126,6 +126,11 @@ void POST_requests_router(struct mg_connection *c, struct mg_http_message *hm){
 		mg_http_reply(c, 200, "", "{\"status\": \"ok\"}");
 	}
 
+	else if (mg_match(hm->uri, mg_str("/api/hil"), NULL)) {
+
+		mg_http_reply(c, 200, "Content-Type: application/json\r\n", "");
+	}
+
 	else if (mg_match(hm->uri, mg_str("/api/periph/dac1"), NULL)) {
 	
 		double dac_channel, dac_value;

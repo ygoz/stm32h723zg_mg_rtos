@@ -28,7 +28,7 @@ async def main():
     # read_params = {"addr" : addr , "slave" : 0xa0, "size" : len(text)+10}
     # response = await api_test_manager.read_eeprom(params=read_params)
     # response = await api_test_manager.fota_update()
-    response = await api_test_manager.get_ram()
+    response = await api_test_manager.get_hil_serial_comm()
 
 
 if __name__ == '__main__':

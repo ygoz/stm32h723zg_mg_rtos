@@ -8,6 +8,21 @@
   "modbus": {"enable": false, "port": 502}, 
   "build": {"mode": "new", "board": "h723", "ide": "GCC+make", "rtos": "FreeRTOS"}, 
   "api": {
+    "hil": {
+      "type": "data", 
+      "read_level": 0, 
+      "write_level": 0, 
+      "attributes": {
+        "master": {"type": "bool", "value": true}, 
+        "i2c1": {"type": "bool", "value": false}, 
+        "i2c4": {"type": "bool", "value": false}, 
+        "spi4": {"type": "bool", "value": false}, 
+        "spi5": {"type": "bool", "value": false}, 
+        "uart8": {"type": "bool", "value": false}, 
+        "uart10": {"type": "bool", "value": false}
+      }, 
+      "readonly": true
+    }, 
     "reboot": {
       "type": "action", 
       "read_level": 3, 
@@ -80,10 +95,35 @@
       "attributes": {
         "username": {"type": "string", "value": "Joe", "size": 50}, 
         "lastsync": {"type": "string", "value": "", "size": 50}, 
-        "online": {"type": "bool", "value": false}
+        "online": {"type": "bool", "value": false}, 
+        "userlevel": {"type": "int", "value": 7}
       }
     }, 
-    "websocket": {"type": "websocket", "readonly": true, "attributes": {"voltage": {"type": "int", "value": 42}, "temperature": {"type": "int", "value": 42}}}
+    "websocket": {"type": "websocket", "readonly": true, "attributes": {"voltage": {"type": "int", "value": 42}, "temperature": {"type": "int", "value": 42}}}, 
+    "save_event": {
+      "type": "action"
+    }, 
+    "events": {
+      "type": "custom", 
+      "value": [
+        {
+          "id": 0, 
+          "timestamp": 12345, 
+          "message": "Something failed", 
+          "priority": 2, 
+          "status": "active", 
+          "notes": "some notes"
+        },
+        {
+          "id": 1, 
+          "timestamp": 12395, 
+          "message": "Something succeeded", 
+          "priority": 1, 
+          "status": "processed", 
+          "notes": ""
+        }
+      ]
+    }
   }, 
   "ui": {
     "production": false, 
@@ -274,7 +314,55 @@
                     ]}
                 ]}
             ]}
-        ]}
+        ]},
+      {"title": "BIT", "icon": "link", "css": "padding: 0.75rem;\ngap: 0.5rem;\nmin-height: 2rem;\ndisplay: flex;\nflex-direction: column;\nflex-grow: 1;", "layout": [
+          {"classes": "container", "css": "flex-direction: column;\nheight: 11.5rem;\ngap: 0.5rem;\nflex-wrap: wrap;", "layout": [
+              {"format": "HIL Serial Communication Tests", "css": "font-weight: 900;\nfont-size: 2rem;"},
+              {"format": "Hardware-in-the-Loop (HIL) testing verifies the behavior of the firmware by connecting two HaGeneral Boards and simulating interactions. In this setup, connect two HaGeneral boards to test the following serial communication protocols: I2C, SPI, and UART.", "css": "font-size: 1rem;"},
+              {"format": "One board acts as the master, responsible for initiating communication and sending test requests. The other board acts as the slave, continuously listening on its serial interfaces via interrupts. When the slave receives the expected request from the master, it immediately responds with the predefined response. This allows the master to verify the integrity and correctness of each communication protocol during the HIL tests.", "css": "font-size: 1rem;\nflex: 0 0 auto;\nwidth: 65rem;"}
+            ]},
+          {"classes": "container", "css": "height: 8rem;\ngap: 0.5rem;\nflex-wrap: wrap;", "layout": [
+              {"classes": "container", "css": "flex: 0 0 auto;\nwidth: 78.75rem;\nflex-wrap: wrap;\ngap: 0.5rem;", "layout": [
+                  {"classes": "panel", "css": "flex: 0 0 auto;\nwidth: 7rem;\nheight: 9.25rem;\nflex-basis: 0 0 auto;\ntext-align: center;", "layout": [
+                      {"classes": "container", "css": "gap: 0.5rem;", "layout": [
+                          {"css": "white-space: nowrap;\ntext-overflow: ellipsis;\nfont-weight: 700;\ntext-align: center;", "format": "I2C Handle 1"}
+                        ]},
+                      {"type": "icon", "icon": "circle", "css": "flex: 0 0 auto;\nwidth: 5.400000095367432rem;\n${hil.i2c1? \"color: green; font-weight: 900;\" : \"color: #c33; font-weight: 900;\"}\nheight: 5.400000095367432rem;"}
+                    ]},
+                  {"classes": "panel", "css": "flex: 0 0 auto;\nwidth: 7rem;\nheight: 9.25rem;\nflex-basis: 0 0 auto;\ntext-align: center;", "layout": [
+                      {"classes": "container", "css": "gap: 0.5rem;", "layout": [
+                          {"css": "white-space: nowrap;\ntext-overflow: ellipsis;\nfont-weight: 700;\ntext-align: center;", "format": "I2C Handle 4"}
+                        ]},
+                      {"type": "icon", "icon": "circle", "css": "flex: 0 0 auto;\nwidth: 5.400000095367432rem;\n${hil.i2c4 ? \"color: green; font-weight: 900;\" : \"color: #c33; font-weight: 900;\"}\nheight: 5.400000095367432rem;"}
+                    ]},
+                  {"classes": "panel", "css": "flex: 0 0 auto;\nwidth: 7rem;\nheight: 9.25rem;\nflex-basis: 0 0 auto;\ntext-align: center;", "layout": [
+                      {"classes": "container", "css": "gap: 0.5rem;", "layout": [
+                          {"css": "white-space: nowrap;\ntext-overflow: ellipsis;\nfont-weight: 700;\ntext-align: center;", "format": "SPI Handle 4"}
+                        ]},
+                      {"type": "icon", "icon": "circle", "css": "flex: 0 0 auto;\nwidth: 5.400000095367432rem;\n${hil.spi4 ? \"color: green; font-weight: 900;\" : \"color: #c33; font-weight: 900;\"}\nheight: 5.400000095367432rem;"}
+                    ]},
+                  {"classes": "panel", "css": "flex: 0 0 auto;\nwidth: 7rem;\nheight: 9.25rem;\nflex-basis: 0 0 auto;\ntext-align: center;", "layout": [
+                      {"classes": "container", "css": "gap: 0.5rem;", "layout": [
+                          {"css": "white-space: nowrap;\ntext-overflow: ellipsis;\nfont-weight: 700;\ntext-align: center;", "format": "SPI Handle 5"}
+                        ]},
+                      {"type": "icon", "icon": "circle", "css": "flex: 0 0 auto;\nwidth: 5.400000095367432rem;\n${hil.spi5 ? \"color: green; font-weight: 900;\" : \"color: #c33; font-weight: 900;\"}\nheight: 5.400000095367432rem;"}
+                    ]},
+                  {"classes": "panel", "css": "flex: 0 0 auto;\nwidth: 8rem;\nheight: 9.25rem;\nflex-basis: 0 0 auto;\ntext-align: center;", "layout": [
+                      {"classes": "container", "css": "gap: 0.5rem;", "layout": [
+                          {"css": "white-space: nowrap;\ntext-overflow: ellipsis;\nfont-weight: 700;\ntext-align: center;", "format": "UART Handle 8"}
+                        ]},
+                      {"type": "icon", "icon": "circle", "css": "flex: 0 0 auto;\nwidth: 5.400000095367432rem;\n${hil.uart8 ? \"color: green; font-weight: 900;\" : \"color: #c33; font-weight: 900;\"}\nheight: 5.400000095367432rem;"}
+                    ]},
+                  {"classes": "panel", "css": "flex: 0 0 auto;\nwidth: 8.510937690734863rem;\nheight: 9.25rem;\nflex-basis: 0 0 auto;\ntext-align: center;", "layout": [
+                      {"classes": "container", "css": "gap: 0.5rem;", "layout": [
+                          {"css": "white-space: nowrap;\ntext-overflow: ellipsis;\nfont-weight: 700;\ntext-align: center;", "format": "UART Handle 10"}
+                        ]},
+                      {"type": "icon", "icon": "circle", "css": "flex: 0 0 auto;\nwidth: 5.400000095367432rem;\n${hil.uart10 ? \"color: green; font-weight: 900;\" : \"color: #c33; font-weight: 900;\"}\nheight: 5.400000095367432rem;"}
+                    ]},
+                  {"type": "action", "title": "Test Serial Communication", "icon": "code", "ref": "hil", "disabled": "${!hil.master}"}
+                ]}
+            ]}
+        ], "level": "7"}
     ], 
     "login": {"title": "login", "icon": "user", "level": 0, "classes": "page", "layout": [
         {"classes": "container", "css": "flex-grow: 1;\njustify-content: center;", "layout": [

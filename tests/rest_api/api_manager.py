@@ -103,6 +103,10 @@ class api_test_manager:
     async def get_comp1(response: httpx.Response, *args, **kwargs) -> Response:
         return response
     
+    @classmethod
+    @request_handler("GET", f"{STM32_HTTP_SERVER}/api/hil_tests/serial_comm")
+    async def get_hil_serial_comm(response: httpx.Response, *args, **kwargs) -> Response:
+        return response
     
     @classmethod
     async def fota_update(cls) -> Response:
